@@ -14,8 +14,7 @@ namespace Orleans.EventSourcing.UnitTests
             EventStoreProviderConfigManager eventStoreConfigManager = new EventStoreProviderConfigManager();
             var couchbaseProviderConfig = eventStoreConfigManager.ProviderConfigs.SingleOrDefault(s => s.Name == "CouchbaseEventStoreProvider");
             Assert.IsNotNull(eventStoreConfigManager.ProviderConfigs);
-            Assert.IsTrue(eventStoreConfigManager.ProviderConfigs.Count()== 2);
-            Assert.IsTrue(couchbaseProviderConfig.Default);
+            Assert.IsTrue(eventStoreConfigManager.ProviderConfigs.Count()== 2); 
             Assert.IsTrue(!string.IsNullOrEmpty(couchbaseProviderConfig.Type));
 
             dynamic setting = couchbaseProviderConfig.Settings;

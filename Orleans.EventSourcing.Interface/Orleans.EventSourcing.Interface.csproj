@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1BDBE34D-912E-492A-9D38-27F7F1901338}</ProjectGuid>
+    <ProjectGuid>{4B0254BA-B320-4777-9ABB-90125FE23781}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Orleans.EventSourcing.SimpleInterface</RootNamespace>
-    <AssemblyName>Orleans.EventSourcing.SimpleInterface</AssemblyName>
+    <RootNamespace>Orleans.EventSourcing.Interface</RootNamespace>
+    <AssemblyName>Orleans.EventSourcing.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Orleans, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Microsoft Project Orleans SDK v1.0\SDK\Binaries\OrleansServer\Orleans.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,24 +38,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Orleans">
+      <HintPath>$(OrleansSDK)\Binaries\OrleansClient\Orleans.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITransferTransaction.cs" />
-    <Compile Include="ITransferTransactionProcessManager.cs" />
-    <Compile Include="TransactionFaileReason.cs" />
-    <Compile Include="TransferTransactionInfo.cs" />
-    <Compile Include="TransactionStatus.cs" />
-    <Compile Include="PreparationType.cs" />
-    <Compile Include="TransactionType.cs" />
-    <Compile Include="IBankAccount.cs" />
+    <Compile Include="IEventStoreDispatcher.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Orleans.EventSourcing\Orleans.EventSourcing.csproj">
-      <Project>{50826ccf-9bef-4cf0-8ffb-08fd028cfc2a}</Project>
-      <Name>Orleans.EventSourcing</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

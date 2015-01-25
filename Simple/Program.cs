@@ -21,7 +21,7 @@ namespace Simple
                 AppDomainInitializerArguments = args,
             });
 
-            Orleans.OrleansClient.Initialize("DevTestClientConfiguration.xml");
+            GrainClient.Initialize("DevTestClientConfiguration.xml");
 
             var a = false;
 

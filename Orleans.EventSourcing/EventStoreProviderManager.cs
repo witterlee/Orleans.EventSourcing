@@ -25,34 +25,17 @@ namespace Orleans.EventSourcing
                 providers.Add(config.Name, provider);
             }
         }
-        public static IEventStoreProvider GetProvider<T>() where T : IEventSourcingGrain
-        {
-            return GetProvider(typeof(T));
-        }
 
-        public static IEventStoreProvider GetProvider(Type grainType)
-        {
-            IEventStoreProvider provider;
-            var providerName = mappings.GetOrAdd(grainType, GetEventStoreProviderName);
-            providers.TryGetValue(providerName, out provider);
-            return provider;
-        }
-
-        private static string GetEventStoreProviderName<T>()
-        {
-            return GetEventStoreProviderName(typeof(T));
-        }
-
-        private static string GetEventStoreProviderName(Type grainType)
-        {
-            var attr = grainType.GetCustomAttribute<EventStoreProviderAttribute>();
-
-            if (attr == null && !configManager.HasDefaultProvider)
+        public static IEventStoreProvider GetProvider()
+        { 
+            if (providers.Count == 0)
             {
-                throw new EventStoreProviderEmptyException(grainType);
+                throw new EventStoreProviderEmptyException();
             }
-            return attr == null ? configManager.DefaultProviderName : attr.ProviderName;
+            else
+            {
+                return providers.First().Value;
+            } 
         }
-
     }
 }

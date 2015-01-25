@@ -19,11 +19,13 @@ namespace Orleans.EventSourcing
     {
         private static ConcurrentBag<string> registerAssembly = new ConcurrentBag<string>();
         private static object lockObj = new object();
+        private const int AFTER_SNAPSHOT_SEVENT_COUNT = 100;
         public EventSourcingGrain()
         {
             var assembly = this.GetType().Assembly;
             if (!registerAssembly.Contains(assembly.FullName))
             {
+
                 lock (lockObj)
                 {
                     if (!registerAssembly.Contains(assembly.FullName))
@@ -35,44 +37,22 @@ namespace Orleans.EventSourcing
                 }
             }
         }
-        private const int APPLY_EVENT_ERROR = 60001;
-        private EventStore<TGrain, TState> eventStore { get; set; }
 
-        /// <summary>
-        /// apply event to grain, if applied success retrun SuccessMessage,else return ErrorMessage
-        /// </summary>
-        /// <param name="event"></param>
-        /// <returns></returns>
         protected async Task ApplyEvent(GrainEvent @event)
         {
-            //try
-            //{
             @event.GrainId = this.GetPrimaryKey();
             @event.Version = this.GetState().Version + 1;
             @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
+
+            await WriteEvent(@event);
             this.HandleEvent(@event);
-            await this.eventStore.WriteEvent(@event);
-            //return SuccessMessage.Instance;
-            //}
-            //catch (Exception ex)
-            //{
-            //    var log = this.GetLogger("event_store");
-            //    log.Error(APPLY_EVENT_ERROR, string.Format("applay event {0} error, eventId={1}", @event.GetType().FullName, @event.Version), ex);
-
-            //    return new ErrorMessage(ex.Message);
-            //}
         }
 
-        protected ulong GetNextEventId()
-        {
-            return this.State.Version + 1;
-        }
 
-        public async override Task ActivateAsync()
+        public async override Task OnActivateAsync()
         {
-            this.eventStore = new EventStore<TGrain, TState>(this as TGrain, 100);
-            await this.eventStore.ReplayEvents();
-            await base.ActivateAsync();
+            ReplayEvents();
+            await base.OnActivateAsync();
         }
 
         public TState GetState()
@@ -97,6 +77,37 @@ namespace Orleans.EventSourcing
             this.State.Version = @event.Version;
         }
 
+        public async Task WriteEvent(IEvent @event)
+        {
+            var eventDispatcher = GrainFactory.GetGrain<IEventStoreDispatcher>(0);
+            await eventDispatcher.Append(this.GetPrimaryKey(), @event.Version, @event);
 
+            var grainId = this.GetPrimaryKey();
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(@event);
+
+            if (@event.Version % AFTER_SNAPSHOT_SEVENT_COUNT == 0)
+                await this.WriteSnapshot();
+        }
+
+        private Task WriteSnapshot()
+        {
+            return this.State.WriteStateAsync();
+        }
+        private async void ReplayEvents()
+        {
+            var grainId = this.GetPrimaryKey();
+            var currentVersion = this.State.Version;
+
+            var eventDispatcher = GrainFactory.GetGrain<IEventStoreDispatcher>(0);
+            var unapplyEvents = await eventDispatcher.ReadFrom(grainId, currentVersion);
+
+            if (unapplyEvents.Count() > 0)
+            {
+                foreach (var evnt in unapplyEvents)
+                {
+                    HandleEvent(evnt);
+                }
+            }
+        }
     }
 }

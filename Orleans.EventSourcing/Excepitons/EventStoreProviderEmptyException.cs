@@ -12,10 +12,10 @@ using System.Reflection.Emit;
 namespace Orleans.EventSourcing
 {
     public class EventStoreProviderEmptyException : Exception
-    { 
-        public EventStoreProviderEmptyException(Type grainType)
+    {
+        public EventStoreProviderEmptyException()
+            : base("no event store provider")
         {
-            var message = grainType.FullName + " has not EventStoreProviderAttribute, you can set a event store provider as default or get a EventStoreProviderAttribute to this grain type.";
         }
     }
 

@@ -34,9 +34,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Orleans, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Microsoft Codename Orleans SDK v0.9\SDK\Binaries\OrleansClient\Orleans.dll</HintPath>
+    <Reference Include="Orleans">
+      <HintPath>..\..\..\Microsoft Project Orleans SDK v1.0\SDK\Binaries\OrleansServer\Orleans.dll</HintPath>
+    </Reference>
+    <Reference Include="OrleansRuntime">
+      <HintPath>..\..\..\Microsoft Project Orleans SDK v1.0\SDK\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.3.4.3\lib\net35\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -48,21 +53,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsistentHashRing.cs" />
     <Compile Include="DynamicReflection.cs" />
     <Compile Include="EventNameTypeMapping.cs" />
+    <Compile Include="EventStoreDispatcher.cs" />
     <Compile Include="EventStoreProviderConfigManager.cs" />
-    <Compile Include="EventStoreProviderAttribute.cs" />
     <Compile Include="Excepitons\EventStoreProviderEmptyException.cs" />
     <Compile Include="Excepitons\ConfigInvalidException.cs" />
     <Compile Include="GrainInternalEventHandlerProvider.cs" />
     <Compile Include="EventSourcingGrain.cs" />
     <Compile Include="IEventSourcingState.cs" />
     <Compile Include="IEventSourcingGrain.cs" />
-    <Compile Include="EventStore.cs" />
     <Compile Include="EventStoreProviderManager.cs" />
+    <Compile Include="IEventStoreDispatcherManager.cs" />
+    <Compile Include="IEventStoreDispatcher.cs" />
     <Compile Include="IEventStore.cs" />
     <Compile Include="IEventStoreProvider.cs" />
     <Compile Include="IEvent.cs" />
+    <Compile Include="SiloHostExtension.cs" />
     <Compile Include="TaskMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

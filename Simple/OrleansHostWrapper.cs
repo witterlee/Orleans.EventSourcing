@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net;
 
-using Orleans.Host;
+using Orleans.Runtime.Host;
+using Orleans.EventSourcing;
+using System.Configuration;
 
 namespace Simple
 {
@@ -13,7 +15,7 @@ namespace Simple
             set { siloHost.Debug = value; }
         }
 
-        private OrleansSiloHost siloHost;
+        private SiloHost siloHost;
 
         public OrleansHostWrapper(string[] args)
         {
@@ -24,20 +26,21 @@ namespace Simple
         public bool Run()
         {
             bool ok = false;
-
             try
             {
-                siloHost.InitializeOrleansSilo();
 
+                var rabbitMqConnectString = ConfigurationManager.ConnectionStrings["rabbitMqConnectString"].ConnectionString;
+                siloHost.InitializeOrleansSilo();
+                siloHost.UseEventStore(rabbitMqConnectString);
                 ok = siloHost.StartOrleansSilo();
 
                 if (ok)
                 {
-                    Console.WriteLine(string.Format("Successfully started Orleans silo '{0}' as a {1} node.", siloHost.SiloName, siloHost.SiloType));
+                    Console.WriteLine(string.Format("Successfully started Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type));
                 }
                 else
                 {
-                    throw new SystemException(string.Format("Failed to start Orleans silo '{0}' as a {1} node.", siloHost.SiloName, siloHost.SiloType));
+                    throw new SystemException(string.Format("Failed to start Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type));
                 }
             }
             catch (Exception exc)
@@ -58,7 +61,7 @@ namespace Simple
             {
                 siloHost.StopOrleansSilo();
 
-                Console.WriteLine(string.Format("Orleans silo '{0}' shutdown.", siloHost.SiloName));
+                Console.WriteLine(string.Format("Orleans silo '{0}' shutdown.", siloHost.Name));
             }
             catch (Exception exc)
             {
@@ -142,7 +145,7 @@ namespace Simple
                 }
             }
 
-            siloHost = new OrleansSiloHost(siloName);
+            siloHost = new SiloHost(siloName);
             siloHost.ConfigFileName = configFileName;
             if (deploymentId != null)
                 siloHost.DeploymentId = deploymentId;

@@ -20,16 +20,11 @@ namespace Orleans.EventSourcing
         Task Initialize(ExpandoObject settings);
 
         /// <summary>
-        /// Create event store provider instance for specifc grain type
+        /// Create event store provider instance 
         /// <remarks>
-        /// maybe you choose save different type grain's event to different table or collection.
-        ///       you need give different event store provider instance for every type grain
-        /// mayby you save all type grain's event to a same table(collection etc)
-        ///       you only need give a singlion event store provider
         /// </remarks>
         /// </summary>
-        /// <typeparam name="T">the grain type</typeparam>
         /// <returns></returns>
-        IEventStore Create<T>() where T : IEventSourcingGrain;
+        IEventStore Create();
     }
 }

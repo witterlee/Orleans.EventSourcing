@@ -72,11 +72,11 @@ namespace Orleans.EventSourcing.Couchbase
             return result;
         }
 
-        public Task Append(Guid grainId, ulong eventVersion, string eventJsonString)
+        public Task Append(string eventId, string eventJsonString)
         {
             try
             {
-                var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
+                var result = _bucket.Insert(eventId, eventJsonString);
                 if (!result.Success)
                     throw new Exception("append event to store exception", result.Exception);
 
@@ -95,25 +95,6 @@ namespace Orleans.EventSourcing.Couchbase
             //    }
             //});
         }
-
-        private void Test()
-        {
-            var configuration = new ClientConfiguration
-            {
-                Servers = new List<Uri>
-                {
-                    new Uri("http://192.168.0.100:8091/pools")
-                }
-            };
-            using (var cluster = new Cluster(configuration))
-            {
-                using (var bucket = cluster.OpenBucket())
-                {
-                    var manager = bucket.CreateManager("Administrator", "couchbase");
-                    var result = manager.GetDesignDocument("by_field");
-                    Console.WriteLine(result);
-                }
-            }
-        }
+         
     }
 }

@@ -83,7 +83,7 @@ namespace Orleans.EventSourcing.Couchbase
             return Task.Run(() => { });
         }
 
-        public IEventStore Create<T>() where T : IEventSourcingGrain
+        public IEventStore Create() 
         {
             string user = _setting.administrator;
             string pwd = _setting.adminpassword;

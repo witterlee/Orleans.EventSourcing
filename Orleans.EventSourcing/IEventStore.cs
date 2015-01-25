@@ -8,7 +8,7 @@ namespace Orleans.EventSourcing
 {
     public interface IEventStore
     {
-        Task Append(Guid grainId, ulong eventVersion, string eventJsonString);
+        Task Append(string eventId, string eventJsonString);
         Task<IEnumerable<string>> ReadFrom(Guid grainId, ulong eventVersion = 0);
     }
 }

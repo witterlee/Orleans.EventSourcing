@@ -30,7 +30,7 @@ namespace Orleans.EventSourcing.SimpleInterface
     using Orleans.EventSourcing;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class TransferTransactionFactory
     {
@@ -52,7 +52,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return TransferTransactionReference.Cast(grainRef);
             }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
         [global::Orleans.CodeGeneration.GrainReferenceAttribute("Orleans.EventSourcing.SimpleInterface.Orleans.EventSourcing.SimpleInterface.ITran" +
@@ -181,7 +181,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.MethodInvokerAttribute("Orleans.EventSourcing.SimpleInterface.Orleans.EventSourcing.SimpleInterface.ITran" +
         "sferTransaction", 1895808213)]
@@ -200,7 +200,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         {
 
             try
-            {{                    if (grain == null) throw new System.ArgumentNullException("grain");
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
                     case 1895808213:  // ITransferTransaction
@@ -235,13 +235,13 @@ namespace Orleans.EventSourcing.SimpleInterface
                     default:
                         throw new System.InvalidCastException("interfaceId="+interfaceId);
                 }
-            }}
+            }
             catch(Exception ex)
-            {{
+            {
                 var t = new System.Threading.Tasks.TaskCompletionSource<object>();
                 t.SetException(ex);
                 return t.Task;
-            }}
+            }
         }
         
         public static string GetMethodName(int interfaceId, int methodId)
@@ -289,7 +289,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class TransferTransactionProcessManagerFactory
     {
@@ -311,7 +311,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return TransferTransactionProcessManagerReference.Cast(grainRef);
             }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
         [global::Orleans.CodeGeneration.GrainReferenceAttribute("Orleans.EventSourcing.SimpleInterface.Orleans.EventSourcing.SimpleInterface.ITran" +
@@ -387,12 +387,12 @@ namespace Orleans.EventSourcing.SimpleInterface
             System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransactionProcessManager.ProcessTransferTransaction(System.Guid fromAccountId, System.Guid toAccountId, decimal amount)
             {
 
-                return base.InvokeMethodAsync<object>(1500745786, new object[] {fromAccountId, toAccountId, amount} , options:  global::Orleans.CodeGeneration.InvokeMethodOptions.Unordered);
+                return base.InvokeMethodAsync<object>(1500745786, new object[] {fromAccountId, toAccountId, amount} );
             }
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.MethodInvokerAttribute("Orleans.EventSourcing.SimpleInterface.Orleans.EventSourcing.SimpleInterface.ITran" +
         "sferTransactionProcessManager", 2060187244)]
@@ -411,7 +411,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         {
 
             try
-            {{                    if (grain == null) throw new System.ArgumentNullException("grain");
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
                     case 2060187244:  // ITransferTransactionProcessManager
@@ -430,13 +430,13 @@ namespace Orleans.EventSourcing.SimpleInterface
                     default:
                         throw new System.InvalidCastException("interfaceId="+interfaceId);
                 }
-            }}
+            }
             catch(Exception ex)
-            {{
+            {
                 var t = new System.Threading.Tasks.TaskCompletionSource<object>();
                 t.SetException(ex);
                 return t.Task;
-            }}
+            }
         }
         
         public static string GetMethodName(int interfaceId, int methodId)
@@ -468,7 +468,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class BankAccountFactory
     {
@@ -490,7 +490,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return BankAccountReference.Cast(grainRef);
             }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
         [global::Orleans.CodeGeneration.GrainReferenceAttribute("Orleans.EventSourcing.SimpleInterface.Orleans.EventSourcing.SimpleInterface.IBank" +
@@ -601,7 +601,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.MethodInvokerAttribute("Orleans.EventSourcing.SimpleInterface.Orleans.EventSourcing.SimpleInterface.IBank" +
         "Account", -912346303)]
@@ -620,7 +620,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         {
 
             try
-            {{                    if (grain == null) throw new System.ArgumentNullException("grain");
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
                     case -912346303:  // IBankAccount
@@ -649,13 +649,13 @@ namespace Orleans.EventSourcing.SimpleInterface
                     default:
                         throw new System.InvalidCastException("interfaceId="+interfaceId);
                 }
-            }}
+            }
             catch(Exception ex)
-            {{
+            {
                 var t = new System.Threading.Tasks.TaskCompletionSource<object>();
                 t.SetException(ex);
                 return t.Task;
-            }}
+            }
         }
         
         public static string GetMethodName(int interfaceId, int methodId)
@@ -697,7 +697,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Orleans_EventSourcing_SimpleInterface_TransferTransactionInfoSerialization
@@ -713,26 +713,26 @@ namespace Orleans.EventSourcing.SimpleInterface
             Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo input = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(original));
             Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo result = new Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo();
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
-            result.Amount = ((Decimal)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Amount)));
-            result.FromAccountId = ((Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.FromAccountId)));
-            result.ToAccountId = ((Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.ToAccountId)));
+            result.Amount = input.Amount;
+            result.FromAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.FromAccountId)));
+            result.ToAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.ToAccountId)));
             return result;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
             Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo input = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(untypedInput));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(Decimal));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.FromAccountId, stream, typeof(Guid));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.ToAccountId, stream, typeof(Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(decimal));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.FromAccountId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ToAccountId, stream, typeof(System.Guid));
         }
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo result = new Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo();
-            result.Amount = ((Decimal)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Decimal), stream)));
-            result.FromAccountId = ((Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Guid), stream)));
-            result.ToAccountId = ((Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Guid), stream)));
+            result.Amount = ((decimal)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(decimal), stream)));
+            result.FromAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.ToAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             return result;
         }
         

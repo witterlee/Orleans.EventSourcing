@@ -15,24 +15,19 @@ namespace Orleans.EventSourcing
 {
     public class EventStoreProviderConfigManager
     {
-        private List<EventStoreProviderConfig> _providerConfigs = new List<EventStoreProviderConfig>();
-        private string _defaultProviderName = string.Empty;
-        public bool HasDefaultProvider { get { return !string.IsNullOrEmpty(_defaultProviderName); } }  
-        public string DefaultProviderName { get { return _defaultProviderName; } }
+        private List<EventStoreProviderConfig> _providerConfigs = new List<EventStoreProviderConfig>(); 
         public IEnumerable<EventStoreProviderConfig> ProviderConfigs { get { return _providerConfigs; } }
 
         public EventStoreProviderConfigManager(string configFileName = "eventstore.json")
         {
-            var json = File.ReadAllText(configFileName);
             try
             {
+                var json = File.ReadAllText(configFileName);
                 var _providerConfigCollection = JsonConvert.DeserializeObject<EventStoreProviderConfigCollection>(json);
 
                 if (_providerConfigCollection != null)
                 {
-                    _providerConfigs = _providerConfigCollection.Providers.ToList();
-                    var _default = _providerConfigs.SingleOrDefault(p => p.Default);
-                    _defaultProviderName = _default == null ? string.Empty : _default.Name;
+                    _providerConfigs = _providerConfigCollection.Providers.ToList();  
                 }
             }
             catch (Exception ex)
@@ -54,9 +49,6 @@ namespace Orleans.EventSourcing
     {
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("default")]
-        public bool Default { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
