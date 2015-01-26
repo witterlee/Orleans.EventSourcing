@@ -21,7 +21,7 @@ namespace Orleans.EventSourcing
     //when stateless, if the second dispather startup ,it will block on ProcessAllUncommitEventMessageBeforeEventStoreDispatcherStartUp
     //becauce the first dispather awalys send new message to queue, I need to think about this condition
     //so remove [StatelessWorker] before I have a idea to process this condition.                                          
-    public class EventStoreDispatcherGrain : Orleans.Grain, Orleans.EventSourcing.IEventStoreDispatcher
+    public class EventStoreDispatcher : Orleans.Grain, Orleans.EventSourcing.IEventStoreDispatcher
     {
         private static readonly IEventStoreProvider eventStoreProvider = EventStoreProviderManager.GetProvider();
         private readonly IEventStore eventStore = eventStoreProvider.Create();
@@ -35,7 +35,7 @@ namespace Orleans.EventSourcing
         private const int ERROR_CODE_EVENT_PROCESS = 60000;
         static SemaphoreSlim slim;
 
-        public EventStoreDispatcherGrain()
+        public EventStoreDispatcher()
         {
             slim = new SemaphoreSlim(dispatcherSetting.QueuePoolSize, dispatcherSetting.QueuePoolSize);
             InitEventMessageProducter();

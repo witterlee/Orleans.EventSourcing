@@ -54,6 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsistentHashRing.cs" />
+    <Compile Include="IDurableMessageQueueProvider.cs" />
+    <Compile Include="IMessageQueueConsumer.cs" />
+    <Compile Include="IDurableMessageQueueProducter.cs" />
+    <Compile Include="DurableMessageQueueProviderFactory.cs" />
     <Compile Include="DynamicReflection.cs" />
     <Compile Include="EventNameTypeMapping.cs" />
     <Compile Include="EventStoreDispatcher.cs" />

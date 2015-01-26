@@ -55,6 +55,7 @@
     <Compile Include="Messages\TransferTransactionMessages.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterTask\RegisterGrainInternalEventHandler.cs" />
     <Compile Include="TransactionPreparation.cs" />
     <Compile Include="TransferTransaction.cs" />
     <Compile Include="TransferTransactionProcessManager.cs" />

@@ -45,6 +45,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OrleansRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Microsoft Project Orleans SDK v1.0\SDK\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -55,10 +59,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="Orleans">
       <HintPath>$(OrleansSDK)\Binaries\OrleansClient\Orleans.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="OrleansRuntime">
-      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

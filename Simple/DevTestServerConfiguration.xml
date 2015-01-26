@@ -6,10 +6,7 @@
       <!-- To use Azure storage, uncomment one of the following lines: -->
       <!--<Provider Type="Orleans.Storage.AzureTableStorage" Name="AzureStore" DataConnectionString="UseDevelopmentStorage=true" />-->
       <!--<Provider Type="Orleans.Storage.AzureTableStorage" Name="AzureStore" DataConnectionString="DefaultEndpointsProtocol=https;AccountName=MYACCOUNTNAME;AccountKey=MYACCOUNTKEY" />-->
-    </StorageProviders>
-    <BootstrapProviders>
-      <Provider Type="Orleans.EventSourcing.EventStoreInitBootstrapProvider" Name="EventStoreInitBootstrapProvider" /> 
-    </BootstrapProviders>
+    </StorageProviders> 
     <SeedNode Address="localhost" Port="11111" />
   </Globals>
   <Defaults>
