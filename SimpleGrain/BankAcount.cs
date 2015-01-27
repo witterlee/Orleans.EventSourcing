@@ -87,7 +87,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         private void Handle(BankAccountInitializeEvent @event)
         {
             this.State.OwnerId = @event.OwnerId;
-            this.State.Balance = 5000;
+            this.State.Balance = 100000000;//for test
             this.State.TransactionPreparations = new Dictionary<Guid, TransactionPreparation>();
         }
 
@@ -117,7 +117,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             }
 
             return this.State.Balance - totalDebitTransactionPreparationAmount;
-        } 
+        }
     }
 
     public interface IBankAcountState : IEventSourcingState

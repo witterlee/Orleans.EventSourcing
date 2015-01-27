@@ -11,6 +11,7 @@ using System.Reflection.Emit;
 
 namespace Orleans.EventSourcing
 {
+    [Serializable]
     public class EventStoreProviderEmptyException : Exception
     { 
         public EventStoreProviderEmptyException(Type grainType)

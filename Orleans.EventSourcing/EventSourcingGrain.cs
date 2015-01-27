@@ -45,58 +45,31 @@ namespace Orleans.EventSourcing
         /// <returns></returns>
         protected async Task ApplyEvent(GrainEvent @event)
         {
-            //try
-            //{
-            @event.GrainId = this.GetPrimaryKey();
-            @event.Version = this.GetState().Version + 1;
-            @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
-            this.HandleEvent(@event);
-            await this.eventStore.WriteEvent(@event);
-            //return SuccessMessage.Instance;
-            //}
-            //catch (Exception ex)
-            //{
-            //    var log = this.GetLogger("event_store");
-            //    log.Error(APPLY_EVENT_ERROR, string.Format("applay event {0} error, eventId={1}", @event.GetType().FullName, @event.Version), ex);
-
-            //    return new ErrorMessage(ex.Message);
-            //}
+            try
+            {
+                @event.GrainId = this.GetPrimaryKey();
+                @event.Version = this.GetState().Version + 1;
+                @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
+                await this.eventStore.WriteEvent(@event);
+            }
+            catch (Exception ex)
+            {
+                var log = this.GetLogger("event_store");
+                log.Warn(APPLY_EVENT_ERROR, string.Format("applay event {0} error, eventId={1}", @event.GetType().FullName, @event.Version), ex);
+                throw ex;
+            }
         }
 
-        protected ulong GetNextEventId()
-        {
-            return this.State.Version + 1;
-        }
-
-        public async override Task ActivateAsync()
+        public async override Task OnActivateAsync()
         {
             this.eventStore = new EventStore<TGrain, TState>(this as TGrain, 100);
             await this.eventStore.ReplayEvents();
-            await base.ActivateAsync();
+            await base.OnActivateAsync();
         }
 
         public TState GetState()
         {
             return this.State;
-        }
-        private void HandleEvent(IEvent @event)
-        {
-            var eventHandler = GrainInternalEventHandlerProvider.GetInternalEventHandler(this.GetType(), @event.GetType());
-
-            if (eventHandler == null)
-            {
-                throw new Exception(string.Format("Could not find event handler for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
-            }
-            eventHandler.Invoke(this, @event);
-
-            if (this.State.Version + 1 != @event.Version)
-            {
-                throw new Exception(string.Format("inlidate event apply,the event id is {0},", @event.GetType().FullName, this.GetType().FullName));
-            }
-            //event id is the state's next version number
-            this.State.Version = @event.Version;
-        }
-
-
+        } 
     }
 }

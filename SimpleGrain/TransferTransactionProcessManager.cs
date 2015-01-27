@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using System.Text;
 using Orleans;
 using Orleans.EventSourcing.SimpleInterface;
+using Orleans.Concurrency;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
+    [StatelessWorker]
     public class TransferTransactionProcessManager : Orleans.Grain, ITransferTransactionProcessManager, IRemindable
     {
+        private const int TransferTransactionProcessManager_ERROR_CODE = 60000;
         async Task ITransferTransactionProcessManager.ProcessTransferTransaction(Guid fromAccountId, Guid toAccountId, decimal amount)
         {
             var txid = Guid.NewGuid();
@@ -17,11 +20,15 @@ namespace Orleans.EventSourcing.SimpleGrain
             var tx = GrainFactory.GetGrain<ITransferTransaction>(txid);
 
             await Task.WhenAll(tx.Initialize(fromAccountId, toAccountId, amount),
-                this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1)));
-
-            await ProcessTransferTransaction(tx);
-
-            Console.Error.WriteLine("________________________test_______________________________");
+                this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60)));
+            try
+            {
+                await ProcessTransferTransaction(tx);
+            }
+            catch (Exception ex)
+            {
+                this.GetLogger("TransferTransactionProcessManager").Warn(TransferTransactionProcessManager_ERROR_CODE, "TransferTransactionProcessManager process " + txid + " error", ex);
+            }
         }
 
         public Task ReceiveReminder(string reminderName, Runtime.TickStatus status)
@@ -39,7 +46,14 @@ namespace Orleans.EventSourcing.SimpleGrain
             var status = await tx.GetStatus();
             if (status != default(TransactionStatus) && status != TransactionStatus.Completed)
             {
-                await ProcessTransferTransaction(tx);
+                try
+                {
+                    await ProcessTransferTransaction(tx);
+                }
+                catch (Exception ex)
+                {
+                    this.GetLogger("TransferTransactionProcessManager").Warn(TransferTransactionProcessManager_ERROR_CODE, "TransferTransactionProcessManager process " + txid + " error", ex);
+                }
             }
             else
             {
@@ -91,6 +105,7 @@ namespace Orleans.EventSourcing.SimpleGrain
                 await Task.WhenAll(tx.ConfirmTransferOut(), tx.ConfirmTransferIn());
 
                 Console.WriteLine("transaction complete success." + transferTransactionInfo.Amount + "$");
+
             }
         }
     }

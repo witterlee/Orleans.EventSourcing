@@ -27,7 +27,7 @@ namespace Orleans.EventSourcing.SimpleGrain
     using Orleans.EventSourcing.SimpleInterface;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [SerializableAttribute()]
     [global::Orleans.CodeGeneration.GrainStateAttribute("Orleans.EventSourcing.SimpleGrain.Orleans.EventSourcing.SimpleGrain.BankAcount")]
@@ -105,7 +105,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.1053.48452")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [SerializableAttribute()]
     [global::Orleans.CodeGeneration.GrainStateAttribute("Orleans.EventSourcing.SimpleGrain.Orleans.EventSourcing.SimpleGrain.TransferTrans" +

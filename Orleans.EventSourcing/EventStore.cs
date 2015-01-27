@@ -25,18 +25,6 @@ namespace Orleans.EventSourcing
                 return this.grain.GetState();
             }
         }
-        public ulong LastAppliedEventId
-        {
-            get
-            {
-                return this.State.Version;
-            }
-
-            private set
-            {
-                this.State.Version = value;
-            }
-        }
         public EventStore(TGrain grain, ulong afterSnapshotsEventCount = 100)
         {
             this.grain = grain;
@@ -50,22 +38,23 @@ namespace Orleans.EventSourcing
                 var grainId = this.grain.GetPrimaryKey();
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(@event);
                 await eventStore.Append(grainId, @event.Version, json);
-                this.LastAppliedEventId = @event.Version;
+                HandleEvent(@event);
             }
 
             if (@event.Version % this.afterSnapshotsEventCount == 0)
                 await this.WriteSnapshot();
-
         }
 
         private Task WriteSnapshot()
         {
-            return this.State.WriteStateAsync();
+            //return this.State.WriteStateAsync();
+
+            return TaskDone.Done;
         }
         public async Task ReplayEvents()
         {
             var grainId = this.grain.GetPrimaryKey();
-            var currentEventId = this.LastAppliedEventId;
+            var currentEventId = this.grain.GetState().Version;
             var unapplyEventsJson = await eventStore.ReadFrom(grainId, currentEventId);
 
             if (unapplyEventsJson.Count() > 0)

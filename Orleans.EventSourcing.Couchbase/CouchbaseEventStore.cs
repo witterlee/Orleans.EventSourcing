@@ -22,7 +22,7 @@ namespace Orleans.EventSourcing.Couchbase
         private const string VIEW_NAME = "eventview";
         //private string desginDoc = "{\"views\":{\"" + VIEW_NAME + "\":{\"map\":\"function (doc, meta) { if(doc.GrainID&&doc.Id) emit([doc.GrainID, doc.Id]); }\"}}}";
         private static IBucketManager bucketManager;
-
+        private static ConcurrentDictionary<string, int> bags = new System.Collections.Concurrent.ConcurrentDictionary<string, int>();
         public CouchbaseEventStore(IBucket bucket, string couchbaseUser, string couchbasePwd)
         {
             if (_bucket == null)
@@ -74,46 +74,14 @@ namespace Orleans.EventSourcing.Couchbase
 
         public Task Append(Guid grainId, ulong eventVersion, string eventJsonString)
         {
-            try
-            {
-                var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
-                if (!result.Success)
-                    throw new Exception("append event to store exception", result.Exception);
+            var @eventId = grainId.ToString() + eventVersion;
 
-            }
-            catch (Exception ex)
+            var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
+            if (!result.Success)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception("append event to store exception", result.Exception);
             }
-
             return TaskDone.Done;
-            //return Task.Run(() =>
-            //{
-            //    if (!task.Result.Success)
-            //    {
-            //        throw new Exception("append event to store exception", task.Result.Exception);
-            //    }
-            //});
-        }
-
-        private void Test()
-        {
-            var configuration = new ClientConfiguration
-            {
-                Servers = new List<Uri>
-                {
-                    new Uri("http://192.168.0.100:8091/pools")
-                }
-            };
-            using (var cluster = new Cluster(configuration))
-            {
-                using (var bucket = cluster.OpenBucket())
-                {
-                    var manager = bucket.CreateManager("Administrator", "couchbase");
-                    var result = manager.GetDesignDocument("by_field");
-                    Console.WriteLine(result);
-                }
-            }
         }
     }
 }

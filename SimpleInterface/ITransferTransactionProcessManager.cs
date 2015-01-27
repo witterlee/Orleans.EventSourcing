@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Orleans;
-using Orleans.Concurrency;
+using Orleans; 
 
 namespace Orleans.EventSourcing.SimpleInterface
 {
 
-    [StatelessWorker]
     public interface ITransferTransactionProcessManager : Orleans.IGrainWithIntegerKey
     {
         Task ProcessTransferTransaction(Guid fromAccountId, Guid toAccountId, decimal amount);
