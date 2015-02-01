@@ -9,17 +9,17 @@ using Orleans.EventSourcing.SimpleInterface;
 using Orleans.EventSourcing.SimpleGrain.Events;
 using Orleans.Providers;
 using Orleans.Concurrency;
+using System.Net.Http;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    [Reentrant]
-    //[StorageProvider(ProviderName = "CouchbaseEventStoreProvider")]
-    public class BankAcount : EventSourcingGrain<BankAcount, IBankAcountState>, IBankAccount
+    [StorageProvider(ProviderName = "CouchbaseStore")]
+    public class BankAccount : EventSourcingGrain<BankAccount, IBankAcountState>, IBankAccount
     {
         #region interface impl
 
         async Task<TaskMessage> IBankAccount.Initialize(Guid ownerId)
-        {
+        { 
             if (this.State.OwnerId == null || this.State.OwnerId == Guid.Empty)
             {
                 await this.ApplyEvent(new BankAccountInitializeEvent(ownerId));
@@ -98,7 +98,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         private void Handle(TransactionPreparationCommittedEvent @event)
         {
             this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId);
-            this.State.Balance = @event.CurrentBalance;
+            this.State.Balance = @event.CurrentBalance; 
         }
 
         #endregion

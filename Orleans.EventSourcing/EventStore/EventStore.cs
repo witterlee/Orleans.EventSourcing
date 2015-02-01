@@ -35,9 +35,8 @@ namespace Orleans.EventSourcing
         {
             if (@event != null)
             {
-                var grainId = this.grain.GetPrimaryKey();
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(@event);
-                await eventStore.Append(grainId, @event.Version, json);
+                await eventStore.Append(@event.GrainId, @event.Version, json);
                 HandleEvent(@event);
             }
 
@@ -47,15 +46,11 @@ namespace Orleans.EventSourcing
 
         private Task WriteSnapshot()
         {
-            //return this.State.WriteStateAsync();
-
-            return TaskDone.Done;
+            return this.State.WriteStateAsync(); 
         }
         public async Task ReplayEvents()
         {
-            var grainId = this.grain.GetPrimaryKey();
-            var currentEventId = this.grain.GetState().Version;
-            var unapplyEventsJson = await eventStore.ReadFrom(grainId, currentEventId);
+            var unapplyEventsJson = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version+1);
 
             if (unapplyEventsJson.Count() > 0)
             {
@@ -102,6 +97,5 @@ namespace Orleans.EventSourcing
 
             return convertEvent;
         }
-
     }
 }

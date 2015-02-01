@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Net;
- 
+
+using Orleans.Runtime;
 using Orleans.Runtime.Host;
+using Orleans.EventSourcing;
+using System.Configuration;
+using Orleans.EventSourcing.Couchbase;
+using System.Reflection;
 
 namespace Simple
 {
@@ -28,7 +33,10 @@ namespace Simple
             try
             {
                 siloHost.InitializeOrleansSilo();
+                var eventStoreSection = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider");
+                var assembly = Assembly.LoadFrom("Orleans.EventSourcing.SimpleGrain.dll");
 
+                siloHost.UseEventStore(eventStoreSection).RegisterGrain(assembly);
                 ok = siloHost.StartOrleansSilo();
 
                 if (ok)

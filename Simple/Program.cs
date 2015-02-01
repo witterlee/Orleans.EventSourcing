@@ -3,6 +3,10 @@ using Orleans;
 using Orleans.EventSourcing.SimpleInterface;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 
 namespace Simple
 {
@@ -24,36 +28,8 @@ namespace Simple
 
             Orleans.GrainClient.Initialize("DevTestClientConfiguration.xml");
 
-            var userAId = Guid.NewGuid();
-            var userBId = Guid.NewGuid();
-            var accountAId = Guid.Parse("33ca5cd9-e39b-44d1-98cc-82e68baafca1");
-            var accountBId = Guid.Parse("0dc32514-51c0-458e-bed7-5d84d5b1de3f");
-
-            var accountA = GrainFactory.GetGrain<IBankAccount>(accountAId);
-            var accountB = GrainFactory.GetGrain<IBankAccount>(accountBId);
-
-            Task.WhenAll(accountA.Initialize(userAId), accountB.Initialize(userBId)).Wait();
-            var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
-
-            var loopTimes = 100;
-            while (loopTimes-- > 0)
-            {
-                var tasks = new List<Task>();
-                for (int i = 0; i < 100; i++)
-                { 
-                    decimal amount = new Random().Next(100); 
-                    tasks.Add(transferManager.ProcessTransferTransaction(accountAId, accountBId, amount));
-                }
-
-                Task.WaitAll(tasks.ToArray());
-                Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
-                Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
-            }
-
-            Task.Delay(300 * 1000).Wait();
-
-            Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
-            Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
+            TestConcurent();
+            //TestPerformance();
 
             Console.WriteLine("Orleans Silo is running.\nPress Enter to terminate...");
             Console.ReadLine();
@@ -77,6 +53,86 @@ namespace Simple
                 hostWrapper.Dispose();
                 GC.SuppressFinalize(hostWrapper);
             }
+        }
+
+        static void TestConcurent()
+        {
+            var userAId = Guid.NewGuid();
+            var userBId = Guid.NewGuid();
+            var accountAId = Guid.Parse("33ca5cd9-e39b-44d1-98cc-82e68baafca2");
+            var accountBId = Guid.Parse("0dc32514-51c0-458e-bed7-5d84d5b1de31");
+
+            var accountA = GrainFactory.GetGrain<IBankAccount>(accountAId);
+            var accountB = GrainFactory.GetGrain<IBankAccount>(accountBId);
+
+            Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
+            Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
+
+            Task.WhenAll(accountA.Initialize(userAId), accountB.Initialize(userBId)).Wait();
+            var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
+
+            var loopTimes = 10;
+            while (loopTimes-- > 0)
+            {
+                var tasks = new List<Task>();
+                for (int i = 0; i < 1000; i++)
+                {
+                    decimal amount = new Random().Next(100);
+                    tasks.Add(transferManager.ProcessTransferTransaction(accountAId, accountBId, amount));
+                }
+
+                Task.WaitAll(tasks.ToArray());
+                Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
+                Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
+            }
+
+            Task.Delay(300 * 1000).Wait();
+
+            Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
+            Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
+        }
+
+        static void TestPerformance()
+        {
+            var accountPairs = new ConcurrentDictionary<Guid, Guid>();
+            var accountCreateTasks = new ConcurrentBag<Task>();
+            var transferTasks = new ConcurrentBag<Task>();
+
+
+            Parallel.For(0, 100, (i) =>
+            {
+                var accountAId = Guid.NewGuid();
+                var accountBId = Guid.NewGuid();
+                accountPairs.TryAdd(accountAId, accountBId);
+            });
+
+            var sw = Stopwatch.StartNew();
+            accountPairs.AsParallel().ForAll((ap) =>
+            {
+                var accountA = GrainFactory.GetGrain<IBankAccount>(ap.Key);
+                var accountB = GrainFactory.GetGrain<IBankAccount>(ap.Value);
+
+                accountCreateTasks.Add(accountA.Initialize(ap.Value));
+                accountCreateTasks.Add(accountB.Initialize(ap.Key));
+            });
+            Task.WhenAll(accountCreateTasks).Wait();
+
+            Thread.Sleep(3000);
+
+            var sw1 = Stopwatch.StartNew();
+
+            var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
+            foreach (var kv in accountPairs)
+            {
+                for (int i = 0; i < 100; i++)
+                    transferTasks.Add(transferManager.ProcessTransferTransaction(kv.Key, kv.Value, 100M));
+            }
+
+            Task.WhenAll(transferTasks).Wait();
+            sw1.Stop();
+
+            Console.WriteLine("<-------------" + sw.Elapsed.TotalSeconds + "------------>");
+            Console.WriteLine("<-------------" + sw1.Elapsed.TotalSeconds + "------------>");
         }
 
         private static OrleansHostWrapper hostWrapper;

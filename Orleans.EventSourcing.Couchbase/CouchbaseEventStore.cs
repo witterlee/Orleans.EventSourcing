@@ -20,27 +20,26 @@ namespace Orleans.EventSourcing.Couchbase
         //private static bool hasDesignDoc = false;
         private const string DESGIN_DOC_NAME = "__eventsource_desgin_doc";
         private const string VIEW_NAME = "eventview";
-        //private string desginDoc = "{\"views\":{\"" + VIEW_NAME + "\":{\"map\":\"function (doc, meta) { if(doc.GrainID&&doc.Id) emit([doc.GrainID, doc.Id]); }\"}}}";
-        private static IBucketManager bucketManager;
-        private static ConcurrentDictionary<string, int> bags = new System.Collections.Concurrent.ConcurrentDictionary<string, int>();
-        public CouchbaseEventStore(IBucket bucket, string couchbaseUser, string couchbasePwd)
+        //private const string desginDoc = "{\"views\":{\"" + VIEW_NAME + "\":{\"map\":\"function (doc, meta) { if(doc.GrainId!=undefined&&doc.Version>0&&doc.Type!=undefined) emit([doc.GrainId, doc.Version]); }\"}}}";
+        //private static IBucketManager bucketManager;
+        //private static bool hasDesignDoc; 
+        public CouchbaseEventStore(IBucket bucket, string couchbaseUser = "", string couchbasePwd = "")
         {
             if (_bucket == null)
                 _bucket = bucket;
-            if (bucketManager == null)
-                bucketManager = _bucket.CreateManager(couchbaseUser, couchbasePwd);
+            //if (bucketManager == null)
+            //    bucketManager = _bucket.CreateManager(couchbaseUser, couchbasePwd);
 
         }
 
-        public async Task<IEnumerable<string>> ReadFrom(Guid grainId, ulong eventId = 0)
+        public async Task<IEnumerable<string>> ReadFrom(string grainId, ulong eventId = 0)
         {
             //if (!hasDesignDoc)
             //{
-            //    Test();
-            //    var designDoc = bucketManager.GetDesignDocument(DESGIN_DOC_NAME);
+            //    var designDoc = await bucketManager.GetDesignDocumentAsync(DESGIN_DOC_NAME);
             //    if (!designDoc.Success)
             //    {
-            //        var createResult = bucketManager.InsertDesignDocument(DESGIN_DOC_NAME, desginDoc);
+            //        var createResult = await bucketManager.InsertDesignDocumentAsync(DESGIN_DOC_NAME, desginDoc);
             //        if (createResult.Success) hasDesignDoc = true;
             //    }
             //}
@@ -72,7 +71,7 @@ namespace Orleans.EventSourcing.Couchbase
             return result;
         }
 
-        public Task Append(Guid grainId, ulong eventVersion, string eventJsonString)
+        public Task Append(string grainId, ulong eventVersion, string eventJsonString)
         {
             var @eventId = grainId.ToString() + eventVersion;
 

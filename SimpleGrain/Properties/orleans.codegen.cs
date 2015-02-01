@@ -30,8 +30,8 @@ namespace Orleans.EventSourcing.SimpleGrain
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Orleans.EventSourcing.SimpleGrain.Orleans.EventSourcing.SimpleGrain.BankAcount")]
-    public class BankAcountState : global::Orleans.CodeGeneration.GrainState, IBankAcountState
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Orleans.EventSourcing.SimpleGrain.Orleans.EventSourcing.SimpleGrain.BankAccount")]
+    public class BankAccountState : global::Orleans.CodeGeneration.GrainState, IBankAcountState
     {
         
 
@@ -55,11 +55,11 @@ namespace Orleans.EventSourcing.SimpleGrain
 
             public override System.String ToString()
             {
-                return System.String.Format("BankAcountState( Version={0} TransactionPreparations={1} OwnerId={2} Balance={3} )", Version, TransactionPreparations, OwnerId, Balance);
+                return System.String.Format("BankAccountState( Version={0} TransactionPreparations={1} OwnerId={2} Balance={3} )", Version, TransactionPreparations, OwnerId, Balance);
             }
         
-        public BankAcountState() : 
-                base("Orleans.EventSourcing.SimpleGrain.BankAcount")
+        public BankAccountState() : 
+                base("Orleans.EventSourcing.SimpleGrain.BankAccount")
         {
             this.InitStateFields();
         }
@@ -85,21 +85,21 @@ namespace Orleans.EventSourcing.SimpleGrain
         [global::Orleans.CodeGeneration.CopierMethodAttribute()]
         public static object _Copier(object original)
         {
-            BankAcountState input = ((BankAcountState)(original));
+            BankAccountState input = ((BankAccountState)(original));
             return input.DeepCopy();
         }
         
         [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
         public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            BankAcountState input = ((BankAcountState)(original));
+            BankAccountState input = ((BankAccountState)(original));
             input.SerializeTo(stream);
         }
         
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            BankAcountState result = new BankAcountState();
+            BankAccountState result = new BankAccountState();
             result.DeserializeFrom(stream);
             return result;
         }

@@ -14,28 +14,10 @@ namespace Orleans.EventSourcing
 {
 
     public abstract class EventSourcingGrain<TGrain, TState> : Grain<TState>, IEventSourcingGrain<TState>
-        where TGrain : Grain<TState>, IEventSourcingGrain<TState>, IGrainWithGuidKey
+        where TGrain : Grain<TState>, IEventSourcingGrain<TState>, IGrain
         where TState : class,IEventSourcingState
     {
-        private static ConcurrentBag<string> registerAssembly = new ConcurrentBag<string>();
-        private static object lockObj = new object();
-        public EventSourcingGrain()
-        {
-            var assembly = this.GetType().Assembly;
-            if (!registerAssembly.Contains(assembly.FullName))
-            {
-                lock (lockObj)
-                {
-                    if (!registerAssembly.Contains(assembly.FullName))
-                    {
-                        GrainInternalEventHandlerProvider.RegisterInternalEventHandler(assembly);
-                        EventNameTypeMapping.RegisterEventType(assembly);
-                        registerAssembly.Add(assembly.FullName);
-                    }
-                }
-            }
-        }
-        private const int APPLY_EVENT_ERROR = 60001;
+        private const int APPLY_EVENT_ERROR = 60101;
         private EventStore<TGrain, TState> eventStore { get; set; }
 
         /// <summary>
@@ -47,7 +29,7 @@ namespace Orleans.EventSourcing
         {
             try
             {
-                @event.GrainId = this.GetPrimaryKey();
+                @event.GrainId = this.GetGrainId();
                 @event.Version = this.GetState().Version + 1;
                 @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
                 await this.eventStore.WriteEvent(@event);
@@ -70,6 +52,16 @@ namespace Orleans.EventSourcing
         public TState GetState()
         {
             return this.State;
-        } 
+        }
+
+        public string GetGrainId()
+        {
+            string extKey;
+            var grainId = this.GetPrimaryKey(out extKey).ToString();
+            var currentEventId = this.State.Version;
+            grainId = grainId + (string.IsNullOrEmpty(extKey) ? string.Empty : "_" + extKey);
+
+            return grainId;
+        }
     }
 }

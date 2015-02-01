@@ -23,6 +23,17 @@ namespace Orleans.EventSourcing
         {
             return eventNameMappings.TryGetValue(typeName, out eventType);
         }
+        public static void RegisterEventType(Assembly[] assemblies)
+        {
+            if (assemblies != null && assemblies.Count() > 0)
+            {
+                lock (_lock)
+                {
+                    foreach (var assembly in assemblies)
+                        RegisterEventType(assembly);
+                }
+            }
+        }
 
         public static void RegisterEventType(Assembly assembly)
         {
@@ -36,6 +47,7 @@ namespace Orleans.EventSourcing
                         {
                             RegisterEventType(type);
                         }
+                        registerAssembly.Add(assembly.FullName);
                     }
                 }
             }

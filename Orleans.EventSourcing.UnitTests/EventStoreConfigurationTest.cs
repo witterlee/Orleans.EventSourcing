@@ -10,17 +10,12 @@ namespace Orleans.EventSourcing.UnitTests
     {
         [TestMethod]
         public void Test_EventStore_Config()
-        {
-            EventStoreProviderConfigManager eventStoreConfigManager = new EventStoreProviderConfigManager();
-            var couchbaseProviderConfig = eventStoreConfigManager.ProviderConfigs.SingleOrDefault(s => s.Name == "CouchbaseEventStoreProvider");
-            Assert.IsNotNull(eventStoreConfigManager.ProviderConfigs);
-            Assert.IsTrue(eventStoreConfigManager.ProviderConfigs.Count()== 2);
-            Assert.IsTrue(couchbaseProviderConfig.Default);
-            Assert.IsTrue(!string.IsNullOrEmpty(couchbaseProviderConfig.Type));
+        { 
+            var section = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider"); 
 
-            dynamic setting = couchbaseProviderConfig.Settings;
-
-            Assert.IsNotNull((object)setting); 
+            Assert.IsNotNull(section);
+            Assert.IsNotNull(section.Providers[0]); 
+            Assert.IsTrue(section.Providers[0].ConfigSection == "couchbaseEventStore");
         }
     }
 }

@@ -11,8 +11,7 @@ using Orleans.Concurrency;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    [Reentrant]
-    //[StorageProvider(ProviderName = "CouchbaseEventStoreProvider")]
+    [StorageProvider(ProviderName = "CouchbaseStore")]
     public class TransferTransaction : EventSourcingGrain<TransferTransaction, ITransferTransactionState>,
                                        ITransferTransaction
     {
@@ -116,7 +115,11 @@ namespace Orleans.EventSourcing.SimpleGrain
             this.State.TransferOutConfirmed = true;
             this.State.TransferOutConfirmedAt = @event.UTCTimestamp;
             if (this.State.TransferInConfirmed)
+            {
                 this.State.Status = TransactionStatus.Completed;
+                this.State.WriteStateAsync();
+                this.DeactivateOnIdle();
+            }
         }
         private void Handle(TransferInConfirmedEvent @event)
         {
@@ -125,7 +128,8 @@ namespace Orleans.EventSourcing.SimpleGrain
             if (this.State.TransferOutConfirmed)
             {
                 this.State.Status = TransactionStatus.Completed;
-                //this.State.WriteStateAsync();
+                this.State.WriteStateAsync();
+                this.DeactivateOnIdle();
             }
         }
         private void Handle(TransferCanceledEvent @event)

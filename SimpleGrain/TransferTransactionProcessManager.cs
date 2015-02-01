@@ -13,17 +13,18 @@ namespace Orleans.EventSourcing.SimpleGrain
     public class TransferTransactionProcessManager : Orleans.Grain, ITransferTransactionProcessManager, IRemindable
     {
         private const int TransferTransactionProcessManager_ERROR_CODE = 60000;
+        private const int TransferTransactionProcessManager_REMINDER_ERROR_CODE = 60001;
         async Task ITransferTransactionProcessManager.ProcessTransferTransaction(Guid fromAccountId, Guid toAccountId, decimal amount)
         {
             var txid = Guid.NewGuid();
 
             var tx = GrainFactory.GetGrain<ITransferTransaction>(txid);
 
-            await Task.WhenAll(tx.Initialize(fromAccountId, toAccountId, amount),
-                this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60)));
+            await Task.WhenAll(tx.Initialize(fromAccountId, toAccountId, amount)//);
+                      , this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60)));
             try
             {
-                await ProcessTransferTransaction(tx);
+                await InnerProcessTransferTransaction(tx);
             }
             catch (Exception ex)
             {
@@ -31,16 +32,14 @@ namespace Orleans.EventSourcing.SimpleGrain
             }
         }
 
-        public Task ReceiveReminder(string reminderName, Runtime.TickStatus status)
+        public async Task ReceiveReminder(string reminderName, Runtime.TickStatus status)
         {
             Guid txid;
             if (Guid.TryParse(reminderName, out txid))
-                CheckTransferTransaction(txid);
-
-            return TaskDone.Done;
+                await CheckTransferTransaction(txid);
         }
 
-        private async void CheckTransferTransaction(Guid txid)
+        private async Task CheckTransferTransaction(Guid txid)
         {
             var tx = GrainFactory.GetGrain<ITransferTransaction>(txid);
             var status = await tx.GetStatus();
@@ -48,7 +47,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             {
                 try
                 {
-                    await ProcessTransferTransaction(tx);
+                    await InnerProcessTransferTransaction(tx);
                 }
                 catch (Exception ex)
                 {
@@ -57,13 +56,21 @@ namespace Orleans.EventSourcing.SimpleGrain
             }
             else
             {
-                var reminder = await this.GetReminder(txid.ToString());
-                await this.UnregisterReminder(reminder);
+                try
+                {
+                    var reminder = await this.GetReminder(txid.ToString());
+                    await this.UnregisterReminder(reminder);
+                }
+                catch (Exception ex)
+                {
+                    this.GetLogger("TransferTransactionProcessManager").Warn(TransferTransactionProcessManager_REMINDER_ERROR_CODE, "UnregisterReminder " + txid + " error", ex);
+
+                }
             }
 
         }
 
-        private async Task ProcessTransferTransaction(ITransferTransaction tx)
+        private async Task InnerProcessTransferTransaction(ITransferTransaction tx)
         {
             var transferTransactionInfo = await tx.GetTransferTransactionInfo();
             var fromAccount = GrainFactory.GetGrain<IBankAccount>(transferTransactionInfo.FromAccountId);

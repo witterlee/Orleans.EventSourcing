@@ -9,56 +9,21 @@ using Couchbase.Configuration;
 using Couchbase.Configuration.Client;
 using System.Dynamic;
 using Couchbase.Core;
+using System.Configuration;
+using Couchbase.Configuration.Client.Providers;
 
 namespace Orleans.EventSourcing.Couchbase
 {
     public class EventStoreProvider : IEventStoreProvider
     {
         private static IBucket bucket;
-        private static string bucketName;
-        private static string bucketPwd;
         private static Cluster cluster;
+        private static ClientConfiguration config;
+        private static bool initialized;
         private static object locker = new object();
-        private static dynamic _setting;
         private Cluster Cluster
         {
-            get
-            {
-                if (cluster == null)
-                {
-                    lock (locker)
-                    {
-                        if (cluster == null)
-                        {
-                            var servers = _setting.servers;
-                            var uris = new List<Uri>();
-
-                            bucketName = _setting.bucket.name;
-                            bucketPwd = _setting.bucket.password;
-
-                            dynamic pool = _setting.bucket.connectionPool;
-                            //"usessl": false, "maxsize": 10, "minsize":5
-                            bool usessl = pool.usessl;
-                            int maxsize = (int)pool.maxsize;
-                            int minsize = (int)pool.minsize;
-
-                            foreach (var uri in servers)
-                            {
-                                uris.Add(new Uri(uri));
-                            }
-
-                            var config = new ClientConfiguration()
-                            {
-                                Servers = uris,
-                                PoolConfiguration = new PoolConfiguration { MaxSize = maxsize, UseSsl = usessl, MinSize = minsize }
-                            };
-                            cluster = new Cluster(config);
-                        }
-                    }
-                }
-
-                return cluster;
-            }
+            get { return cluster; }
         }
 
         private IBucket Bucket
@@ -70,24 +35,32 @@ namespace Orleans.EventSourcing.Couchbase
                     lock (locker)
                     {
                         if (bucket == null)
-                            bucket = Cluster.OpenBucket(bucketName, bucketPwd);
+                        {
+                            var bucketConfig = config.BucketConfigs.First();
+                            bucket = Cluster.OpenBucket(bucketConfig.Value.BucketName, bucketConfig.Value.Password);
+                        }
                     }
                 }
                 return bucket;
             }
         }
-        public Task Initialize(ExpandoObject settings)
+        public Task Initialize(EventStoreProviderSetting settings)
         {
-            _setting = settings;
+            if (initialized) throw new Exception("Event store provider has initialized,do not initialize again.");
 
-            return Task.Run(() => { });
+
+            var section = (CouchbaseClientSection)ConfigurationManager.GetSection(settings.ConfigSection);
+            if (section.Servers.Count == 0) throw new ArgumentException("Couchbase servers not set");
+
+            config = new ClientConfiguration(section);
+            cluster = new Cluster(config);
+
+            return TaskDone.Done;
         }
 
         public IEventStore Create<T>() where T : IEventSourcingGrain
         {
-            string user = _setting.administrator;
-            string pwd = _setting.adminpassword;
-            return new CouchbaseEventStore(this.Bucket, user, pwd);
+            return new CouchbaseEventStore(this.Bucket);
         }
     }
 }

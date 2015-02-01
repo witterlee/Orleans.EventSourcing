@@ -11,6 +11,8 @@
     <AssemblyName>Orleans.EventSourcing</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,10 +34,13 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Orleans">
-      <HintPath>..\..\..\Microsoft Project Orleans SDK v1.0\SDK\Binaries\OrleansServer\Orleans.dll</HintPath>
+      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\Orleans.dll</HintPath>
+    </Reference>
+    <Reference Include="OrleansRuntime">
+      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -47,21 +52,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\EventStoreSection.cs" />
     <Compile Include="DynamicReflection.cs" />
     <Compile Include="EventNameTypeMapping.cs" />
-    <Compile Include="EventStoreProviderConfigManager.cs" />
-    <Compile Include="EventStoreProviderAttribute.cs" />
+    <Compile Include="EventStore\EventStoreProviderAttribute.cs" />
     <Compile Include="Excepitons\EventStoreProviderEmptyException.cs" />
     <Compile Include="Excepitons\ConfigInvalidException.cs" />
     <Compile Include="GrainInternalEventHandlerProvider.cs" />
     <Compile Include="EventSourcingGrain.cs" />
     <Compile Include="IEventSourcingState.cs" />
     <Compile Include="IEventSourcingGrain.cs" />
-    <Compile Include="EventStore.cs" />
-    <Compile Include="EventStoreProviderManager.cs" />
-    <Compile Include="IEventStore.cs" />
-    <Compile Include="IEventStoreProvider.cs" />
+    <Compile Include="EventStore\EventStore.cs" />
+    <Compile Include="EventStore\EventStoreProviderManager.cs" />
+    <Compile Include="EventStore\IEventStore.cs" />
+    <Compile Include="EventStore\IEventStoreProvider.cs" />
     <Compile Include="IEvent.cs" />
+    <Compile Include="SiloHostExtension.cs" />
     <Compile Include="TaskMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,6 +75,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

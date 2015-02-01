@@ -17,7 +17,7 @@ namespace Orleans.EventSourcing
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        Task Initialize(ExpandoObject settings);
+        Task Initialize(EventStoreProviderSetting settings);
 
         /// <summary>
         /// Create event store provider instance for specifc grain type

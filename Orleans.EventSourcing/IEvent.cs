@@ -9,7 +9,7 @@ namespace Orleans.EventSourcing
 
     public class GrainEvent : IEvent
     {
-        public Guid GrainId { get; set; }
+        public string GrainId { get; set; }
         public ulong Version { get; set; }
         public DateTime UTCTimestamp { get; set; }
         public string Type { get { return this.GetType().FullName; } }
@@ -20,7 +20,7 @@ namespace Orleans.EventSourcing
     /// </summary>
     public interface IEvent
     {
-        Guid GrainId { get; }
+        string GrainId { get; }
         ulong Version { get; }
         string Type { get; }
         DateTime UTCTimestamp { get; }
