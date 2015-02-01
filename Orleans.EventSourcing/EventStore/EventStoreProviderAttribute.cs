@@ -10,9 +10,9 @@ namespace Orleans.EventSourcing
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class EventStoreProviderAttribute : Attribute
     {
-        public EventStoreProviderAttribute(string providerName)
+        public EventStoreProviderAttribute()
         {
-            this.ProviderName = providerName;
+          
         }
         public string ProviderName { get; set; }
     }
