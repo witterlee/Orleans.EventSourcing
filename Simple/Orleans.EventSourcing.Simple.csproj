@@ -94,10 +94,6 @@
       <Project>{50826ccf-9bef-4cf0-8ffb-08fd028cfc2a}</Project>
       <Name>Orleans.EventSourcing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SimpleGrain\Orleans.EventSourcing.SimpleGrain.csproj">
-      <Project>{8ceb3272-9926-4c62-8389-8c0793968301}</Project>
-      <Name>Orleans.EventSourcing.SimpleGrain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SimpleInterface\Orleans.EventSourcing.SimpleInterface.csproj">
       <Project>{1bdbe34d-912e-492a-9d38-27f7f1901338}</Project>
       <Name>Orleans.EventSourcing.SimpleInterface</Name>

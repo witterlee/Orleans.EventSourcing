@@ -54,7 +54,7 @@ namespace Orleans.EventSourcing.Couchbase
 
             config = new ClientConfiguration(section);
             cluster = new Cluster(config);
-
+            initialized = true;
             return TaskDone.Done;
         }
 
