@@ -108,7 +108,7 @@ namespace Orleans.EventSourcing
 
             if (eventHandlerDic.ContainsKey(eventType))
             {
-                Console.WriteLine(string.Format("duplicated event handler on event-sourcing grain, grain type:{0}, event type:{1}", grainType.FullName, eventType.FullName));
+                throw  new Exception(string.Format("duplicated event handler on event-sourcing grain, grain type:{0}, event type:{1}", grainType.FullName, eventType.FullName));
             }
             else
             {

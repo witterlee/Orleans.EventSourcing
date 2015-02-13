@@ -125,10 +125,10 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return TransferTransactionMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransaction.Initialize(System.Guid fromAccountId, System.Guid toAccountId, decimal amount)
+            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransaction.Initialize(System.Guid @fromAccountId, System.Guid @toAccountId, decimal @amount)
             {
 
-                return base.InvokeMethodAsync<object>(518927232, new object[] {fromAccountId, toAccountId, amount} );
+                return base.InvokeMethodAsync<object>(518927232, new object[] {@fromAccountId, @toAccountId, @amount} );
             }
             
             System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransaction.ConfirmAccountValidatePassed()
@@ -161,10 +161,10 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return base.InvokeMethodAsync<object>(1990501567, new object[] {} );
             }
             
-            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransaction.Cancel(Orleans.EventSourcing.SimpleInterface.TransactionFaileReason reason)
+            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransaction.Cancel(Orleans.EventSourcing.SimpleInterface.TransactionFaileReason @reason)
             {
 
-                return base.InvokeMethodAsync<object>(751141822, new object[] {reason} );
+                return base.InvokeMethodAsync<object>(751141822, new object[] {@reason} );
             }
             
             System.Threading.Tasks.Task<Orleans.EventSourcing.SimpleInterface.TransactionStatus> Orleans.EventSourcing.SimpleInterface.ITransferTransaction.GetStatus()
@@ -384,10 +384,10 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return TransferTransactionProcessManagerMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransactionProcessManager.ProcessTransferTransaction(System.Guid fromAccountId, System.Guid toAccountId, decimal amount)
+            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.ITransferTransactionProcessManager.ProcessTransferTransaction(System.Guid @fromAccountId, System.Guid @toAccountId, decimal @amount)
             {
 
-                return base.InvokeMethodAsync<object>(1500745786, new object[] {fromAccountId, toAccountId, amount} );
+                return base.InvokeMethodAsync<object>(1500745786, new object[] {@fromAccountId, @toAccountId, @amount} );
             }
         }
     }
@@ -563,10 +563,10 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return BankAccountMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<Orleans.EventSourcing.TaskMessage> Orleans.EventSourcing.SimpleInterface.IBankAccount.Initialize(System.Guid ownerId)
+            System.Threading.Tasks.Task<Orleans.EventSourcing.TaskMessage> Orleans.EventSourcing.SimpleInterface.IBankAccount.Initialize(System.Guid @ownerId)
             {
 
-                return base.InvokeMethodAsync<Orleans.EventSourcing.TaskMessage>(-1993006295, new object[] {ownerId} );
+                return base.InvokeMethodAsync<Orleans.EventSourcing.TaskMessage>(-1993006295, new object[] {@ownerId} );
             }
             
             System.Threading.Tasks.Task<bool> Orleans.EventSourcing.SimpleInterface.IBankAccount.Validate()
@@ -575,22 +575,22 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return base.InvokeMethodAsync<System.Boolean>(1980500241, new object[] {} );
             }
             
-            System.Threading.Tasks.Task<Orleans.EventSourcing.TaskMessage> Orleans.EventSourcing.SimpleInterface.IBankAccount.AddTransactionPreparation(System.Guid transactionId, Orleans.EventSourcing.SimpleInterface.TransactionType transactionType, Orleans.EventSourcing.SimpleInterface.PreparationType preparationType, decimal amount)
+            System.Threading.Tasks.Task<Orleans.EventSourcing.TaskMessage> Orleans.EventSourcing.SimpleInterface.IBankAccount.AddTransactionPreparation(System.Guid @transactionId, Orleans.EventSourcing.SimpleInterface.TransactionType @transactionType, Orleans.EventSourcing.SimpleInterface.PreparationType @preparationType, decimal @amount)
             {
 
-                return base.InvokeMethodAsync<Orleans.EventSourcing.TaskMessage>(1417003246, new object[] {transactionId, transactionType, preparationType, amount} );
+                return base.InvokeMethodAsync<Orleans.EventSourcing.TaskMessage>(1417003246, new object[] {@transactionId, @transactionType, @preparationType, @amount} );
             }
             
-            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.IBankAccount.CommitTransactionPreparation(System.Guid transactionId)
+            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.IBankAccount.CommitTransactionPreparation(System.Guid @transactionId)
             {
 
-                return base.InvokeMethodAsync<object>(-576022763, new object[] {transactionId} );
+                return base.InvokeMethodAsync<object>(-576022763, new object[] {@transactionId} );
             }
             
-            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.IBankAccount.CancelTransactionPreparation(System.Guid transactionId)
+            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.IBankAccount.CancelTransactionPreparation(System.Guid @transactionId)
             {
 
-                return base.InvokeMethodAsync<object>(-1730429136, new object[] {transactionId} );
+                return base.InvokeMethodAsync<object>(-1730429136, new object[] {@transactionId} );
             }
             
             System.Threading.Tasks.Task<decimal> Orleans.EventSourcing.SimpleInterface.IBankAccount.GetBalance()

@@ -17,7 +17,11 @@ namespace Orleans.EventSourcing
         private ulong afterSnapshotsEventCount;
         private readonly TGrain grain;
         private IEventStore eventStore;
-        private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore };
+        private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings()
+        {
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            NullValueHandling = NullValueHandling.Ignore 
+        };
         private TState State
         {
             get
@@ -35,7 +39,7 @@ namespace Orleans.EventSourcing
         {
             if (@event != null)
             {
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(@event);
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(@event, jsonsetting);
                 await eventStore.Append(@event.GrainId, @event.Version, json);
                 HandleEvent(@event);
             }
@@ -46,11 +50,11 @@ namespace Orleans.EventSourcing
 
         private Task WriteSnapshot()
         {
-            return this.State.WriteStateAsync(); 
+            return this.State.WriteStateAsync();
         }
         public async Task ReplayEvents()
         {
-            var unapplyEventsJson = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version+1);
+            var unapplyEventsJson = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version + 1);
 
             if (unapplyEventsJson.Count() > 0)
             {
@@ -84,7 +88,7 @@ namespace Orleans.EventSourcing
         }
         private IEvent ConvertJsonToEvent(string eventJson)
         {
-            dynamic @event = JsonConvert.DeserializeObject(eventJson);
+            dynamic @event = JsonConvert.DeserializeObject(eventJson, jsonsetting);
             string eventTypeName = @event.Type;
             Type eventType;
 

@@ -35,27 +35,27 @@ namespace Orleans.EventSourcing.SimpleGrain
     {
         
 
-            public UInt64 Version { get; set; }
+            public UInt64 @Version { get; set; }
 
-            public Dictionary<Guid,TransactionPreparation> TransactionPreparations { get; set; }
+            public Dictionary<Guid,TransactionPreparation> @TransactionPreparations { get; set; }
 
-            public Guid OwnerId { get; set; }
+            public Guid @OwnerId { get; set; }
 
-            public Decimal Balance { get; set; }
+            public Decimal @Balance { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("Version", out value)) Version = (UInt64) value;
-                if (values.TryGetValue("TransactionPreparations", out value)) TransactionPreparations = (Dictionary<Guid,TransactionPreparation>) value;
-                if (values.TryGetValue("OwnerId", out value)) OwnerId = (Guid) value;
-                if (values.TryGetValue("Balance", out value)) Balance = (Decimal) value;
+                if (values.TryGetValue("Version", out value)) @Version = (UInt64) value;
+                if (values.TryGetValue("TransactionPreparations", out value)) @TransactionPreparations = (Dictionary<Guid,TransactionPreparation>) value;
+                if (values.TryGetValue("OwnerId", out value)) @OwnerId = (Guid) value;
+                if (values.TryGetValue("Balance", out value)) @Balance = (Decimal) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("BankAccountState( Version={0} TransactionPreparations={1} OwnerId={2} Balance={3} )", Version, TransactionPreparations, OwnerId, Balance);
+                return System.String.Format("BankAccountState( Version={0} TransactionPreparations={1} OwnerId={2} Balance={3} )", @Version, @TransactionPreparations, @OwnerId, @Balance);
             }
         
         public BankAccountState() : 
@@ -114,54 +114,54 @@ namespace Orleans.EventSourcing.SimpleGrain
     {
         
 
-            public UInt64 Version { get; set; }
+            public UInt64 @Version { get; set; }
 
-            public TransactionStatus Status { get; set; }
+            public TransactionStatus @Status { get; set; }
 
-            public Boolean TransferOutPreparationConfirmed { get; set; }
+            public Boolean @TransferOutPreparationConfirmed { get; set; }
 
-            public Boolean TransferInPreparationConfirmed { get; set; }
+            public Boolean @TransferInPreparationConfirmed { get; set; }
 
-            public Boolean TransferOutConfirmed { get; set; }
+            public Boolean @TransferOutConfirmed { get; set; }
 
-            public Boolean TransferInConfirmed { get; set; }
+            public Boolean @TransferInConfirmed { get; set; }
 
-            public DateTime AccountValidatedAt { get; set; }
+            public DateTime @AccountValidatedAt { get; set; }
 
-            public DateTime TransferOutPreparationConfirmedAt { get; set; }
+            public DateTime @TransferOutPreparationConfirmedAt { get; set; }
 
-            public DateTime TransferInPreparationConfirmedAt { get; set; }
+            public DateTime @TransferInPreparationConfirmedAt { get; set; }
 
-            public DateTime TransferOutConfirmedAt { get; set; }
+            public DateTime @TransferOutConfirmedAt { get; set; }
 
-            public DateTime TransferInConfirmedAt { get; set; }
+            public DateTime @TransferInConfirmedAt { get; set; }
 
-            public DateTime TransferCancelAt { get; set; }
+            public DateTime @TransferCancelAt { get; set; }
 
-            public TransferTransactionInfo TransferTransactionInfo { get; set; }
+            public TransferTransactionInfo @TransferTransactionInfo { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("Version", out value)) Version = (UInt64) value;
-                if (values.TryGetValue("Status", out value)) Status = (TransactionStatus) value;
-                if (values.TryGetValue("TransferOutPreparationConfirmed", out value)) TransferOutPreparationConfirmed = (Boolean) value;
-                if (values.TryGetValue("TransferInPreparationConfirmed", out value)) TransferInPreparationConfirmed = (Boolean) value;
-                if (values.TryGetValue("TransferOutConfirmed", out value)) TransferOutConfirmed = (Boolean) value;
-                if (values.TryGetValue("TransferInConfirmed", out value)) TransferInConfirmed = (Boolean) value;
-                if (values.TryGetValue("AccountValidatedAt", out value)) AccountValidatedAt = (DateTime) value;
-                if (values.TryGetValue("TransferOutPreparationConfirmedAt", out value)) TransferOutPreparationConfirmedAt = (DateTime) value;
-                if (values.TryGetValue("TransferInPreparationConfirmedAt", out value)) TransferInPreparationConfirmedAt = (DateTime) value;
-                if (values.TryGetValue("TransferOutConfirmedAt", out value)) TransferOutConfirmedAt = (DateTime) value;
-                if (values.TryGetValue("TransferInConfirmedAt", out value)) TransferInConfirmedAt = (DateTime) value;
-                if (values.TryGetValue("TransferCancelAt", out value)) TransferCancelAt = (DateTime) value;
-                if (values.TryGetValue("TransferTransactionInfo", out value)) TransferTransactionInfo = (TransferTransactionInfo) value;
+                if (values.TryGetValue("Version", out value)) @Version = (UInt64) value;
+                if (values.TryGetValue("Status", out value)) @Status = (TransactionStatus) value;
+                if (values.TryGetValue("TransferOutPreparationConfirmed", out value)) @TransferOutPreparationConfirmed = (Boolean) value;
+                if (values.TryGetValue("TransferInPreparationConfirmed", out value)) @TransferInPreparationConfirmed = (Boolean) value;
+                if (values.TryGetValue("TransferOutConfirmed", out value)) @TransferOutConfirmed = (Boolean) value;
+                if (values.TryGetValue("TransferInConfirmed", out value)) @TransferInConfirmed = (Boolean) value;
+                if (values.TryGetValue("AccountValidatedAt", out value)) @AccountValidatedAt = (DateTime) value;
+                if (values.TryGetValue("TransferOutPreparationConfirmedAt", out value)) @TransferOutPreparationConfirmedAt = (DateTime) value;
+                if (values.TryGetValue("TransferInPreparationConfirmedAt", out value)) @TransferInPreparationConfirmedAt = (DateTime) value;
+                if (values.TryGetValue("TransferOutConfirmedAt", out value)) @TransferOutConfirmedAt = (DateTime) value;
+                if (values.TryGetValue("TransferInConfirmedAt", out value)) @TransferInConfirmedAt = (DateTime) value;
+                if (values.TryGetValue("TransferCancelAt", out value)) @TransferCancelAt = (DateTime) value;
+                if (values.TryGetValue("TransferTransactionInfo", out value)) @TransferTransactionInfo = (TransferTransactionInfo) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("TransferTransactionState( Version={0} Status={1} TransferOutPreparationConfirmed={2} TransferInPreparationConfirmed={3} TransferOutConfirmed={4} TransferInConfirmed={5} AccountValidatedAt={6} TransferOutPreparationConfirmedAt={7} TransferInPreparationConfirmedAt={8} TransferOutConfirmedAt={9} TransferInConfirmedAt={10} TransferCancelAt={11} TransferTransactionInfo={12} )", Version, Status, TransferOutPreparationConfirmed, TransferInPreparationConfirmed, TransferOutConfirmed, TransferInConfirmed, AccountValidatedAt, TransferOutPreparationConfirmedAt, TransferInPreparationConfirmedAt, TransferOutConfirmedAt, TransferInConfirmedAt, TransferCancelAt, TransferTransactionInfo);
+                return System.String.Format("TransferTransactionState( Version={0} Status={1} TransferOutPreparationConfirmed={2} TransferInPreparationConfirmed={3} TransferOutConfirmed={4} TransferInConfirmed={5} AccountValidatedAt={6} TransferOutPreparationConfirmedAt={7} TransferInPreparationConfirmedAt={8} TransferOutConfirmedAt={9} TransferInConfirmedAt={10} TransferCancelAt={11} TransferTransactionInfo={12} )", @Version, @Status, @TransferOutPreparationConfirmed, @TransferInPreparationConfirmed, @TransferOutConfirmed, @TransferInConfirmed, @AccountValidatedAt, @TransferOutPreparationConfirmedAt, @TransferInPreparationConfirmedAt, @TransferOutConfirmedAt, @TransferInConfirmedAt, @TransferCancelAt, @TransferTransactionInfo);
             }
         
         public TransferTransactionState() : 
