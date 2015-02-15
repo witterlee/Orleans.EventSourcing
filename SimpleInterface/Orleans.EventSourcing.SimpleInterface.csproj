@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ITransferTransaction.cs" />
     <Compile Include="ITransferTransactionProcessManager.cs" />
+    <Compile Include="TaskMessage.cs" />
     <Compile Include="TransactionFaileReason.cs" />
     <Compile Include="TransferTransactionInfo.cs" />
     <Compile Include="TransactionStatus.cs" />

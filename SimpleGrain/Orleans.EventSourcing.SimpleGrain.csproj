@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankAccount.cs" />
-    <Compile Include="Events\BankEvents.cs" />
+    <Compile Include="Events\BankAccountEvents.cs" />
     <Compile Include="Events\TransferTransactionEvents.cs" />
     <Compile Include="Messages\TransferTransactionMessages.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />

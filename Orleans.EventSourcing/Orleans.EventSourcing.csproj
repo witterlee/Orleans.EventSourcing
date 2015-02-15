@@ -68,7 +68,6 @@
     <Compile Include="EventStore\IEventStoreProvider.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="SiloHostExtension.cs" />
-    <Compile Include="TaskMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -100,7 +100,10 @@ namespace Orleans.EventSourcing.SimpleGrain
             this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId);
             this.State.Balance = @event.CurrentBalance; 
         }
-
+        private void Handle(TransactionPreparationCanceledEvent @event)
+        {
+            this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId); 
+        } 
         #endregion
 
         private decimal GetAvailableBalance()

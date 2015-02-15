@@ -742,6 +742,113 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
 }
+namespace Orleans.EventSourcing.SimpleInterfaceSerializers
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Orleans.Serialization;
+    using Orleans.EventSourcing;
+    using System.Collections;
+    using System.Runtime.InteropServices;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SuccessMessageSerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo1;
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        static Orleans_EventSourcing_SuccessMessageSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SuccessMessage input = ((Orleans.EventSourcing.SuccessMessage)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Message, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Success, stream, typeof(bool));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SuccessMessage result = ((Orleans.EventSourcing.SuccessMessage)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SuccessMessage))));
+            object objResult = ((object)(result));
+            object temp1 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SuccessMessage), DeepCopier, Serializer, Deserializer);
+            fieldInfo1 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Message>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo2 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Success>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_ErrorMessageSerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo1;
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        static Orleans_EventSourcing_ErrorMessageSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.ErrorMessage input = ((Orleans.EventSourcing.ErrorMessage)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Message, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Success, stream, typeof(bool));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.ErrorMessage result = ((Orleans.EventSourcing.ErrorMessage)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.ErrorMessage))));
+            object objResult = ((object)(result));
+            object temp1 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.ErrorMessage), DeepCopier, Serializer, Deserializer);
+            fieldInfo1 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Message>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo2 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Success>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+        }
+    }
+}
 #pragma warning restore 162
 #pragma warning restore 219
 #pragma warning restore 693
