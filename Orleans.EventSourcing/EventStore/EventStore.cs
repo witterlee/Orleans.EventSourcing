@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Orleans.EventSourcing
 {
     public class EventStore<TGrain, TState>
-        where TGrain : Grain<TState>, IEventSourcingGrain<TState>
+        where TGrain : IEventSourcingGrain<TState>
         where TState : class,IEventSourcingState
     {
         private static readonly IEventStoreProvider eventStoreProvider = EventStoreProviderManager.GetProvider<TGrain>();
