@@ -3,7 +3,7 @@
   <Globals>
     <StorageProviders>
       <Provider Type="Orleans.Storage.MemoryStorage" Name="MemoryStore" />
-      <Provider Type="Orleans.Storage.Couchbase.CouchbaseStorage" Name="CouchbaseStore" ConfigSectionName="couchbaseClients/couchbaseDataStore" />
+      <Provider Type="Orleans.Storage.Couchbase.CouchbaseStorage" Name="CouchbaseStore" UseGuidAsStorageKey="True" ConfigSectionName="couchbaseClients/couchbaseDataStore" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>
