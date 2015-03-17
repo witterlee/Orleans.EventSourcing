@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{70F9B8
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.Storage.Couchbase", "..\Orleans.Storage.Couchbase\Orleans.Storage.Couchbase\Orleans.Storage.Couchbase.csproj", "{C87F74C4-7DD1-4214-84B9-3C7E00F1B34C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{8CEB3272-9926-4C62-8389-8C0793968301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CEB3272-9926-4C62-8389-8C0793968301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CEB3272-9926-4C62-8389-8C0793968301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C87F74C4-7DD1-4214-84B9-3C7E00F1B34C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C87F74C4-7DD1-4214-84B9-3C7E00F1B34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C87F74C4-7DD1-4214-84B9-3C7E00F1B34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C87F74C4-7DD1-4214-84B9-3C7E00F1B34C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

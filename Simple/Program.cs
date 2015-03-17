@@ -28,8 +28,8 @@ namespace Simple
 
             Orleans.GrainClient.Initialize("DevTestClientConfiguration.xml");
 
-            TestConcurent();
-            //TestPerformance();
+             TestConcurent();
+           //TestPerformance();
 
             Console.WriteLine("Orleans Silo is running.\nPress Enter to terminate...");
             Console.ReadLine();

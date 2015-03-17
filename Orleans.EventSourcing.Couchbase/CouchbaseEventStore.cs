@@ -10,6 +10,7 @@ using Couchbase.Configuration.Client;
 using System.Dynamic;
 using Couchbase.Core;
 using System.Collections.Concurrent;
+using System.Threading;
 using Couchbase.Management;
 
 namespace Orleans.EventSourcing.Couchbase
@@ -75,10 +76,21 @@ namespace Orleans.EventSourcing.Couchbase
         {
             var @eventId = grainId.ToString() + eventVersion;
 
-            var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
-            if (!result.Success)
+            var tcs = new TaskCompletionSource<IOperationResult>();
+
+            WaitCallback write = (state) =>
             {
-                throw new Exception("append event to store exception", result.Exception);
+                var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
+                tcs.SetResult(result);
+            };
+
+            ThreadPool.QueueUserWorkItem(write, null);
+
+            var opResult = tcs.Task.Result;
+
+            if (!opResult.Success)
+            {
+                throw new Exception("append event to store exception", opResult.Exception);
             }
             return TaskDone.Done;
         }
