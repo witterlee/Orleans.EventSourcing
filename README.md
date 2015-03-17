@@ -7,7 +7,10 @@
 ###USE CASE
   you can see the detail from simple project
 
-####Server config
+###Install From Nuget
+    Install-Package Orleans.EventSourcing
+
+####Server Config
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
