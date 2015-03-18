@@ -59,40 +59,66 @@ namespace Orleans.EventSourcing.Couchbase
 
             if (keys.Count > 0)
             {
-                var events = _bucket.Get<string>(keys);
+                var tcs = new TaskCompletionSource<List<string>>();
 
-                if (events.Count(e => e.Value.Success) == keys.Count)
+                Task.Factory.StartNew(() =>
                 {
-                    result = events.Select(et => et.Value.Value).ToList();
-                }
-                else
-                    throw new Exception("read from event store exception", events.Select(et => et.Value.Exception).FirstOrDefault());
+                    try
+                    {
+                        var events = _bucket.Get<string>(keys);
+
+                        if (events.Count(e => e.Value.Success) == keys.Count)
+                        {
+                            var eventsResult = events.Select(et => et.Value.Value).ToList();
+                            tcs.SetResult(eventsResult);
+                        }
+                        else
+                        {
+                            Exception firstEx = null;
+                            foreach (var et in events)
+                            {
+                                firstEx = et.Value.Exception ?? null;
+                                if (firstEx != null)
+                                    break;
+                            }
+                            tcs.SetException(new Exception("Read events from couchbase error", firstEx));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(new Exception("append event to store exception", ex));
+                    }
+                }); 
+
+                result = await tcs.Task;
             }
 
             return result;
         }
 
-        public Task Append(string grainId, ulong eventVersion, string eventJsonString)
+        public async Task Append(string grainId, ulong eventVersion, string eventJsonString)
         {
             var @eventId = grainId.ToString() + eventVersion;
 
             var tcs = new TaskCompletionSource<IOperationResult>();
 
-            WaitCallback write = (state) =>
+            Task.Factory.StartNew(() =>
             {
-                var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
-                tcs.SetResult(result);
-            };
+                try
+                {
+                    var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
+                    tcs.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(new Exception("append event to store exception", ex));
+                }
+            });
 
-            ThreadPool.QueueUserWorkItem(write, null);
-
-            var opResult = tcs.Task.Result;
+            var opResult = await tcs.Task;
 
             if (!opResult.Success)
-            {
                 throw new Exception("append event to store exception", opResult.Exception);
-            }
-            return TaskDone.Done;
         }
     }
 }

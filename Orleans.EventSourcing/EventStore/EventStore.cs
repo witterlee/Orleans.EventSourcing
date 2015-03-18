@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using System.Threading;
 using Newtonsoft.Json;
 
 namespace Orleans.EventSourcing
@@ -15,12 +11,12 @@ namespace Orleans.EventSourcing
     {
         private static readonly IEventStoreProvider eventStoreProvider = EventStoreProviderManager.GetProvider<TGrain>();
         private ulong afterSnapshotsEventCount;
-        private readonly TGrain grain;
+        private TGrain grain;
         private IEventStore eventStore;
         private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings()
         {
             MissingMemberHandling = MissingMemberHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore 
+            NullValueHandling = NullValueHandling.Ignore
         };
         private TState State
         {
@@ -29,17 +25,23 @@ namespace Orleans.EventSourcing
                 return this.grain.GetState();
             }
         }
-        public EventStore(TGrain grain, ulong afterSnapshotsEventCount = 100)
+
+        private EventStore() { }
+
+        public static async Task<EventStore<TGrain, TState>> Initialize(TGrain grain, ulong afterSnapshotsEventCount = 100)
         {
-            this.grain = grain;
-            this.afterSnapshotsEventCount = afterSnapshotsEventCount;
-            eventStore = eventStoreProvider.Create<TGrain>();
+            var instance = new EventStore<TGrain, TState>();
+            instance.grain = grain;
+            instance.afterSnapshotsEventCount = afterSnapshotsEventCount;
+            instance.eventStore = await eventStoreProvider.Create<TGrain>();
+
+            return instance;
         }
         public async Task WriteEvent(IEvent @event)
         {
             if (@event != null)
             {
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(@event, jsonsetting);
+                var json = JsonConvert.SerializeObject(@event, jsonsetting);
                 await eventStore.Append(@event.GrainId, @event.Version, json);
                 HandleEvent(@event);
             }
@@ -56,7 +58,7 @@ namespace Orleans.EventSourcing
         {
             var unapplyEventsJson = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version + 1);
 
-            if (unapplyEventsJson.Count() > 0)
+            if (unapplyEventsJson.Any())
             {
                 var events = unapplyEventsJson.Select(ConvertJsonToEvent).OrderBy(et => et.Version);
                 foreach (var evnt in events)

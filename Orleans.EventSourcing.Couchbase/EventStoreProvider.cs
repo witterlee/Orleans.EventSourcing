@@ -10,6 +10,7 @@ using Couchbase.Configuration.Client;
 using System.Dynamic;
 using Couchbase.Core;
 using System.Configuration;
+using System.Threading;
 using Couchbase.Configuration.Client.Providers;
 
 namespace Orleans.EventSourcing.Couchbase
@@ -26,23 +27,36 @@ namespace Orleans.EventSourcing.Couchbase
             get { return cluster; }
         }
 
-        private IBucket Bucket
+        private async Task<IBucket> GetBucket()
         {
-            get
+            var tcs = new TaskCompletionSource<IBucket>();
+            if (bucket == null)
             {
-                if (bucket == null)
+                Task.Factory.StartNew(() =>
                 {
-                    lock (locker)
+                    try
                     {
-                        if (bucket == null)
+                        lock (locker)
                         {
-                            var bucketConfig = config.BucketConfigs.First();
-                            bucket = Cluster.OpenBucket(bucketConfig.Value.BucketName, bucketConfig.Value.Password);
+                            if (bucket == null)
+                            {
+                                var bucketConfig = config.BucketConfigs.First();
+                                bucket = Cluster.OpenBucket(bucketConfig.Value.BucketName, bucketConfig.Value.Password);
+                            }
                         }
+
+                        tcs.SetResult(bucket);
                     }
-                }
-                return bucket;
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(new Exception("Couchbase Event Store Init Bucket Exception", ex));
+                    }
+                });
+
+                await tcs.Task;
             }
+
+            return bucket;
         }
         public Task Initialize(EventStoreProviderSetting settings)
         {
@@ -58,9 +72,11 @@ namespace Orleans.EventSourcing.Couchbase
             return TaskDone.Done;
         }
 
-        public IEventStore Create<T>() where T : IEventSourcingGrain
+        public async Task<IEventStore> Create<T>() where T : IEventSourcingGrain
         {
-            return new CouchbaseEventStore(this.Bucket);
+            var _bucket = await this.GetBucket();
+
+            return new CouchbaseEventStore(_bucket);
         }
     }
 }

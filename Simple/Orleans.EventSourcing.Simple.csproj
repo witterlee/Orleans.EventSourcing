@@ -55,10 +55,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(OrleansSDK)\Binaries\OrleansServer\Orleans.dll</HintPath>
     </Reference>
-    <Reference Include="Orleans.Storage.Couchbase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orleans.Storage.Couchbase.1.2.0.0\lib\net45\Orleans.Storage.Couchbase.dll</HintPath>
-    </Reference>
     <Reference Include="OrleansRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
@@ -90,6 +86,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Orleans.Storage.Couchbase\Orleans.Storage.Couchbase\Orleans.Storage.Couchbase.csproj">
+      <Project>{c87f74c4-7dd1-4214-84b9-3c7e00f1b34c}</Project>
+      <Name>Orleans.Storage.Couchbase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orleans.EventSourcing.Couchbase\Orleans.EventSourcing.Couchbase.csproj">
       <Project>{c30032fe-0dc4-47c4-9144-e00d1a104211}</Project>
       <Name>Orleans.EventSourcing.Couchbase</Name>

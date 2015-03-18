@@ -21,8 +21,8 @@ namespace Orleans.EventSourcing.SimpleGrain
             var tx = GrainFactory.GetGrain<ITransferTransaction>(txid);
 
             await tx.Initialize(fromAccountId, toAccountId, amount);
-             var reminder = await this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromSeconds(30),
-                TimeSpan.FromSeconds(60));//);
+            var reminder = await this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromSeconds(30),
+               TimeSpan.FromSeconds(60));//);
             try
             {
                 await InnerProcessTransferTransaction(tx);

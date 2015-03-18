@@ -30,6 +30,6 @@ namespace Orleans.EventSourcing
         /// </summary>
         /// <typeparam name="T">the grain type</typeparam>
         /// <returns></returns>
-        IEventStore Create<T>() where T : IEventSourcingGrain;
+        Task<IEventStore> Create<T>() where T : IEventSourcingGrain;
     }
 }

@@ -44,7 +44,7 @@ namespace Orleans.EventSourcing
 
         public async override Task OnActivateAsync()
         {
-            this.eventStore = new EventStore<TGrain, TState>(this as TGrain, 100);
+            this.eventStore = await EventStore<TGrain, TState>.Initialize(this as TGrain, 100);
             await this.eventStore.ReplayEvents();
             await base.OnActivateAsync();
         }
