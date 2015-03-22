@@ -85,7 +85,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 }
             }
             
-            protected override string InterfaceName
+            public override string InterfaceName
             {
                 get
                 {
@@ -344,7 +344,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 }
             }
             
-            protected override string InterfaceName
+            public override string InterfaceName
             {
                 get
                 {
@@ -523,7 +523,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 }
             }
             
-            protected override string InterfaceName
+            public override string InterfaceName
             {
                 get
                 {
