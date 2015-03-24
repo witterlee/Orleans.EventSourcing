@@ -32,7 +32,9 @@ namespace Orleans.EventSourcing.Couchbase
             var tcs = new TaskCompletionSource<IBucket>();
             if (bucket == null)
             {
+#pragma warning disable 4014
                 Task.Factory.StartNew(() =>
+#pragma warning restore 4014
                 {
                     try
                     {

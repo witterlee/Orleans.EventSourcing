@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{70F9B8
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.MongoDB", "Orleans.EventSourcing.MongoDB\Orleans.EventSourcing.MongoDB.csproj", "{E5003DEA-41B3-4C64-80A4-0FCB56B287BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{8CEB3272-9926-4C62-8389-8C0793968301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CEB3272-9926-4C62-8389-8C0793968301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CEB3272-9926-4C62-8389-8C0793968301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5003DEA-41B3-4C64-80A4-0FCB56B287BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5003DEA-41B3-4C64-80A4-0FCB56B287BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5003DEA-41B3-4C64-80A4-0FCB56B287BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5003DEA-41B3-4C64-80A4-0FCB56B287BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

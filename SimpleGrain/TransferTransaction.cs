@@ -117,8 +117,6 @@ namespace Orleans.EventSourcing.SimpleGrain
             if (this.State.TransferInConfirmed)
             {
                 this.State.Status = TransactionStatus.Completed;
-                this.State.WriteStateAsync();
-                this.DeactivateOnIdle();
             }
         }
         private void Handle(TransferInConfirmedEvent @event)
@@ -128,8 +126,6 @@ namespace Orleans.EventSourcing.SimpleGrain
             if (this.State.TransferOutConfirmed)
             {
                 this.State.Status = TransactionStatus.Completed;
-                this.State.WriteStateAsync();
-                this.DeactivateOnIdle();
             }
         }
         private void Handle(TransferCanceledEvent @event)

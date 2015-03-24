@@ -107,6 +107,13 @@ namespace Orleans.EventSourcing
             get { return (string)base["ConfigSection"]; }
             set { base["ConfigSection"] = value; }
         }
+
+        [ConfigurationProperty("DatabaseName", IsRequired = false)]
+        public string DatabaseName
+        {
+            get { return (string)base["DatabaseName"]; }
+            set { base["DatabaseName"] = value; }
+        }
          
     }
 

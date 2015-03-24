@@ -7,11 +7,11 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>https://github.com/weitaolee/Orleans.EventSourcing/blob/develop/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/weitaolee/Orleans.EventSourcing</projectUrl> 
+    <projectUrl>https://github.com/weitaolee/Orleans.EventSourcing</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Update Orleans To v1.0.5</releaseNotes>
     <copyright>Copyright 2015</copyright>
-    <tags>Orleans EventSourcing</tags>
+    <tags>Orleans EventSourcing MongoDB EventStore Plusin</tags>
   </metadata>
 </package>

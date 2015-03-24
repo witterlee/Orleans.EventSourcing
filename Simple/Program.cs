@@ -27,9 +27,12 @@ namespace Simple
             });
 
             Orleans.GrainClient.Initialize("DevTestClientConfiguration.xml");
+            var sw3 = Stopwatch.StartNew();
+            //TestConcurent();
 
-            TestConcurent();
-            // TestPerformance();
+            TestPerformance();
+
+            Console.WriteLine("<------总共用时-------" + sw3.Elapsed.TotalSeconds + "------------>");
 
             Console.WriteLine("Orleans Silo is running.\nPress Enter to terminate...");
             Console.ReadLine();
@@ -69,21 +72,22 @@ namespace Simple
             Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
 
             Task.WhenAll(accountA.Initialize(userAId), accountB.Initialize(userBId)).Wait();
+
             var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
 
-            var loopTimes = 10;
+            var loopTimes = 100;
             while (loopTimes-- > 0)
             {
                 var tasks = new List<Task>();
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     decimal amount = new Random().Next(100);
                     tasks.Add(transferManager.ProcessTransferTransaction(accountAId, accountBId, amount));
                 }
 
                 Task.WaitAll(tasks.ToArray());
-                Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
-                Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
+                //Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
+                //Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
             }
 
             Task.Delay(300 * 1000).Wait();
@@ -121,14 +125,17 @@ namespace Simple
 
             var sw1 = Stopwatch.StartNew();
 
-            var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
             foreach (var kv in accountPairs)
             {
                 for (int i = 0; i < 100; i++)
+                { 
+                    var managerId = i % 9;
+                    var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(managerId);
                     transferTasks.Add(transferManager.ProcessTransferTransaction(kv.Key, kv.Value, 100M));
+                }
             }
 
-            Task.WhenAll(transferTasks).Wait();
+            Task.WhenAll(transferTasks).ConfigureAwait(false).GetAwaiter().GetResult();
             sw1.Stop();
 
             Console.WriteLine("<-------------" + sw.Elapsed.TotalSeconds + "------------>");

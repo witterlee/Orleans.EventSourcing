@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Couchbase;
-using Couchbase.Views;
-using Couchbase.Configuration;
-using Couchbase.Configuration.Client;
-using System.Dynamic;
 using Couchbase.Core;
-using System.Collections.Concurrent;
-using System.Threading;
-using Couchbase.Management;
+using Newtonsoft.Json;
 
 namespace Orleans.EventSourcing.Couchbase
 {
@@ -33,7 +26,7 @@ namespace Orleans.EventSourcing.Couchbase
 
         }
 
-        public async Task<IEnumerable<string>> ReadFrom(string grainId, ulong eventId = 0)
+        public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, ulong eventId = 0)
         {
             //if (!hasDesignDoc)
             //{
@@ -51,7 +44,7 @@ namespace Orleans.EventSourcing.Couchbase
                                .StartKey(startKey)
                                .EndKey(endKey);
 
-            var result = new List<string>();
+            var result = new List<IEvent>();
 
             var indexs = await _bucket.QueryAsync<dynamic>(query);
 
@@ -59,9 +52,11 @@ namespace Orleans.EventSourcing.Couchbase
 
             if (keys.Count > 0)
             {
-                var tcs = new TaskCompletionSource<List<string>>();
+                var tcs = new TaskCompletionSource<List<IEvent>>();
 
+#pragma warning disable 4014
                 Task.Factory.StartNew(() =>
+#pragma warning restore 4014
                 {
                     try
                     {
@@ -69,7 +64,8 @@ namespace Orleans.EventSourcing.Couchbase
 
                         if (events.Count(e => e.Value.Success) == keys.Count)
                         {
-                            var eventsResult = events.Select(et => et.Value.Value).ToList();
+                            var eventsResult = events.Select(et => ConvertJsonToEvent(et.Value.Value)).ToList();
+
                             tcs.SetResult(eventsResult);
                         }
                         else
@@ -88,7 +84,7 @@ namespace Orleans.EventSourcing.Couchbase
                     {
                         tcs.SetException(new Exception("append event to store exception", ex));
                     }
-                }); 
+                });
 
                 result = await tcs.Task;
             }
@@ -96,17 +92,21 @@ namespace Orleans.EventSourcing.Couchbase
             return result;
         }
 
-        public async Task Append(string grainId, ulong eventVersion, string eventJsonString)
+        public async Task Append(IEvent @event)
         {
-            var @eventId = grainId.ToString() + eventVersion;
+            var _event = @event as GrainEvent;
+
+            var @eventId = _event.GrainId.ToString() + _event.Version;
 
             var tcs = new TaskCompletionSource<IOperationResult>();
 
+#pragma warning disable 4014
             Task.Factory.StartNew(() =>
+#pragma warning restore 4014
             {
                 try
                 {
-                    var result = _bucket.Insert(grainId + eventVersion.ToString(), eventJsonString);
+                    var result = _bucket.Insert(@eventId, JsonConvert.SerializeObject(@event));
                     tcs.SetResult(result);
                 }
                 catch (Exception ex)
@@ -119,6 +119,22 @@ namespace Orleans.EventSourcing.Couchbase
 
             if (!opResult.Success)
                 throw new Exception("append event to store exception", opResult.Exception);
+        }
+
+        private IEvent ConvertJsonToEvent(string eventJson)
+        {
+            dynamic @event = JsonConvert.DeserializeObject(eventJson);
+            string eventTypeName = @event.Type;
+            Type eventType;
+
+            if (!EventNameTypeMapping.TryGetEventType(eventTypeName, out eventType))
+            {
+                throw new Exception("unknow event type");
+            }
+
+            var convertEvent = JsonConvert.DeserializeObject(eventJson, eventType) as IEvent;
+
+            return convertEvent;
         }
     }
 }

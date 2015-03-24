@@ -41,8 +41,7 @@ namespace Orleans.EventSourcing
         {
             if (@event != null)
             {
-                var json = JsonConvert.SerializeObject(@event, jsonsetting);
-                await eventStore.Append(@event.GrainId, @event.Version, json);
+                await eventStore.Append(@event);
                 HandleEvent(@event);
             }
 
@@ -56,11 +55,12 @@ namespace Orleans.EventSourcing
         }
         public async Task ReplayEvents()
         {
-            var unapplyEventsJson = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version + 1);
+            var events = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version + 1);
 
-            if (unapplyEventsJson.Any())
+            if (events.Any())
             {
-                var events = unapplyEventsJson.Select(ConvertJsonToEvent).OrderBy(et => et.Version);
+                events = events.OrderBy(et => et.Version);
+
                 foreach (var evnt in events)
                 {
                     HandleEvent(evnt);
@@ -88,20 +88,6 @@ namespace Orleans.EventSourcing
                 throw new Exception(string.Format("invlid event version for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
             }
         }
-        private IEvent ConvertJsonToEvent(string eventJson)
-        {
-            dynamic @event = JsonConvert.DeserializeObject(eventJson, jsonsetting);
-            string eventTypeName = @event.Type;
-            Type eventType;
 
-            if (!EventNameTypeMapping.TryGetEventType(eventTypeName, out eventType))
-            {
-                throw new Exception("unknow event type");
-            }
-
-            var convertEvent = JsonConvert.DeserializeObject(eventJson, eventType) as IEvent;
-
-            return convertEvent;
-        }
     }
 }
