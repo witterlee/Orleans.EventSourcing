@@ -6,6 +6,7 @@ using MongoDB.Bson;
 using MongoDBBson = MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Operations;
 using JsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace Orleans.EventSourcing.MongoDB
@@ -22,7 +23,7 @@ namespace Orleans.EventSourcing.MongoDB
 
         public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, ulong eventId = 0)
         {
-            var collection = await GetCollection(CollectionName);
+            var collection = (await GetCollection(CollectionName)).WithReadPreference(ReadPreference.SecondaryPreferred);
             var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:'" + grainId + "',Version:{ $gt: " + eventId + " }}");
             var sort = MongoDBBson.BsonDocument.Parse("{Version:1}");
             var options = new FindOptions<MongoDBBson.BsonDocument, MongoDBBson.BsonDocument>
@@ -39,7 +40,7 @@ namespace Orleans.EventSourcing.MongoDB
 
         public async Task Append(IEvent @event)
         {
-            var collection = (await GetCollection(CollectionName)).WithWriteConcern(WriteConcern.Acknowledged);
+            var collection = (await GetCollection(CollectionName)).WithWriteConcern(new WriteConcern(new Optional<WriteConcern.WValue>(), journal: new Optional<bool?>(true)));
 
             await collection.InsertOneAsync(@event.ToBsonDocument());
         }
@@ -63,7 +64,7 @@ namespace Orleans.EventSourcing.MongoDB
         }
 
         private IEvent ConvertJsonToEvent(MongoDBBson.BsonDocument bson)
-        { 
+        {
             var json = bson.ToJson();
             dynamic @event = JsonConvert.DeserializeObject(json);
             string eventTypeName = @event.Type;
