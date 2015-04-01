@@ -129,13 +129,14 @@ namespace Simple
             {
                 for (int i = 0; i < 100; i++)
                 { 
-                    var managerId = i % 9;
+                    var managerId = i % 10;
                     var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(managerId);
                     transferTasks.Add(transferManager.ProcessTransferTransaction(kv.Key, kv.Value, 100M));
-                }
-            }
+                } 
+            } 
 
             Task.WhenAll(transferTasks).ConfigureAwait(false).GetAwaiter().GetResult();
+
             sw1.Stop();
 
             Console.WriteLine("<-------------" + sw.Elapsed.TotalSeconds + "------------>");

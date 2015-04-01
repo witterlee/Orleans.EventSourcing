@@ -11,7 +11,7 @@ using Orleans.Concurrency;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    [StorageProvider(ProviderName = "CouchbaseStore")]
+    [StorageProvider(ProviderName = "MongoDBStore")]
     public class TransferTransaction : EventSourcingGrain<TransferTransaction, ITransferTransactionState>,
                                        ITransferTransaction
     {
@@ -117,6 +117,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             if (this.State.TransferInConfirmed)
             {
                 this.State.Status = TransactionStatus.Completed;
+                this.State.WriteStateAsync();
             }
         }
         private void Handle(TransferInConfirmedEvent @event)
@@ -126,6 +127,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             if (this.State.TransferOutConfirmed)
             {
                 this.State.Status = TransactionStatus.Completed;
+                this.State.WriteStateAsync();
             }
         }
         private void Handle(TransferCanceledEvent @event)

@@ -24,7 +24,7 @@ namespace Orleans.EventSourcing.MongoDB
         public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, ulong eventId = 0)
         {
             var collection = (await GetCollection(CollectionName)).WithReadPreference(ReadPreference.SecondaryPreferred);
-            var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:'" + grainId + "',Version:{ $gt: " + eventId + " }}");
+            var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gt: " + eventId + " }}");
             var sort = MongoDBBson.BsonDocument.Parse("{Version:1}");
             var options = new FindOptions<MongoDBBson.BsonDocument, MongoDBBson.BsonDocument>
             {
@@ -41,8 +41,10 @@ namespace Orleans.EventSourcing.MongoDB
         public async Task Append(IEvent @event)
         {
             var collection = (await GetCollection(CollectionName)).WithWriteConcern(new WriteConcern(new Optional<WriteConcern.WValue>(), journal: new Optional<bool?>(true)));
+            var json = JsonConvert.SerializeObject(@event); 
 
-            await collection.InsertOneAsync(@event.ToBsonDocument());
+            var doc = MongoDBBson.Serialization.BsonSerializer.Deserialize<BsonDocument>(json);
+            await collection.InsertOneAsync(doc);
         }
 
 
@@ -58,7 +60,7 @@ namespace Orleans.EventSourcing.MongoDB
                     var keys = Builders<MongoDBBson.BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
                     await collection.Indexes.CreateOneAsync(keys);
                 }
-
+                HasIndex = true;
             }
             return collection;
         }

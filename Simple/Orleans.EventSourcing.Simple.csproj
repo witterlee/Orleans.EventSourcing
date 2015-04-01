@@ -74,6 +74,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Orleans.Storage.Couchbase.1.2.3.0\lib\net45\Orleans.Storage.Couchbase.dll</HintPath>
     </Reference>
+    <Reference Include="Orleans.Storage.MongoDB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Orleans.Storage.MongoDB\Orleans.Storage.MongoDB\bin\Debug\Orleans.Storage.MongoDB.dll</HintPath>
+    </Reference>
     <Reference Include="OrleansRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
