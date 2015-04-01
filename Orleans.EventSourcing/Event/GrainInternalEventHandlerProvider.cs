@@ -14,8 +14,7 @@ namespace Orleans.EventSourcing
 {
     public class GrainInternalEventHandlerProvider
     {
-        private static readonly IDictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>> mappings = new Dictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>>();
-        private static readonly IDictionary<string, Type> eventNameMappings = new Dictionary<string, Type>();
+        private static readonly IDictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>> mappings = new Dictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>>(); 
 
         private static readonly BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
         private static readonly Type[] parameterTypes = new Type[] { typeof(IEventSourcingGrain), typeof(IEvent) };
@@ -114,8 +113,7 @@ namespace Orleans.EventSourcing
             {
                 var methodDelegate = DynamicReflection.CreateDelegate<Action<IEventSourcingGrain, IEvent>>(method, parameterTypes);
 
-                eventHandlerDic.Add(eventType, methodDelegate);
-                eventNameMappings.Add(eventType.FullName, eventType);
+                eventHandlerDic.Add(eventType, methodDelegate); 
             }
         }
         #endregion

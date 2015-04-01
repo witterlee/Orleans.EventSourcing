@@ -82,7 +82,7 @@ namespace Orleans.EventSourcing.Couchbase
                     }
                     catch (Exception ex)
                     {
-                        tcs.SetException(new Exception("append event to store exception", ex));
+                        tcs.SetException(new Exception("Read event to store exception", ex));
                     }
                 });
 
@@ -124,10 +124,10 @@ namespace Orleans.EventSourcing.Couchbase
         private IEvent ConvertJsonToEvent(string eventJson)
         {
             dynamic @event = JsonConvert.DeserializeObject(eventJson);
-            string eventTypeName = @event.Type;
+            uint eventTypeCode = @event.TypeCode;
             Type eventType;
 
-            if (!EventNameTypeMapping.TryGetEventType(eventTypeName, out eventType))
+            if (!EventNameTypeMapping.TryGetEventType(eventTypeCode, out eventType))
             {
                 throw new Exception("unknow event type");
             }

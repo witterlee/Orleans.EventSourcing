@@ -28,9 +28,9 @@ namespace Simple
 
             Orleans.GrainClient.Initialize("DevTestClientConfiguration.xml");
             var sw3 = Stopwatch.StartNew();
-            //TestConcurent();
+            TestConcurent();
 
-            TestPerformance();
+            //TestPerformance();
 
             Console.WriteLine("<------总共用时-------" + sw3.Elapsed.TotalSeconds + "------------>");
 

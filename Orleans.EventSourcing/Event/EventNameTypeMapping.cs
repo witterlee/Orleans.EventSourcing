@@ -14,49 +14,29 @@ namespace Orleans.EventSourcing
 {
     public class EventNameTypeMapping
     {
-        private static readonly IDictionary<string, Type> eventNameMappings = new Dictionary<string, Type>();
-        private static readonly List<string> registerAssembly = new List<string>();
+        private static readonly IDictionary<uint, Type> eventTypeCodeMappings = new Dictionary<uint, Type>();
 
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
-        public static bool TryGetEventType(string typeName, out Type eventType)
+        public static bool TryGetEventType(uint typeCode, out Type eventType)
         {
-            return eventNameMappings.TryGetValue(typeName, out eventType);
+            return eventTypeCodeMappings.TryGetValue(typeCode, out eventType);
         }
-        public static void RegisterEventType(Assembly[] assemblies)
+
+        public static bool TryGetEventTypeCode(Type eventType, out uint typeCode)
         {
-            if (assemblies != null && assemblies.Count() > 0)
+            typeCode = (from kv in eventTypeCodeMappings where eventType == kv.Value select kv.Key).FirstOrDefault();
+
+            return typeCode > 0;
+        }
+
+        public static void RegisterEventType(uint typeCode, Type type)
+        {
+            lock (_lock)
             {
-                lock (_lock)
-                {
-                    foreach (var assembly in assemblies)
-                        RegisterEventType(assembly);
-                }
+                if (IsEventType(type) && !eventTypeCodeMappings.ContainsKey(typeCode))
+                    eventTypeCodeMappings.Add(typeCode, type);
             }
-        }
-
-        public static void RegisterEventType(Assembly assembly)
-        {
-            if (!registerAssembly.Contains(assembly.FullName))
-            {
-                lock (_lock)
-                {
-                    if (!registerAssembly.Contains(assembly.FullName))
-                    {
-                        foreach (var type in assembly.GetTypes().Where(IsEventType))
-                        {
-                            RegisterEventType(type);
-                        }
-                        registerAssembly.Add(assembly.FullName);
-                    }
-                }
-            }
-        }
-
-        private static void RegisterEventType(Type type)
-        {
-            if (!eventNameMappings.ContainsKey(type.FullName))
-                eventNameMappings.Add(type.FullName, type);
         }
 
 

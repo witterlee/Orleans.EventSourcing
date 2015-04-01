@@ -13,7 +13,7 @@ using System.Net.Http;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    [StorageProvider(ProviderName = "MongoDBStore")]
+    [StorageProvider(ProviderName = "CouchbaseStore")]
     public class BankAccount : EventSourcingGrain<BankAccount, IBankAcountState>, IBankAccount
     {
         #region interface impl

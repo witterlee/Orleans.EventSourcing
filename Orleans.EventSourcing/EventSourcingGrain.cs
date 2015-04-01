@@ -29,9 +29,15 @@ namespace Orleans.EventSourcing
         {
             try
             {
+                uint typeCode;
+
+                if (!EventNameTypeMapping.TryGetEventTypeCode(@event.GetType(), out typeCode))
+                    throw new Exception("unknow event type");
+
                 @event.GrainId = this.GetGrainId();
                 @event.Version = this.GetState().Version + 1;
                 @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
+                @event.TypeCode = typeCode;
                 await this.eventStore.WriteEvent(@event);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 
 using Orleans.Runtime;
@@ -36,7 +37,9 @@ namespace Simple
                 var eventStoreSection = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider");
                 var assembly = Assembly.LoadFrom(".\\Applications\\Orleans.EventSourcing.SimpleGrain\\Orleans.EventSourcing.SimpleGrain.dll");
 
-                siloHost.UseEventStore(eventStoreSection).RegisterGrain(assembly);
+
+
+                siloHost.UseEventStore(eventStoreSection).RegisterGrain(GetEventTypeNameAndCodeMapping(), assembly);
                 ok = siloHost.StartOrleansSilo();
 
                 if (ok)
@@ -56,6 +59,25 @@ namespace Simple
             }
 
             return ok;
+        }
+
+        private Dictionary<string, uint> GetEventTypeNameAndCodeMapping()
+        {
+            //Generate from EventTypeCodeRegisterTool
+            var typeCodeDic = new Dictionary<string, uint>();
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent", 1001);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent", 1002);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent", 1003);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent", 1004);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent", 1005);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent", 1006);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent", 1007);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent", 1008);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent", 1009);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent", 1010);
+            typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent", 1011);
+
+            return typeCodeDic;
         }
 
         public bool Stop()

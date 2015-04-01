@@ -12,7 +12,7 @@ namespace Orleans.EventSourcing
         public string GrainId { get; set; }
         public ulong Version { get; set; }
         public DateTime UTCTimestamp { get; set; }
-        public string Type { get { return this.GetType().FullName; } }
+        public uint TypeCode { get; set; }
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Orleans.EventSourcing
     {
         string GrainId { get; }
         ulong Version { get; }
-        string Type { get; }
+        uint TypeCode { get; }
         DateTime UTCTimestamp { get; }
     }
 }

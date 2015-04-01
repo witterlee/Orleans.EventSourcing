@@ -28,6 +28,7 @@ namespace Orleans.EventSourcing.MongoDB
             var sort = MongoDBBson.BsonDocument.Parse("{Version:1}");
             var options = new FindOptions<MongoDBBson.BsonDocument, MongoDBBson.BsonDocument>
             {
+                AllowPartialResults = false,  
                 BatchSize = 20,
                 Sort = sort
             };
@@ -69,10 +70,10 @@ namespace Orleans.EventSourcing.MongoDB
         {
             var json = bson.ToJson();
             dynamic @event = JsonConvert.DeserializeObject(json);
-            string eventTypeName = @event.Type;
+            uint eventTypeCode = @event.TypeCode;
             Type eventType;
 
-            if (!EventNameTypeMapping.TryGetEventType(eventTypeName, out eventType))
+            if (!EventNameTypeMapping.TryGetEventType(eventTypeCode, out eventType))
             {
                 throw new Exception("unknow event type");
             }

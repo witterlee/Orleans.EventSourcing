@@ -34,12 +34,22 @@ namespace Orleans.EventSourcing
             return siloHost;
         }
 
-        public static SiloHost RegisterGrain(this SiloHost siloHost, params Assembly[] assemlies)
+        public static SiloHost RegisterGrain(this SiloHost siloHost, IDictionary<string, uint> typeNameCodeMapping, params Assembly[] assemlies)
         {
-            if (assemlies != null && assemlies.Count() > 0)
+            if (assemlies != null && assemlies.Any())
             {
-                GrainInternalEventHandlerProvider.RegisterInternalEventHandler(assemlies);
-                EventNameTypeMapping.RegisterEventType(assemlies);
+                GrainInternalEventHandlerProvider.RegisterInternalEventHandler(assemlies); 
+
+                if (typeNameCodeMapping.Any())
+                {
+                    var types = assemlies.SelectMany(assemly => assemly.GetTypes());
+                    foreach (var kv in typeNameCodeMapping)
+                    {
+                        var type = types.Single(t => t.FullName == kv.Key);
+
+                        EventNameTypeMapping.RegisterEventType(kv.Value, type); 
+                    }
+                }
             }
             return siloHost;
         }
