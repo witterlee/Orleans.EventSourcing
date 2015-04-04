@@ -11,7 +11,7 @@ using Orleans.Concurrency;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    [StorageProvider(ProviderName = "CouchbaseStore")]
+    [StorageProvider(ProviderName = "MongoDBStore")]
     public class TransferTransaction : EventSourcingGrain<TransferTransaction, ITransferTransactionState>,
                                        ITransferTransaction
     {

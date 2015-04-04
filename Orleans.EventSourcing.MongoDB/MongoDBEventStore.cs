@@ -24,25 +24,28 @@ namespace Orleans.EventSourcing.MongoDB
         public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, ulong eventId = 0)
         {
             var collection = (await GetCollection(CollectionName)).WithReadPreference(ReadPreference.SecondaryPreferred);
-            var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gt: " + eventId + " }}");
-            var sort = MongoDBBson.BsonDocument.Parse("{Version:1}");
+            var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventId + " }}");
+            var sort = MongoDBBson.BsonDocument.Parse("{ Version:1 }");
             var options = new FindOptions<MongoDBBson.BsonDocument, MongoDBBson.BsonDocument>
             {
-                AllowPartialResults = false,  
+                AllowPartialResults = false,
                 BatchSize = 20,
                 Sort = sort
             };
-            var eventsBson = await (await collection.FindAsync(filter, options)).ToListAsync();
+            using (var cursor = await collection.FindAsync(filter, options))
+            {
+                var eventsBson = await cursor.ToListAsync();
+               
+                var events = eventsBson.Select(ConvertJsonToEvent);
 
-            var events = eventsBson.Select(ConvertJsonToEvent);
-
-            return events;
+                return events;
+            }
         }
 
         public async Task Append(IEvent @event)
         {
             var collection = (await GetCollection(CollectionName)).WithWriteConcern(new WriteConcern(new Optional<WriteConcern.WValue>(), journal: new Optional<bool?>(true)));
-            var json = JsonConvert.SerializeObject(@event); 
+            var json = JsonConvert.SerializeObject(@event);
 
             var doc = MongoDBBson.Serialization.BsonSerializer.Deserialize<BsonDocument>(json);
             await collection.InsertOneAsync(doc);
@@ -55,19 +58,23 @@ namespace Orleans.EventSourcing.MongoDB
 
             if (!HasIndex)
             {
-                var indexes = await (await collection.Indexes.ListAsync()).ToListAsync();
-                if (indexes.Count(index => index["name"] == "GrainId_1_Version_1") == 0)
+                using (var cursor = await collection.Indexes.ListAsync())
                 {
-                    var keys = Builders<MongoDBBson.BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
-                    await collection.Indexes.CreateOneAsync(keys);
+                    var indexes = await cursor.ToListAsync();
+                    if (indexes.Count(index => index["name"] == "GrainId_1_Version_1") == 0)
+                    {
+                        var keys = Builders<MongoDBBson.BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
+                        await collection.Indexes.CreateOneAsync(keys);
+                    }
+                    HasIndex = true;
                 }
-                HasIndex = true;
             }
             return collection;
         }
 
         private IEvent ConvertJsonToEvent(MongoDBBson.BsonDocument bson)
         {
+            bson.Remove("_id");
             var json = bson.ToJson();
             dynamic @event = JsonConvert.DeserializeObject(json);
             uint eventTypeCode = @event.TypeCode;

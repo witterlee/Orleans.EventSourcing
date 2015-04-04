@@ -13,20 +13,20 @@ using System.Net.Http;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    [StorageProvider(ProviderName = "CouchbaseStore")]
+    [StorageProvider(ProviderName = "MongoDBStore")]
     public class BankAccount : EventSourcingGrain<BankAccount, IBankAcountState>, IBankAccount
     {
         #region interface impl
 
-        async Task<TaskMessage> IBankAccount.Initialize(Guid ownerId)
+        async Task IBankAccount.Initialize(Guid ownerId)
         { 
             if (this.State.OwnerId == null || this.State.OwnerId == Guid.Empty)
             {
                 await this.ApplyEvent(new BankAccountInitializeEvent(ownerId));
-                return SuccessMessage.Instance;
             }
-            else
-                return new BankAccountInitialized("this bank account has initialized,Dot initialize again");
+             
+            //else
+            //    return new BankAccountInitialized("this bank account has initialized,Dot initialize again");
         }
         public Task<decimal> GetBalance()
         {

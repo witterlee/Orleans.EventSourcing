@@ -563,10 +563,10 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return BankAccountMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<Orleans.EventSourcing.TaskMessage> Orleans.EventSourcing.SimpleInterface.IBankAccount.Initialize(System.Guid @ownerId)
+            System.Threading.Tasks.Task Orleans.EventSourcing.SimpleInterface.IBankAccount.Initialize(System.Guid @ownerId)
             {
 
-                return base.InvokeMethodAsync<Orleans.EventSourcing.TaskMessage>(-1993006295, new object[] {@ownerId} );
+                return base.InvokeMethodAsync<object>(-1993006295, new object[] {@ownerId} );
             }
             
             System.Threading.Tasks.Task<bool> Orleans.EventSourcing.SimpleInterface.IBankAccount.Validate()
@@ -627,7 +627,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                         switch (methodId)
                         {
                             case -1993006295: 
-                                return ((IBankAccount)grain).Initialize((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                                return ((IBankAccount)grain).Initialize((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1980500241: 
                                 return ((IBankAccount)grain).Validate().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1417003246: 

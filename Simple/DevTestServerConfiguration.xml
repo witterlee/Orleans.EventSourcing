@@ -3,8 +3,8 @@
   <Globals>
     <StorageProviders>
       <Provider Type="Orleans.Storage.MemoryStorage" Name="MemoryStore" />
-      <Provider Type="Orleans.Storage.Couchbase.CouchbaseStorage" Name="CouchbaseStore" UseGuidAsStorageKey="True" ConfigSectionName="couchbaseClients/couchbaseDataStore" />
-      <Provider Type="Orleans.Storage.MongoDB.MongoDBStorage" Name="MongoDBStore" Database="datastore" ConnectionString="mongodb://192.168.0.100:27017/" />
+      <!--<Provider Type="Orleans.Storage.Couchbase.CouchbaseStorage" Name="CouchbaseStore" UseGuidAsStorageKey="True" ConfigSectionName="couchbaseClients/couchbaseDataStore" />-->
+      <Provider Type="Orleans.Storage.MongoDB.MongoDBStorage" Name="MongoDBStore" Database="datastore" ConnectionString="mongodb://sa:sa@192.168.2.10:27017/" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>

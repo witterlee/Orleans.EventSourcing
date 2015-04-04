@@ -35,32 +35,29 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+    <Reference Include="Common.Logging, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+    <Reference Include="Common.Logging.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <HintPath>..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Couchbase.NetClient, Version=2.0.2.0, Culture=neutral, PublicKeyToken=05e9c6b5a9ec94c2, processorArchitecture=MSIL">
+    <Reference Include="Couchbase.NetClient, Version=2.0.3.0, Culture=neutral, PublicKeyToken=05e9c6b5a9ec94c2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CouchbaseNetClient.2.0.3\lib\net45\Couchbase.NetClient.dll</HintPath>
+      <HintPath>..\packages\CouchbaseNetClient.2.0.3.1\lib\net45\Couchbase.NetClient.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson, Version=2.0.0.788, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MongoDB.Bson, Version=2.0.0.828, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MongoDB.Bson.2.0.0-rc0\lib\net45\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\packages\MongoDB.Bson.2.0.0\lib\net45\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver, Version=2.0.0.788, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MongoDB.Driver, Version=2.0.0.828, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MongoDB.Driver.2.0.0-rc0\lib\net45\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\packages\MongoDB.Driver.2.0.0\lib\net45\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver.Core, Version=2.0.0.788, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MongoDB.Driver.Core, Version=2.0.0.828, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MongoDB.Driver.Core.2.0.0-rc0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver.Legacy">
-      <HintPath>..\packages\mongocsharpdriver.2.0.0-rc0\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
+      <HintPath>..\packages\MongoDB.Driver.Core.2.0.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\packages\MySql.Data.6.9.6\lib\net45\MySql.Data.dll</HintPath>
@@ -73,13 +70,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Orleans.Core.1.0.5\lib\net45\Orleans.dll</HintPath>
     </Reference>
-    <Reference Include="Orleans.Storage.Couchbase, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Orleans.Storage.Couchbase, Version=1.2.4.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orleans.Storage.Couchbase.1.2.3.0\lib\net45\Orleans.Storage.Couchbase.dll</HintPath>
+      <HintPath>..\packages\Orleans.Storage.Couchbase.1.2.4.1\lib\net45\Orleans.Storage.Couchbase.dll</HintPath>
     </Reference>
     <Reference Include="Orleans.Storage.MongoDB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Orleans.Storage.MongoDB\Orleans.Storage.MongoDB\bin\Debug\Orleans.Storage.MongoDB.dll</HintPath>
+      <HintPath>..\packages\Orleans.Storage.MongoDB.1.0.0.0\lib\net45\Orleans.Storage.MongoDB.dll</HintPath>
     </Reference>
     <Reference Include="OrleansRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

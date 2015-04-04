@@ -11,7 +11,7 @@ namespace Orleans.EventSourcing.SimpleInterface
 {
     public interface IBankAccount : Orleans.IGrainWithGuidKey
     {
-        Task<TaskMessage> Initialize(Guid ownerId);
+        Task Initialize(Guid ownerId);
         Task<bool> Validate();
         Task<TaskMessage> AddTransactionPreparation(Guid transactionId, TransactionType transactionType, PreparationType preparationType, decimal amount);
         Task CommitTransactionPreparation(Guid transactionId);
