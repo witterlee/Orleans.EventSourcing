@@ -43,7 +43,7 @@
 ``` 
 
     MongoDB event store 
-    Install-PackageOrleans.EventSourcing.MongoDB
+    Install-Package Orleans.EventSourcing.MongoDB
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
@@ -116,12 +116,12 @@ private Dictionary<string, uint> GetEventTypeNameAndCodeMapping()
 ####Grain code
 
 ```csharp
- [EventStoreProvider(ProviderName = "CouchBaseEventStore")]
-    [StorageProvider(ProviderName = "CouchbaseStore")]    
-    public class BankAccount : EventSourcingGrain<BankAccount, IBankAcountState>, IBankAccount
-   {
-        ...
-   }
+[EventStoreProvider(ProviderName = "CouchBaseEventStore")]
+[StorageProvider(ProviderName = "CouchbaseStore")]    
+public class BankAccount : EventSourcingGrain<BankAccount, IBankAcountState>, IBankAccount
+ {
+      ...
+ }
 ``` 
 
 please note,if you config provider **Default="true"**,when grain do not has a [EventStoreProvider] attribute, this grain will use the default event provider.   
