@@ -11,7 +11,8 @@
     Install-Package Orleans.EventSourcing
 
 ####Server Config
-
+    Couchbase event store 
+    Install-Package Orleans.EventSourcing.Couchbase
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
@@ -34,6 +35,24 @@
   <runtime>
     <gcServer enabled="true"/>
   </runtime>
+</configuration>
+``` 
+
+    MongoDB event store 
+    Install-PackageOrleans.EventSourcing.MongoDB
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <configSections>
+    <sectionGroup name="couchbaseClients">
+      <section name="couchbaseDataStore" type="Couchbase.Configuration.Client.Providers.CouchbaseClientSection, Couchbase.NetClient" />
+      <section name="couchbaseEventStore" type="Couchbase.Configuration.Client.Providers.CouchbaseClientSection, Couchbase.NetClient" />
+    </sectionGroup>
+    <section name="eventStoreProvider" type="Orleans.EventSourcing.EventStoreSection,Orleans.EventSourcing" />
+  </configSections> 
+  <eventStoreProvider>
+    <provider Name="MongoDBEventStore" Type="Orleans.EventSourcing.MongoDB.EventStoreProvider,Orleans.EventSourcing.MongoDB" Default="true" DatabaseName="eventstore" ConnectionString="mongodb://192.168.2.10:27017" />
+  </eventStoreProvider> 
 </configuration>
 ```
 #### OrleansHostWrapper.cs
