@@ -1,4 +1,4 @@
-#Orleans Event-sourcing Libary
+#Orleans Event-sourcing Library
 
 ----------
 ###What is Orleans
