@@ -16,9 +16,13 @@
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-  <configSections>  
-    <section name="eventStoreProvider" type="Orleans.EventSourcing.EventStoreSection,Orleans.EventSourcing"/>
-  </configSections>
+  <configSections>
+    <sectionGroup name="couchbaseClients">
+      <section name="couchbaseDataStore" type="Couchbase.Configuration.Client.Providers.CouchbaseClientSection, Couchbase.NetClient" />
+      <section name="couchbaseEventStore" type="Couchbase.Configuration.Client.Providers.CouchbaseClientSection, Couchbase.NetClient" />
+    </sectionGroup>
+    <section name="eventStoreProvider" type="Orleans.EventSourcing.EventStoreSection,Orleans.EventSourcing" />
+  </configSections> 
   <eventStoreProvider>
     <provider Name="CouchBaseEventStore" Type="Orleans.EventSourcing.Couchbase.EventStoreProvider,Orleans.EventSourcing.Couchbase" Default="true" ConfigSection="couchbaseClients/couchbaseEventStore" />
   </eventStoreProvider>
@@ -44,10 +48,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <configSections>
-    <sectionGroup name="couchbaseClients">
-      <section name="couchbaseDataStore" type="Couchbase.Configuration.Client.Providers.CouchbaseClientSection, Couchbase.NetClient" />
-      <section name="couchbaseEventStore" type="Couchbase.Configuration.Client.Providers.CouchbaseClientSection, Couchbase.NetClient" />
-    </sectionGroup>
     <section name="eventStoreProvider" type="Orleans.EventSourcing.EventStoreSection,Orleans.EventSourcing" />
   </configSections> 
   <eventStoreProvider>
