@@ -47,5 +47,32 @@ namespace Dotpay.EventTypeCodeRegisterTool
             }
         }
 
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            var code = "var typeCodeDic = new Dictionary<string, uint>();" + Environment.NewLine;
+            var fName = openFileDialog1.FileName;
+
+            if (File.Exists(fName))
+            {
+                txtCode.Text = string.Empty;
+                var assembly = Assembly.LoadFrom(fName);
+                uint seedBase = 1000;
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.IsClass && !type.IsAbstract && !type.IsInterface &&
+                        typeof (GrainEvent).IsAssignableFrom(type))
+                    {
+                        ++seedBase;
+                        code += "typeCodeDic.Add(\"" + type.FullName + "\"," + seedBase + ");" + Environment.NewLine;
+                    }
+                }
+                txtCode.Text = code;
+            }
+            else
+            {
+                MessageBox.Show("file not exist");
+            }
+        }
+
     }
 }

@@ -35,9 +35,8 @@ namespace Simple
             {
                 siloHost.InitializeOrleansSilo();
                 var eventStoreSection = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider");
+
                 var assembly = Assembly.LoadFrom(".\\Applications\\Orleans.EventSourcing.SimpleGrain\\Orleans.EventSourcing.SimpleGrain.dll");
-
-
 
                 siloHost.UseEventStore(eventStoreSection).RegisterGrain(GetEventTypeNameAndCodeMapping(), assembly);
                 ok = siloHost.StartOrleansSilo();

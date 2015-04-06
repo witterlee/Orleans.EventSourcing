@@ -36,6 +36,64 @@
   </runtime>
 </configuration>
 ```
+#### OrleansHostWrapper.cs
+
+```csharp
+public bool Run()
+{
+    bool ok = false;
+
+    try
+    {
+        siloHost.InitializeOrleansSilo();
+        var eventStoreSection = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider");
+
+        var assembly = Assembly.LoadFrom(".\\Applications\\Orleans.EventSourcing.SimpleGrain\\Orleans.EventSourcing.SimpleGrain.dll");
+
+        siloHost.UseEventStore(eventStoreSection).RegisterGrain(GetEventTypeNameAndCodeMapping(), assembly);
+        ok = siloHost.StartOrleansSilo();
+
+        if (ok)
+        {
+            Console.WriteLine(string.Format("Successfully started Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type));
+        }
+        else
+        {
+            throw new SystemException(string.Format("Failed to start Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type));
+        }
+    }
+    catch (Exception exc)
+    {
+        siloHost.ReportStartupError(exc);
+        var msg = string.Format("{0}:\n{1}\n{2}", exc.GetType().FullName, exc.Message, exc.StackTrace);
+        Console.WriteLine(msg);
+    }
+
+    return ok;
+}
+
+private Dictionary<string, uint> GetEventTypeNameAndCodeMapping()
+{
+    //Generate from EventTypeCodeRegisterTool
+    var typeCodeDic = new Dictionary<string, uint>();
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent", 1001);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent", 1002);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent", 1003);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent", 1004);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent", 1005);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent", 1006);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent", 1007);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent", 1008);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent", 1009);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent", 1010);
+    typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent", 1011);
+
+    return typeCodeDic;
+}
+```
+####How to generate Event Code
+    Note:  please keep the event code  same as before in your products, Event code generator tool just for easy to use
+![](https://github.com/weitaolee/Orleans.EventSourcing/blob/develop/generatecode.jpg)
 ####Grain code
 
 ```csharp
