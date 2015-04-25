@@ -34,7 +34,7 @@ namespace Orleans.EventSourcing
             return siloHost;
         }
 
-        public static SiloHost RegisterGrain(this SiloHost siloHost, IDictionary<string, uint> typeNameCodeMapping, params Assembly[] assemlies)
+        public static SiloHost RegisterGrain(this SiloHost siloHost, IDictionary<string, int> typeNameCodeMapping, params Assembly[] assemlies)
         {
             if (assemlies != null && assemlies.Any())
             {

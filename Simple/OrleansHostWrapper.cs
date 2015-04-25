@@ -60,10 +60,10 @@ namespace Simple
             return ok;
         }
 
-        private Dictionary<string, uint> GetEventTypeNameAndCodeMapping()
+        private Dictionary<string, int> GetEventTypeNameAndCodeMapping()
         {
             //Generate from EventTypeCodeRegisterTool
-            var typeCodeDic = new Dictionary<string, uint>();
+            var typeCodeDic = new Dictionary<string, int>();
             typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent", 1001);
             typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent", 1002);
             typeCodeDic.Add("Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent", 1003);

@@ -26,7 +26,7 @@ namespace Orleans.EventSourcing.Couchbase
 
         }
 
-        public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, ulong eventId = 0)
+        public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, long eventId = 0)
         {
             //if (!hasDesignDoc)
             //{
@@ -124,7 +124,7 @@ namespace Orleans.EventSourcing.Couchbase
         private IEvent ConvertJsonToEvent(string eventJson)
         {
             dynamic @event = JsonConvert.DeserializeObject(eventJson);
-            uint eventTypeCode = @event.TypeCode;
+            int eventTypeCode = @event.TypeCode;
             Type eventType;
 
             if (!EventNameTypeMapping.TryGetEventType(eventTypeCode, out eventType))

@@ -9,6 +9,6 @@ namespace Orleans.EventSourcing
 
     public interface IEventSourcingState : IGrainState
     {
-        ulong Version { get; set; }
+        long Version { get; set; }
     }
 }

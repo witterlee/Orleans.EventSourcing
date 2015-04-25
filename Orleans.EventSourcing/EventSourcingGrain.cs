@@ -29,7 +29,7 @@ namespace Orleans.EventSourcing
         {
             try
             {
-                uint typeCode;
+                int typeCode;
 
                 if (!EventNameTypeMapping.TryGetEventTypeCode(@event.GetType(), out typeCode))
                     throw new Exception("unknow event type");

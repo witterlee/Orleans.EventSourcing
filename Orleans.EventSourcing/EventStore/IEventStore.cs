@@ -9,6 +9,6 @@ namespace Orleans.EventSourcing
     public interface IEventStore
     {
         Task Append(IEvent @event);
-        Task<IEnumerable<IEvent>> ReadFrom(string grainUniqueId, ulong eventVersion = 0);
+        Task<IEnumerable<IEvent>> ReadFrom(string grainUniqueId, long eventVersion = 0);
     }
 }

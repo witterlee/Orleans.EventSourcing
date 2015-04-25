@@ -10,7 +10,7 @@ namespace Orleans.EventSourcing
         where TState : class,IEventSourcingState
     {
         private static readonly IEventStoreProvider eventStoreProvider = EventStoreProviderManager.GetProvider<TGrain>();
-        private ulong afterSnapshotsEventCount;
+        private long afterSnapshotsEventCount;
         private TGrain grain;
         private IEventStore eventStore;
         private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings()
@@ -28,7 +28,7 @@ namespace Orleans.EventSourcing
 
         private EventStore() { }
 
-        public static async Task<EventStore<TGrain, TState>> Initialize(TGrain grain, ulong afterSnapshotsEventCount = 100)
+        public static async Task<EventStore<TGrain, TState>> Initialize(TGrain grain, long afterSnapshotsEventCount = 100)
         {
             var instance = new EventStore<TGrain, TState>();
             instance.grain = grain;

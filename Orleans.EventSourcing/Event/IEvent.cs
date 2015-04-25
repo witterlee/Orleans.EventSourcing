@@ -10,9 +10,9 @@ namespace Orleans.EventSourcing
     public class GrainEvent : IEvent
     {
         public string GrainId { get; set; }
-        public ulong Version { get; set; }
+        public long Version { get; set; }
         public DateTime UTCTimestamp { get; set; }
-        public uint TypeCode { get; set; }
+        public int TypeCode { get; set; }
     }
 
     /// <summary>
@@ -21,8 +21,8 @@ namespace Orleans.EventSourcing
     public interface IEvent
     {
         string GrainId { get; }
-        ulong Version { get; }
-        uint TypeCode { get; }
+        long Version { get; }
+        int TypeCode { get; }
         DateTime UTCTimestamp { get; }
     }
 }

@@ -21,7 +21,7 @@ namespace Orleans.EventSourcing.MongoDB
             _mongoDatabase = mongoDatabase;
         }
 
-        public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, ulong eventId = 0)
+        public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, long eventId = 0)
         {
             var collection = (await GetCollection(CollectionName)).WithReadPreference(ReadPreference.SecondaryPreferred);
             var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventId + " }}");
@@ -77,7 +77,7 @@ namespace Orleans.EventSourcing.MongoDB
             bson.Remove("_id");
             var json = bson.ToJson();
             dynamic @event = JsonConvert.DeserializeObject(json);
-            uint eventTypeCode = @event.TypeCode;
+            int eventTypeCode = @event.TypeCode;
             Type eventType;
 
             if (!EventNameTypeMapping.TryGetEventType(eventTypeCode, out eventType))

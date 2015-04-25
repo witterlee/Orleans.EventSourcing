@@ -49,7 +49,7 @@ namespace Dotpay.EventTypeCodeRegisterTool
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            var code = "var typeCodeDic = new Dictionary<string, uint>();" + Environment.NewLine;
+            var code = "var typeCodeDic = new Dictionary<string, int>();" + Environment.NewLine;
             var fName = openFileDialog1.FileName;
 
             if (File.Exists(fName))

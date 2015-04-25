@@ -35,7 +35,7 @@ namespace Orleans.EventSourcing.SimpleGrain
     {
         
 
-            public UInt64 @Version { get; set; }
+            public Int64 @Version { get; set; }
 
             public Dictionary<Guid,TransactionPreparation> @TransactionPreparations { get; set; }
 
@@ -47,7 +47,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("Version", out value)) @Version = (UInt64) value;
+                if (values.TryGetValue("Version", out value)) @Version = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("TransactionPreparations", out value)) @TransactionPreparations = (Dictionary<Guid,TransactionPreparation>) value;
                 if (values.TryGetValue("OwnerId", out value)) @OwnerId = (Guid) value;
                 if (values.TryGetValue("Balance", out value)) @Balance = (Decimal) value;
@@ -76,7 +76,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         
         private void InitStateFields()
         {
-            this.Version = default(UInt64);
+            this.Version = default(Int64);
             this.TransactionPreparations = new Dictionary<Guid,TransactionPreparation>();
             this.OwnerId = default(Guid);
             this.Balance = default(Decimal);
@@ -114,7 +114,7 @@ namespace Orleans.EventSourcing.SimpleGrain
     {
         
 
-            public UInt64 @Version { get; set; }
+            public Int64 @Version { get; set; }
 
             public TransactionStatus @Status { get; set; }
 
@@ -144,7 +144,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("Version", out value)) @Version = (UInt64) value;
+                if (values.TryGetValue("Version", out value)) @Version = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Status", out value)) @Status = (TransactionStatus) value;
                 if (values.TryGetValue("TransferOutPreparationConfirmed", out value)) @TransferOutPreparationConfirmed = (Boolean) value;
                 if (values.TryGetValue("TransferInPreparationConfirmed", out value)) @TransferInPreparationConfirmed = (Boolean) value;
@@ -191,7 +191,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         
         private void InitStateFields()
         {
-            this.Version = default(UInt64);
+            this.Version = default(Int64);
             this.Status = default(TransactionStatus);
             this.TransferOutPreparationConfirmed = default(Boolean);
             this.TransferInPreparationConfirmed = default(Boolean);
