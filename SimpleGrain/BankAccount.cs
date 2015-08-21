@@ -14,17 +14,17 @@ using System.Net.Http;
 namespace Orleans.EventSourcing.SimpleGrain
 {
     [StorageProvider(ProviderName = "MongoDBStore")]
-    public class BankAccount : EventSourcingGrain<BankAccount, IBankAcountState>, IBankAccount
+    public class BankAccount : EventSourcingGrain<BankAccount, BankAcountState>, IBankAccount
     {
         #region interface impl
 
         async Task IBankAccount.Initialize(Guid ownerId)
-        { 
+        {
             if (this.State.OwnerId == null || this.State.OwnerId == Guid.Empty)
             {
                 await this.ApplyEvent(new BankAccountInitializeEvent(ownerId));
             }
-             
+
             //else
             //    return new BankAccountInitialized("this bank account has initialized,Dot initialize again");
         }
@@ -98,12 +98,12 @@ namespace Orleans.EventSourcing.SimpleGrain
         private void Handle(TransactionPreparationCommittedEvent @event)
         {
             this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId);
-            this.State.Balance = @event.CurrentBalance; 
+            this.State.Balance = @event.CurrentBalance;
         }
         private void Handle(TransactionPreparationCanceledEvent @event)
         {
-            this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId); 
-        } 
+            this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId);
+        }
         #endregion
 
         private decimal GetAvailableBalance()
@@ -123,10 +123,10 @@ namespace Orleans.EventSourcing.SimpleGrain
         }
     }
 
-    public interface IBankAcountState : IEventSourcingState
+    public class BankAcountState : EventSourcingState
     {
-        Dictionary<Guid, TransactionPreparation> TransactionPreparations { get; set; }
-        Guid OwnerId { get; set; }
-        decimal Balance { get; set; }
+        public Dictionary<Guid, TransactionPreparation> TransactionPreparations { get; set; }
+        public Guid OwnerId { get; set; }
+        public decimal Balance { get; set; }
     }
 }

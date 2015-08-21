@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-
-using Orleans.Runtime;
-using Orleans.Runtime.Host;
-using Orleans.EventSourcing;
 using System.Configuration;
-using Orleans.EventSourcing.Couchbase;
+using System.Net;
 using System.Reflection;
+using Orleans.EventSourcing;
+using Orleans.Runtime.Host;
 
 namespace Simple
 {

@@ -65,15 +65,15 @@ namespace Simple
             var accountAId = Guid.Parse("33ca5cd9-e39b-44d1-98cc-82e68baafca2");
             var accountBId = Guid.Parse("0dc32514-51c0-458e-bed7-5d84d5b1de31");
 
-            var accountA = GrainFactory.GetGrain<IBankAccount>(accountAId);
-            var accountB = GrainFactory.GetGrain<IBankAccount>(accountBId);
+            var accountA = GrainClient.GrainFactory.GetGrain<IBankAccount>(accountAId);
+            var accountB = GrainClient.GrainFactory.GetGrain<IBankAccount>(accountBId);
 
             Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
             Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
 
             Task.WhenAll(accountA.Initialize(userAId), accountB.Initialize(userBId)).Wait();
 
-            var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
+            var transferManager = GrainClient.GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
 
             var loopTimes = 100;
             while (loopTimes-- > 0)
@@ -113,8 +113,8 @@ namespace Simple
             var sw = Stopwatch.StartNew();
             accountPairs.AsParallel().ForAll((ap) =>
             {
-                var accountA = GrainFactory.GetGrain<IBankAccount>(ap.Key);
-                var accountB = GrainFactory.GetGrain<IBankAccount>(ap.Value);
+                var accountA = GrainClient.GrainFactory.GetGrain<IBankAccount>(ap.Key);
+                var accountB = GrainClient.GrainFactory.GetGrain<IBankAccount>(ap.Value);
 
                 accountCreateTasks.Add(accountA.Initialize(ap.Value));
                 accountCreateTasks.Add(accountB.Initialize(ap.Key));
@@ -128,12 +128,12 @@ namespace Simple
             foreach (var kv in accountPairs)
             {
                 for (int i = 0; i < 100; i++)
-                { 
+                {
                     var managerId = i % 10;
-                    var transferManager = GrainFactory.GetGrain<ITransferTransactionProcessManager>(managerId);
+                    var transferManager = GrainClient.GrainFactory.GetGrain<ITransferTransactionProcessManager>(managerId);
                     transferTasks.Add(transferManager.ProcessTransferTransaction(kv.Key, kv.Value, 100M));
-                } 
-            } 
+                }
+            }
 
             Task.WhenAll(transferTasks).ConfigureAwait(false).GetAwaiter().GetResult();
 

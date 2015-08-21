@@ -15,7 +15,7 @@ namespace Orleans.EventSourcing
 
     public abstract class EventSourcingGrain<TGrain, TState> : Grain<TState>, IEventSourcingGrain<TState>
         where TGrain : class ,IEventSourcingGrain<TState>, IGrain
-        where TState : class,IEventSourcingState
+        where TState : EventSourcingState
     {
         private const int APPLY_EVENT_ERROR = 60101;
         private EventStore<TGrain, TState> eventStore { get; set; }

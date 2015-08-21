@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Orleans.Core;
 namespace Orleans.EventSourcing
 {
-
-    public interface IEventSourcingState : IGrainState
+    public class EventSourcingState : GrainState
     {
-        long Version { get; set; }
+        public long Version { get; set; }
     }
 }

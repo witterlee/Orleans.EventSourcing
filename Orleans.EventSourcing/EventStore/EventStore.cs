@@ -7,7 +7,7 @@ namespace Orleans.EventSourcing
 {
     public class EventStore<TGrain, TState>
         where TGrain : IEventSourcingGrain<TState>
-        where TState : class,IEventSourcingState
+        where TState : EventSourcingState
     {
         private static readonly IEventStoreProvider eventStoreProvider = EventStoreProviderManager.GetProvider<TGrain>();
         private long afterSnapshotsEventCount;

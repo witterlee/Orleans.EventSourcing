@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDBBson = MongoDB.Bson;
-using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Operations;
-using JsonConvert = Newtonsoft.Json.JsonConvert;
+using Newtonsoft.Json;
+using MongoDBBson = MongoDB.Bson;
 
 namespace Orleans.EventSourcing.MongoDB
 {
@@ -24,9 +23,9 @@ namespace Orleans.EventSourcing.MongoDB
         public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, long eventId = 0)
         {
             var collection = (await GetCollection(CollectionName)).WithReadPreference(ReadPreference.SecondaryPreferred);
-            var filter = MongoDBBson.BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventId + " }}");
-            var sort = MongoDBBson.BsonDocument.Parse("{ Version:1 }");
-            var options = new FindOptions<MongoDBBson.BsonDocument, MongoDBBson.BsonDocument>
+            var filter = BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventId + " }}");
+            var sort = BsonDocument.Parse("{ Version:1 }");
+            var options = new FindOptions<BsonDocument, BsonDocument>
             {
                 AllowPartialResults = false,
                 BatchSize = 20,
@@ -35,7 +34,7 @@ namespace Orleans.EventSourcing.MongoDB
             using (var cursor = await collection.FindAsync(filter, options))
             {
                 var eventsBson = await cursor.ToListAsync();
-               
+
                 var events = eventsBson.Select(ConvertJsonToEvent);
 
                 return events;
@@ -47,14 +46,14 @@ namespace Orleans.EventSourcing.MongoDB
             var collection = (await GetCollection(CollectionName)).WithWriteConcern(new WriteConcern(new Optional<WriteConcern.WValue>(), journal: new Optional<bool?>(true)));
             var json = JsonConvert.SerializeObject(@event);
 
-            var doc = MongoDBBson.Serialization.BsonSerializer.Deserialize<BsonDocument>(json);
+            var doc = BsonSerializer.Deserialize<BsonDocument>(json);
             await collection.InsertOneAsync(doc);
         }
 
 
-        private async Task<IMongoCollection<MongoDBBson.BsonDocument>> GetCollection(string name)
+        private async Task<IMongoCollection<BsonDocument>> GetCollection(string name)
         {
-            var collection = _mongoDatabase.GetCollection<MongoDBBson.BsonDocument>(name);
+            var collection = _mongoDatabase.GetCollection<BsonDocument>(name);
 
             if (!HasIndex)
             {
@@ -63,7 +62,7 @@ namespace Orleans.EventSourcing.MongoDB
                     var indexes = await cursor.ToListAsync();
                     if (indexes.Count(index => index["name"] == "GrainId_1_Version_1") == 0)
                     {
-                        var keys = Builders<MongoDBBson.BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
+                        var keys = Builders<BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
                         await collection.Indexes.CreateOneAsync(keys);
                     }
                     HasIndex = true;
@@ -72,7 +71,7 @@ namespace Orleans.EventSourcing.MongoDB
             return collection;
         }
 
-        private IEvent ConvertJsonToEvent(MongoDBBson.BsonDocument bson)
+        private IEvent ConvertJsonToEvent(BsonDocument bson)
         {
             bson.Remove("_id");
             var json = bson.ToJson();

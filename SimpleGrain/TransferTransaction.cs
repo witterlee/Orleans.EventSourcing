@@ -138,19 +138,19 @@ namespace Orleans.EventSourcing.SimpleGrain
         #endregion
     }
 
-    public interface ITransferTransactionState : IEventSourcingState
+    public class ITransferTransactionState : EventSourcingState
     {
-        TransactionStatus Status { get; set; }
-        bool TransferOutPreparationConfirmed { get; set; }
-        bool TransferInPreparationConfirmed { get; set; }
-        bool TransferOutConfirmed { get; set; }
-        bool TransferInConfirmed { get; set; }
-        DateTime AccountValidatedAt { get; set; }
-        DateTime TransferOutPreparationConfirmedAt { get; set; }
-        DateTime TransferInPreparationConfirmedAt { get; set; }
-        DateTime TransferOutConfirmedAt { get; set; }
-        DateTime TransferInConfirmedAt { get; set; }
-        DateTime TransferCancelAt { get; set; }
-        TransferTransactionInfo TransferTransactionInfo { get; set; }
+        public TransactionStatus Status { get; set; }
+        public bool TransferOutPreparationConfirmed { get; set; }
+        public bool TransferInPreparationConfirmed { get; set; }
+        public bool TransferOutConfirmed { get; set; }
+        public bool TransferInConfirmed { get; set; }
+        public DateTime AccountValidatedAt { get; set; }
+        public DateTime TransferOutPreparationConfirmedAt { get; set; }
+        public DateTime TransferInPreparationConfirmedAt { get; set; }
+        public DateTime TransferOutConfirmedAt { get; set; }
+        public DateTime TransferInConfirmedAt { get; set; }
+        public DateTime TransferCancelAt { get; set; }
+        public TransferTransactionInfo TransferTransactionInfo { get; set; }
     }
 }

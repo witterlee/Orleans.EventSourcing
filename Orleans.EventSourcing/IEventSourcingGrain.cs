@@ -9,7 +9,7 @@ namespace Orleans.EventSourcing
     /// Orleans grain communication interface IEventSourcingGrain
     /// </summary>
     public interface IEventSourcingGrain<TState> : IEventSourcingGrain
-        where TState : IEventSourcingState
+        where TState : EventSourcingState
     {
         TState GetState();
         string GetGrainId();
