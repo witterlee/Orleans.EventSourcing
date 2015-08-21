@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Orleans.Providers;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Orleans.EventSourcing
@@ -14,7 +9,7 @@ namespace Orleans.EventSourcing
     {
         private static Dictionary<string, IEventStoreProvider> providers;
         private static ConcurrentDictionary<Type, string> mappings = new ConcurrentDictionary<Type, string>();
-        private static bool HasDefaultProvider = false;
+        private static bool HasDefaultProvider;
         private static string DefaultProviderName = string.Empty;
 
         public static void Initailize(EventStoreSection configSection)
@@ -33,7 +28,7 @@ namespace Orleans.EventSourcing
                     provider.Initialize(providerSetting);
                     providers.Add(providerSetting.Name, provider);
 
-                    if (providerSetting.Default == true)
+                    if (providerSetting.Default)
                     {
                         DefaultProviderName = providerSetting.Name;
                         HasDefaultProvider = true;

@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Couchbase;
-using Couchbase.Views;
-using Couchbase.Configuration;
 using Couchbase.Configuration.Client;
-using System.Dynamic;
-using Couchbase.Core;
-using System.Configuration;
-using System.Threading;
 using Couchbase.Configuration.Client.Providers;
+using Couchbase.Core;
 
 namespace Orleans.EventSourcing.Couchbase
 {

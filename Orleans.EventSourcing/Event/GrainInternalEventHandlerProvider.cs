@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using Orleans.Concurrency;
-using System.Collections.Concurrent;
 using System.Reflection;
-using System.IO;
-using System.Diagnostics;
 
 namespace Orleans.EventSourcing
 {
@@ -17,7 +10,7 @@ namespace Orleans.EventSourcing
         private static readonly IDictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>> mappings = new Dictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>>(); 
 
         private static readonly BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-        private static readonly Type[] parameterTypes = new Type[] { typeof(IEventSourcingGrain), typeof(IEvent) };
+        private static readonly Type[] parameterTypes = { typeof(IEventSourcingGrain), typeof(IEvent) };
         private static readonly List<string> registerAssembly = new List<string>();
         private static object _lock = new object();
 
@@ -109,12 +102,9 @@ namespace Orleans.EventSourcing
             {
                 throw  new Exception(string.Format("duplicated event handler on event-sourcing grain, grain type:{0}, event type:{1}", grainType.FullName, eventType.FullName));
             }
-            else
-            {
-                var methodDelegate = DynamicReflection.CreateDelegate<Action<IEventSourcingGrain, IEvent>>(method, parameterTypes);
+            var methodDelegate = DynamicReflection.CreateDelegate<Action<IEventSourcingGrain, IEvent>>(method, parameterTypes);
 
-                eventHandlerDic.Add(eventType, methodDelegate); 
-            }
+            eventHandlerDic.Add(eventType, methodDelegate);
         }
         #endregion
 

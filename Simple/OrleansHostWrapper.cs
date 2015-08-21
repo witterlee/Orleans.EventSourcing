@@ -40,7 +40,7 @@ namespace Simple
 
                 if (ok)
                 {
-                    Console.WriteLine(string.Format("Successfully started Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type));
+                    Console.WriteLine("Successfully started Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace Simple
             {
                 siloHost.StopOrleansSilo();
 
-                Console.WriteLine(string.Format("Orleans silo '{0}' shutdown.", siloHost.Name));
+                Console.WriteLine("Orleans silo '{0}' shutdown.", siloHost.Name);
             }
             catch (Exception exc)
             {
@@ -127,7 +127,7 @@ namespace Simple
                             return false;
                     }
                 }
-                else if (a.Contains("="))
+                if (a.Contains("="))
                 {
                     string[] split = a.Split('=');
                     if (String.IsNullOrEmpty(split[1]))

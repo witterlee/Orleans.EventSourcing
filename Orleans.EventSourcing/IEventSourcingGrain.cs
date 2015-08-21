@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Orleans;
-
-namespace Orleans.EventSourcing
+﻿namespace Orleans.EventSourcing
 {
     /// <summary>
     /// Orleans grain communication interface IEventSourcingGrain
@@ -15,5 +10,5 @@ namespace Orleans.EventSourcing
         string GetGrainId();
     }
 
-    public interface IEventSourcingGrain : Orleans.IGrain { }
+    public interface IEventSourcingGrain : IGrain { }
 }

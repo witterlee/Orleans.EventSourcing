@@ -1,7 +1,5 @@
-﻿using System;
+﻿using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Configuration;
-using System.Linq;
 
 namespace Orleans.EventSourcing.UnitTests
 {

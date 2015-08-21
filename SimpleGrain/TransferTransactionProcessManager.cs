@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using Orleans.EventSourcing.SimpleInterface;
 using Orleans.Concurrency;
+using Orleans.EventSourcing.SimpleInterface;
+using Orleans.Runtime;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
     [StatelessWorker]
-    public class TransferTransactionProcessManager : Orleans.Grain, ITransferTransactionProcessManager, IRemindable
+    public class TransferTransactionProcessManager : Grain, ITransferTransactionProcessManager, IRemindable
     {
         private const int TransferTransactionProcessManager_ERROR_CODE = 60000;
         private const int TransferTransactionProcessManager_REMINDER_ERROR_CODE = 60001;
@@ -34,7 +31,7 @@ namespace Orleans.EventSourcing.SimpleGrain
             }
         }
 
-        public async Task ReceiveReminder(string reminderName, Runtime.TickStatus status)
+        public async Task ReceiveReminder(string reminderName, TickStatus status)
         {
             Guid txid;
             if (Guid.TryParse(reminderName, out txid))

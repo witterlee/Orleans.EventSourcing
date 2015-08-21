@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Orleans.Providers;
-using System.Configuration;
-using System.Xml;
-using System.Xml.Linq;
-using System.IO;
-using System.Dynamic;
-using Newtonsoft.Json;
+﻿using System.Configuration;
 
 namespace Orleans.EventSourcing
 {

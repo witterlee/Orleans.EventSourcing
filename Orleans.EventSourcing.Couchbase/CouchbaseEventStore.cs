@@ -38,8 +38,8 @@ namespace Orleans.EventSourcing.Couchbase
             //    }
             //}
 
-            var startKey = new object[] { grainId.ToString(), eventId };
-            var endKey = new object[] { grainId.ToString(), int.MaxValue };
+            var startKey = new object[] { grainId, eventId };
+            var endKey = new object[] { grainId, int.MaxValue };
             var query = _bucket.CreateQuery(DESGIN_DOC_NAME, VIEW_NAME)
                                .StartKey(startKey)
                                .EndKey(endKey);
@@ -96,7 +96,7 @@ namespace Orleans.EventSourcing.Couchbase
         {
             var _event = @event as GrainEvent;
 
-            var @eventId = _event.GrainId.ToString() + _event.Version;
+            var @eventId = _event.GrainId + _event.Version;
 
             var tcs = new TaskCompletionSource<IOperationResult>();
 

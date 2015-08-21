@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using Orleans.Providers;
-using Orleans.EventSourcing.SimpleInterface;
 using Orleans.EventSourcing.SimpleGrain.Events;
-using Orleans.Concurrency;
+using Orleans.EventSourcing.SimpleInterface;
+using Orleans.Providers;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
     [StorageProvider(ProviderName = "MongoDBStore")]
-    public class TransferTransaction : EventSourcingGrain<TransferTransaction, ITransferTransactionState>,
+    public class TransferTransaction : EventSourcingGrain<TransferTransaction, TransferTransactionState>,
                                        ITransferTransaction
     {
         async Task ITransferTransaction.Initialize(Guid fromAccountId, Guid toAccountId, decimal amount)
@@ -138,7 +133,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         #endregion
     }
 
-    public class ITransferTransactionState : EventSourcingState
+    public class TransferTransactionState : EventSourcingState
     {
         public TransactionStatus Status { get; set; }
         public bool TransferOutPreparationConfirmed { get; set; }

@@ -13,7 +13,7 @@ namespace Orleans.EventSourcing
         private long afterSnapshotsEventCount;
         private TGrain grain;
         private IEventStore eventStore;
-        private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings()
+        private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings
         {
             MissingMemberHandling = MissingMemberHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore

@@ -1,13 +1,9 @@
-﻿using Orleans.Providers;
-using Orleans.Runtime.Configuration;
-using Orleans.Runtime.Host;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
+using System.Linq;
 using System.Reflection;
+using Orleans.Runtime.Host;
 
 namespace Orleans.EventSourcing
 {

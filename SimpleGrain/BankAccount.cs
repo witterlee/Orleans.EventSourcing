@@ -2,14 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using Orleans.EventSourcing;
-using Orleans.EventSourcing.SimpleInterface;
 using Orleans.EventSourcing.SimpleGrain.Events;
+using Orleans.EventSourcing.SimpleInterface;
 using Orleans.Providers;
-using Orleans.Concurrency;
-using System.Net.Http;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
@@ -36,9 +31,9 @@ namespace Orleans.EventSourcing.SimpleGrain
         {
             if (this.State.OwnerId == null || this.State.OwnerId == Guid.Empty)
                 return Task.FromResult(false);
-            else
-                return Task.FromResult(true);
+            return Task.FromResult(true);
         }
+
         async Task<TaskMessage> IBankAccount.AddTransactionPreparation(Guid transactionId, TransactionType transactionType, PreparationType preparationType, decimal amount)
         {
             if (preparationType == PreparationType.DebitPreparation && this.GetAvailableBalance() < amount)

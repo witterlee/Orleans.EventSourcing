@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using Orleans.Runtime;
-using Orleans.EventSourcing;
 
 namespace Orleans.EventSourcing.SimpleInterface
 {
-    public interface IBankAccount : Orleans.IGrainWithGuidKey
+    public interface IBankAccount : IGrainWithGuidKey
     {
         Task Initialize(Guid ownerId);
         Task<bool> Validate();

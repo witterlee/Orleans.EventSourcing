@@ -14,7 +14,7 @@ namespace Orleans.EventSourcing.MongoDB
     {
         private readonly IMongoDatabase _mongoDatabase;
         private const string CollectionName = "event";
-        private static bool HasIndex = false;
+        private static bool HasIndex;
         public MongoDBEventStore(IMongoDatabase mongoDatabase)
         {
             _mongoDatabase = mongoDatabase;
