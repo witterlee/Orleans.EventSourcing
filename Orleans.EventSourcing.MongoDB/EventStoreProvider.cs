@@ -14,7 +14,8 @@ namespace Orleans.EventSourcing.MongoDB
             if (string.IsNullOrWhiteSpace(settings.DatabaseName)) throw new ArgumentException("Database property not set");
 
             MongoClient client = new MongoClient(settings.ConnectionString);
-            _database = client.GetDatabase(settings.DatabaseName);
+          
+            _database = client.GetDatabase(settings.DatabaseName); 
             return TaskDone.Done;
         }
 

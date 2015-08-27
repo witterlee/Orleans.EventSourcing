@@ -22,7 +22,7 @@ namespace Orleans.EventSourcing.MongoDB
 
         public async Task<IEnumerable<IEvent>> ReadFromAsync(string grainId, long eventVersion = 0)
         {
-            var collection = (await GetCollection(COLLECTION_NAME));
+            var collection = (await GetCollection(COLLECTION_NAME)).WithReadPreference(ReadPreference.SecondaryPreferred);
             var filter = BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventVersion + " }}");
             var sort = BsonDocument.Parse("{ Version:1 }");
             var options = new FindOptions<BsonDocument, BsonDocument>

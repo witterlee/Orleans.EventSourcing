@@ -79,7 +79,7 @@ namespace Simple
             while (loopTimes-- > 0)
             {
                 var tasks = new List<Task>();
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 200; i++)
                 {
                     decimal amount = new Random().Next(100);
                     tasks.Add(transferManager.ProcessTransferTransaction(accountAId, accountBId, amount));
@@ -101,11 +101,10 @@ namespace Simple
             var accountPairs = new ConcurrentDictionary<Guid, Guid>();
 
             var sw = Stopwatch.StartNew();
-            for (int i = 0; i < 100; i++)
-            {
+          
                 var accountCreateTasks = new ConcurrentBag<Task>();
 
-                Parallel.For(0, 10, j =>
+                Parallel.For(0, 100, j =>
                 {
                     var accountAId = Guid.NewGuid();
                     var accountBId = Guid.NewGuid();
@@ -122,13 +121,13 @@ namespace Simple
                 });
                 Task.WhenAll(accountCreateTasks).Wait();
 
-            }
+           
             var sw1 = Stopwatch.StartNew();
 
             foreach (var kv in accountPairs)
             {
                 var transferTasks = new ConcurrentBag<Task>();
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 200; i++)
                 {
                     var managerId = i % 10;
                     var transferManager = GrainClient.GrainFactory.GetGrain<ITransferTransactionProcessManager>(managerId);
