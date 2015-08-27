@@ -7,7 +7,7 @@ using Orleans.Runtime;
 namespace Orleans.EventSourcing.SimpleGrain
 {
     [StatelessWorker]
-    public class TransferTransactionProcessManager : Grain, ITransferTransactionProcessManager, IRemindable
+    public class TransferTransactionProcessManager : Grain, ITransferTransactionProcessManager
     {
         private const int TransferTransactionProcessManager_ERROR_CODE = 60000;
         private const int TransferTransactionProcessManager_REMINDER_ERROR_CODE = 60001;
@@ -17,25 +17,15 @@ namespace Orleans.EventSourcing.SimpleGrain
 
             var tx = GrainFactory.GetGrain<ITransferTransaction>(txid);
 
-            await tx.Initialize(fromAccountId, toAccountId, amount);
-            var reminder = await this.RegisterOrUpdateReminder(txid.ToString(), TimeSpan.FromSeconds(30),
-               TimeSpan.FromSeconds(60));//);
+            await tx.Initialize(fromAccountId, toAccountId, amount); 
             try
             {
                 await InnerProcessTransferTransaction(tx);
-                await this.UnregisterReminder(reminder);
             }
             catch (Exception ex)
             {
                 this.GetLogger("TransferTransactionProcessManager").Warn(TransferTransactionProcessManager_ERROR_CODE, "TransferTransactionProcessManager process " + txid + " error", ex);
             }
-        }
-
-        public async Task ReceiveReminder(string reminderName, TickStatus status)
-        {
-            Guid txid;
-            if (Guid.TryParse(reminderName, out txid))
-                await CheckTransferTransaction(txid);
         }
 
         private async Task CheckTransferTransaction(Guid txid)

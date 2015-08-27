@@ -4,7 +4,9 @@ using System.Configuration;
 using System.Net;
 using System.Reflection;
 using Orleans.EventSourcing;
+using Orleans.EventSourcing.RabbitMqEventStreamProvider;
 using Orleans.Runtime.Host;
+using RabbitMQ.Client;
 
 namespace Simple
 {
@@ -32,10 +34,23 @@ namespace Simple
             {
                 siloHost.InitializeOrleansSilo();
                 var eventStoreSection = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider");
+                var rabbitMqConnectionConfig = ConfigurationManager.ConnectionStrings["mqConnectionString"];
 
-                var assembly = Assembly.LoadFrom(".\\Applications\\Orleans.EventSourcing.SimpleGrain\\Orleans.EventSourcing.SimpleGrain.dll");
+                if (rabbitMqConnectionConfig == null || string.IsNullOrEmpty(rabbitMqConnectionConfig.ConnectionString))
+                {
+                    throw new Exception("rabbitMqConnectionConfig null");
+                }
 
-                siloHost.UseEventStore(eventStoreSection).RegisterGrain(GetEventTypeNameAndCodeMapping(), assembly);
+                var assembly = Assembly.LoadFrom("Orleans.EventSourcing.SimpleGrain.dll");
+                var eventSteamProviderFactory =
+                    new EventStreamProviderFactory(
+                        new ConnectionFactory
+                        {
+                            Uri = rabbitMqConnectionConfig.ConnectionString,
+                            AutomaticRecoveryEnabled = true
+                        }, 4);
+                siloHost.UseEventStore(eventStoreSection, GetEventTypeNameAndCodeMapping(), assembly)
+                        .UseRabbitMqEventStreamProvider(eventSteamProviderFactory);
                 ok = siloHost.StartOrleansSilo();
 
                 if (ok)

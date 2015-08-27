@@ -20,7 +20,7 @@ namespace Orleans.EventSourcing.MongoDB
 
         public Task<IEventStore> Create<T>() where T : IEventSourcingGrain
         {
-            return Task.FromResult(new MongoDBEventStore(this._database) as IEventStore);
+            return Task.FromResult(new MongoDbEventStore(this._database) as IEventStore);
         }
     }
 }

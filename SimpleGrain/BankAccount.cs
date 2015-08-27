@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Orleans.EventSourcing.SimpleGrain.Events;
 using Orleans.EventSourcing.SimpleInterface;
 using Orleans.Providers;
+using Orleans.Runtime;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
@@ -17,7 +18,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         {
             if (this.State.OwnerId == null || this.State.OwnerId == Guid.Empty)
             {
-                await this.ApplyEvent(new BankAccountInitializeEvent(ownerId));
+                await this.RaiseEvent(new BankAccountInitializeEvent(ownerId));
             }
 
             //else
@@ -29,6 +30,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         }
         Task<bool> IBankAccount.Validate()
         {
+           
             if (this.State.OwnerId == null || this.State.OwnerId == Guid.Empty)
                 return Task.FromResult(false);
             return Task.FromResult(true);
@@ -45,7 +47,7 @@ namespace Orleans.EventSourcing.SimpleGrain
 
             if (!this.State.TransactionPreparations.ContainsKey(transactionId))
             {
-                await this.ApplyEvent(new TransactionPreparationAddedEvent(transferTransactionPreparationInfo));
+                await this.RaiseEvent(new TransactionPreparationAddedEvent(transferTransactionPreparationInfo));
             }
 
             return SuccessMessage.Instance;
@@ -63,7 +65,7 @@ namespace Orleans.EventSourcing.SimpleGrain
                 else
                     currentBalance += transferTransactionPreparationInfo.Amount;
 
-                await this.ApplyEvent(new TransactionPreparationCommittedEvent(transferTransactionPreparationInfo, currentBalance));
+                await this.RaiseEvent(new TransactionPreparationCommittedEvent(transferTransactionPreparationInfo, currentBalance));
             }
         }
 
@@ -73,33 +75,11 @@ namespace Orleans.EventSourcing.SimpleGrain
 
             if (this.State.TransactionPreparations == null && this.State.TransactionPreparations.TryGetValue(transactionId, out transferTransactionPreparationInfo))
             {
-                await this.ApplyEvent(new TransactionPreparationCanceledEvent(transferTransactionPreparationInfo));
+                await this.RaiseEvent(new TransactionPreparationCanceledEvent(transferTransactionPreparationInfo));
             }
         }
 
-        #endregion
-        #region event handlers
-        private void Handle(BankAccountInitializeEvent @event)
-        {
-            this.State.OwnerId = @event.OwnerId;
-            this.State.Balance = 100000000;//for test
-            this.State.TransactionPreparations = new Dictionary<Guid, TransactionPreparation>();
-        }
-
-        private void Handle(TransactionPreparationAddedEvent @event)
-        {
-            this.State.TransactionPreparations.Add(@event.TransferTransactionPreparation.TransactionId, @event.TransferTransactionPreparation);
-        }
-        private void Handle(TransactionPreparationCommittedEvent @event)
-        {
-            this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId);
-            this.State.Balance = @event.CurrentBalance;
-        }
-        private void Handle(TransactionPreparationCanceledEvent @event)
-        {
-            this.State.TransactionPreparations.Remove(@event.TransactionPreparation.TransactionId);
-        }
-        #endregion
+        #endregion 
 
         private decimal GetAvailableBalance()
         {

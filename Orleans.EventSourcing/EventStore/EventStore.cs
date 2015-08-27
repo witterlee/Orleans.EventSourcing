@@ -1,28 +1,23 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Orleans.EventSourcing
 {
     public class EventStore<TGrain, TState>
-        where TGrain : IEventSourcingGrain<TState>
+        where TGrain : Grain<TState>, IEventSourcingGrain<TState>
         where TState : EventSourcingState
     {
-        private static readonly IEventStoreProvider eventStoreProvider = EventStoreProviderManager.GetProvider<TGrain>();
-        private long afterSnapshotsEventCount;
-        private TGrain grain;
-        private IEventStore eventStore;
-        private static JsonSerializerSettings jsonsetting = new JsonSerializerSettings
-        {
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore
-        };
+        private static readonly IEventStoreProvider EventStoreProvider = EventStoreProviderManager.GetProvider<TGrain>();
+        private long _afterSnapshotsEventCount;
+        private TGrain _grain;
+        private IEventStore _eventStore;
+
         private TState State
         {
             get
             {
-                return this.grain.GetState();
+                return this._grain.GetState();
             }
         }
 
@@ -30,10 +25,12 @@ namespace Orleans.EventSourcing
 
         public static async Task<EventStore<TGrain, TState>> Initialize(TGrain grain, long afterSnapshotsEventCount = 100)
         {
-            var instance = new EventStore<TGrain, TState>();
-            instance.grain = grain;
-            instance.afterSnapshotsEventCount = afterSnapshotsEventCount;
-            instance.eventStore = await eventStoreProvider.Create<TGrain>();
+            var instance = new EventStore<TGrain, TState>
+            {
+                _grain = grain,
+                _afterSnapshotsEventCount = afterSnapshotsEventCount,
+                _eventStore = await EventStoreProvider.Create<TGrain>()
+            };
 
             return instance;
         }
@@ -41,21 +38,34 @@ namespace Orleans.EventSourcing
         {
             if (@event != null)
             {
-                await eventStore.Append(@event);
-                HandleEvent(@event);
-            }
+                var writeResult = await this._eventStore.AppendAsync(@event);
 
-            if (@event.Version % this.afterSnapshotsEventCount == 0)
-                await this.WriteSnapshot();
+                if (writeResult == EventWriteResult.Success || writeResult == EventWriteResult.Duplicate)
+                {
+                    if (await EventStreamProviderManager.GetEventStreamProvider().PublishAsync(@event))
+                    {
+                        HandleEvent(@event);
+
+                        if (@event.Version % this._afterSnapshotsEventCount == 0)
+                            await this.WriteSnapshot();
+                    }
+                    else
+                    {
+                        throw new Exception("publish event stream exception");
+                    }
+                }
+                else
+                    throw new Exception("event store write exception");
+            }
         }
 
         private Task WriteSnapshot()
         {
-            return this.State.WriteStateAsync();
+            return this._grain.WriteSnapshot();
         }
         public async Task ReplayEvents()
         {
-            var events = await eventStore.ReadFrom(this.grain.GetGrainId(), this.grain.GetState().Version + 1);
+            var events = await this._eventStore.ReadFromAsync(this._grain.GetGrainId(), this._grain.GetState().Version + 1);
 
             if (events.Any())
             {
@@ -71,19 +81,19 @@ namespace Orleans.EventSourcing
         private void HandleEvent(IEvent @event)
         {
             VerifyEvent(@event);
-            var eventHandler = GrainInternalEventHandlerProvider.GetInternalEventHandler(this.grain.GetType(), @event.GetType());
+            var eventApplyMethod = GrainInternalEventHandlerProvider.GetInternalEventApplyMethod(@event.GetType());
 
-            if (eventHandler == null)
+            if (eventApplyMethod == null)
             {
-                throw new Exception(string.Format("Could not find event handler for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
+                throw new Exception(string.Format("Could not find event apply method for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
             }
 
-            eventHandler.Invoke(this.grain, @event);
-            this.grain.GetState().Version = @event.Version;
+            eventApplyMethod.Invoke(@event, this.State);
+            this.State.Version = @event.Version;
         }
         private void VerifyEvent(IEvent @event)
         {
-            if (@event.Version != this.grain.GetState().Version + 1)
+            if (@event.Version != this.State.Version + 1)
             {
                 throw new Exception(string.Format("invlid event version for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
             }

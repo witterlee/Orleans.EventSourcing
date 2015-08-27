@@ -55,8 +55,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\EventStoreSection.cs" />
-    <Compile Include="DynamicReflection.cs" />
-    <Compile Include="Event\EventNameTypeMapping.cs" />
+    <Compile Include="DynamicReflection\Dynamic.cs" />
+    <Compile Include="DynamicReflection\DynamicComparer.cs" />
+    <Compile Include="DynamicReflection\DynamicEmit.cs" />
+    <Compile Include="EventStream\EventStreamProviderManager.cs" />
+    <Compile Include="EventStream\IEventStreamProviderFactory.cs" />
+    <Compile Include="EventStream\IEventStreamProvider.cs" />
+    <Compile Include="Event\EventTypeCodeMapping.cs" />
     <Compile Include="EventStore\EventStoreProviderAttribute.cs" />
     <Compile Include="Excepitons\EventStoreProviderEmptyException.cs" />
     <Compile Include="Excepitons\ConfigInvalidException.cs" />
@@ -75,9 +80,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventStream\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

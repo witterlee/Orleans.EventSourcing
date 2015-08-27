@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing", "Orleans.EventSourcing\Orleans.EventSourcing.csproj", "{50826CCF-9BEF-4CF0-8FFB-08FD028CFC2A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.Couchbase", "Orleans.EventSourcing.Couchbase\Orleans.EventSourcing.Couchbase.csproj", "{C30032FE-0DC4-47C4-9144-E00D1A104211}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.UnitTests", "Orleans.EventSourcing.UnitTests\Orleans.EventSourcing.UnitTests.csproj", "{82238ACF-249E-4AA5-983A-873A2332A98E}"
 EndProject
@@ -26,6 +24,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.Mongo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.EventTypeCodeRegisterTool", "EventTypeCodeRegisterTool\Orleans.EventSourcing.EventTypeCodeRegisterTool.csproj", "{48B63A71-F405-410D-91FC-C91345318CFA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{59D83221-D216-4C6E-A113-5DC7C80E2689}"
+	ProjectSection(SolutionItems) = preProject
+		Build.cmd = Build.cmd
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.RabbitMqEventStreamProvider", "Orleans.EventSourcing.RabbitMqEventStreamProvider\Orleans.EventSourcing.RabbitMqEventStreamProvider.csproj", "{BA79ACD0-AF64-4B15-A427-6768B4D1CB15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +41,6 @@ Global
 		{50826CCF-9BEF-4CF0-8FFB-08FD028CFC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50826CCF-9BEF-4CF0-8FFB-08FD028CFC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50826CCF-9BEF-4CF0-8FFB-08FD028CFC2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C30032FE-0DC4-47C4-9144-E00D1A104211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C30032FE-0DC4-47C4-9144-E00D1A104211}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C30032FE-0DC4-47C4-9144-E00D1A104211}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C30032FE-0DC4-47C4-9144-E00D1A104211}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82238ACF-249E-4AA5-983A-873A2332A98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82238ACF-249E-4AA5-983A-873A2332A98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82238ACF-249E-4AA5-983A-873A2332A98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,8 +65,15 @@ Global
 		{48B63A71-F405-410D-91FC-C91345318CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48B63A71-F405-410D-91FC-C91345318CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48B63A71-F405-410D-91FC-C91345318CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA79ACD0-AF64-4B15-A427-6768B4D1CB15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA79ACD0-AF64-4B15-A427-6768B4D1CB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA79ACD0-AF64-4B15-A427-6768B4D1CB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA79ACD0-AF64-4B15-A427-6768B4D1CB15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

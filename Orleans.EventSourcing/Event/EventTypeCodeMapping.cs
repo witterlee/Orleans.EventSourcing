@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Orleans.EventSourcing
 {
-    public class EventNameTypeMapping
+    public class EventTypeCodeMapping
     {
         private static readonly IDictionary<int, Type> eventTypeCodeMappings = new Dictionary<int, Type>();
 

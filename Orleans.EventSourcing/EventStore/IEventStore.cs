@@ -5,7 +5,15 @@ namespace Orleans.EventSourcing
 {
     public interface IEventStore
     {
-        Task Append(IEvent @event);
-        Task<IEnumerable<IEvent>> ReadFrom(string grainUniqueId, long eventVersion = 0);
+        Task<EventWriteResult> AppendAsync(IEvent @event);
+        Task<IEnumerable<IEvent>> ReadFromAsync(string grainUniqueId, long eventVersion = 0);
+        Task<IEvent> ReadOneAsync(string grainUniqueId, string commandId);
+    }
+
+    public enum EventWriteResult
+    {
+        Success = 1,
+        Duplicate = 2,
+        UnknowError = 3
     }
 }

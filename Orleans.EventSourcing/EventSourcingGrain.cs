@@ -5,31 +5,31 @@ namespace Orleans.EventSourcing
 {
 
     public abstract class EventSourcingGrain<TGrain, TState> : Grain<TState>, IEventSourcingGrain<TState>
-        where TGrain : class ,IEventSourcingGrain<TState>, IGrain
+        where TGrain : Grain<TState>, IEventSourcingGrain<TState>, IGrain
         where TState : EventSourcingState
     {
         private const int APPLY_EVENT_ERROR = 60101;
-        private EventStore<TGrain, TState> eventStore { get; set; }
+        private EventStore<TGrain, TState> EventStore { get; set; }
 
         /// <summary>
         /// apply event to grain, if applied success retrun SuccessMessage,else return ErrorMessage
         /// </summary>
         /// <param name="event"></param>
         /// <returns></returns>
-        protected async Task ApplyEvent(GrainEvent @event)
+        protected async Task RaiseEvent(GrainEvent @event)
         {
             try
             {
                 int typeCode;
 
-                if (!EventNameTypeMapping.TryGetEventTypeCode(@event.GetType(), out typeCode))
+                if (!EventTypeCodeMapping.TryGetEventTypeCode(@event.GetType(), out typeCode))
                     throw new Exception("unknow event type");
 
                 @event.GrainId = this.GetGrainId();
                 @event.Version = this.GetState().Version + 1;
                 @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
                 @event.TypeCode = typeCode;
-                await this.eventStore.WriteEvent(@event);
+                await this.EventStore.WriteEvent(@event);
             }
             catch (Exception ex)
             {
@@ -41,8 +41,8 @@ namespace Orleans.EventSourcing
 
         public async override Task OnActivateAsync()
         {
-            this.eventStore = await EventStore<TGrain, TState>.Initialize(this as TGrain, 100);
-            await this.eventStore.ReplayEvents();
+            this.EventStore = await EventStore<TGrain, TState>.Initialize(this as TGrain, 100);
+            await this.EventStore.ReplayEvents();
             await base.OnActivateAsync();
         }
 
@@ -51,12 +51,15 @@ namespace Orleans.EventSourcing
             return this.State;
         }
 
+        public Task WriteSnapshot()
+        {
+            return this.WriteStateAsync();
+        }
+
         public string GetGrainId()
         {
             string extKey;
             var grainId = this.GetPrimaryKey(out extKey).ToString();
-            var currentEventId = this.State.Version;
-            grainId = grainId + (string.IsNullOrEmpty(extKey) ? string.Empty : "_" + extKey);
 
             return grainId;
         }

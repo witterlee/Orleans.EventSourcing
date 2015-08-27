@@ -10,20 +10,20 @@ using MongoDBBson = MongoDB.Bson;
 
 namespace Orleans.EventSourcing.MongoDB
 {
-    public class MongoDBEventStore : IEventStore
+    public class MongoDbEventStore : IEventStore
     {
         private readonly IMongoDatabase _mongoDatabase;
-        private const string CollectionName = "event";
-        private static bool HasIndex;
-        public MongoDBEventStore(IMongoDatabase mongoDatabase)
+        private const string COLLECTION_NAME = "event";
+        private static bool _hasIndex;
+        public MongoDbEventStore(IMongoDatabase mongoDatabase)
         {
             _mongoDatabase = mongoDatabase;
         }
 
-        public async Task<IEnumerable<IEvent>> ReadFrom(string grainId, long eventId = 0)
+        public async Task<IEnumerable<IEvent>> ReadFromAsync(string grainId, long eventVersion = 0)
         {
-            var collection = (await GetCollection(CollectionName)).WithReadPreference(ReadPreference.SecondaryPreferred);
-            var filter = BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventId + " }}");
+            var collection = (await GetCollection(COLLECTION_NAME));
+            var filter = BsonDocument.Parse("{ GrainId:\"" + grainId + "\",Version:{ $gte: " + eventVersion + " }}");
             var sort = BsonDocument.Parse("{ Version:1 }");
             var options = new FindOptions<BsonDocument, BsonDocument>
             {
@@ -41,13 +41,44 @@ namespace Orleans.EventSourcing.MongoDB
             }
         }
 
-        public async Task Append(IEvent @event)
+        public async Task<IEvent> ReadOneAsync(string grainId, string commandId)
         {
-            var collection = (await GetCollection(CollectionName)).WithWriteConcern(new WriteConcern(new Optional<WriteConcern.WValue>(), journal: new Optional<bool?>(true)));
+            var collection = (await GetCollection(COLLECTION_NAME)).WithReadPreference(ReadPreference.SecondaryPreferred);
+            var filter = BsonDocument.Parse("{ GrainId:\"" + grainId + "\",CommandId:" + commandId + "}");
+            var options = new FindOptions<BsonDocument, BsonDocument>
+            {
+                AllowPartialResults = false,
+                Limit = 1
+            };
+            using (var cursor = await collection.FindAsync(filter, options))
+            {
+                var eventsBson = await cursor.ToListAsync();
+
+                var events = eventsBson.Select(ConvertJsonToEvent);
+
+                return events.FirstOrDefault();
+            }
+        }
+
+        public async Task<EventWriteResult> AppendAsync(IEvent @event)
+        {
+            var collection = (await GetCollection(COLLECTION_NAME)).WithWriteConcern(new WriteConcern(new Optional<WriteConcern.WValue>(), journal: new Optional<bool?>(true)));
             var json = JsonConvert.SerializeObject(@event);
+            var result = EventWriteResult.UnknowError;
+
 
             var doc = BsonSerializer.Deserialize<BsonDocument>(json);
-            await collection.InsertOneAsync(doc);
+            try
+            {
+                await collection.InsertOneAsync(doc);
+                result = EventWriteResult.Success;
+            }
+            catch (MongoDuplicateKeyException ex)
+            {
+                result = EventWriteResult.Duplicate;
+            }
+
+            return result;
         }
 
 
@@ -55,17 +86,24 @@ namespace Orleans.EventSourcing.MongoDB
         {
             var collection = _mongoDatabase.GetCollection<BsonDocument>(name);
 
-            if (!HasIndex)
+            if (!_hasIndex)
             {
                 using (var cursor = await collection.Indexes.ListAsync())
                 {
                     var indexes = await cursor.ToListAsync();
-                    if (indexes.Count(index => index["name"] == "GrainId_1_Version_1") == 0)
+                    var versionIndex = "grainid_version_index";
+                    var commandIdIndex = "grainid_commandid_typecode_index";
+                    if (indexes.Count(index => index["name"] == versionIndex) == 0)
                     {
-                        var keys = Builders<BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
-                        await collection.Indexes.CreateOneAsync(keys);
+                        var indexGrainIdVersion = Builders<BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("Version");
+                        await collection.Indexes.CreateOneAsync(indexGrainIdVersion, new CreateIndexOptions() { Unique = true, Name = versionIndex });
                     }
-                    HasIndex = true;
+                    //if (indexes.Count(index => index["name"] == commandIdIndex) == 0)
+                    //{
+                    //    var indexGrainIdVersion = Builders<BsonDocument>.IndexKeys.Ascending("GrainId").Ascending("CommandId").Ascending("TypeCode");
+                    //    await collection.Indexes.CreateOneAsync(indexGrainIdVersion, new CreateIndexOptions() { Unique = true, Name = commandIdIndex });
+                    //}
+                    _hasIndex = true;
                 }
             }
             return collection;
@@ -74,12 +112,12 @@ namespace Orleans.EventSourcing.MongoDB
         private IEvent ConvertJsonToEvent(BsonDocument bson)
         {
             bson.Remove("_id");
+            int eventTypeCode = -1;
             var json = bson.ToJson();
-            dynamic @event = JsonConvert.DeserializeObject(json);
-            int eventTypeCode = @event.TypeCode;
+            eventTypeCode = bson.GetValue("TypeCode", BsonValue.Create(-1)).AsInt32;
             Type eventType;
 
-            if (!EventNameTypeMapping.TryGetEventType(eventTypeCode, out eventType))
+            if (eventTypeCode < 0 || !EventTypeCodeMapping.TryGetEventType(eventTypeCode, out eventType))
             {
                 throw new Exception("unknow event type");
             }

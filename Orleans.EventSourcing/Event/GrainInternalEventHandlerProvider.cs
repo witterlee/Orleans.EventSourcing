@@ -7,35 +7,18 @@ namespace Orleans.EventSourcing
 {
     public class GrainInternalEventHandlerProvider
     {
-        private static readonly IDictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>> mappings = new Dictionary<Type, IDictionary<Type, Action<IEventSourcingGrain, IEvent>>>(); 
+        private static readonly IDictionary<Type, Proc<object, EventSourcingState>> EventApplyMethodMappings = new Dictionary<Type, Proc<object, EventSourcingState>>();
+        private static readonly BindingFlags bindingFlags =BindingFlags.Public| BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-        private static readonly BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-        private static readonly Type[] parameterTypes = { typeof(IEventSourcingGrain), typeof(IEvent) };
-        private static readonly List<string> registerAssembly = new List<string>();
         private static object _lock = new object();
 
         #region event internal handler
 
-        public static Action<IEventSourcingGrain, IEvent> GetInternalEventHandler(Type grainType, Type eventType)
+        public static Proc<object, EventSourcingState> GetInternalEventApplyMethod(Type eventType)
         {
-            Action<IEventSourcingGrain, IEvent> eventHandler;
-            IDictionary<Type, Action<IEventSourcingGrain, IEvent>> eventHandlerDic;
+            Proc<object, EventSourcingState> eventApplyMethod;
 
-
-            if (!mappings.TryGetValue(grainType, out eventHandlerDic))
-            {
-                var assemblyName = grainType.Assembly.FullName;
-                lock (_lock)
-                {
-                    if (!registerAssembly.Contains(assemblyName))
-                    {
-                        RegisterInternalEventHandler(grainType.Assembly);
-                        registerAssembly.Add(assemblyName);
-                    }
-                }
-                mappings.TryGetValue(grainType, out eventHandlerDic);
-            };
-            return eventHandlerDic.TryGetValue(eventType, out eventHandler) ? eventHandler : null;
+            return EventApplyMethodMappings.TryGetValue(eventType, out eventApplyMethod) ? eventApplyMethod : null;
         }
 
         //private static void registerGrainType(Type grainType)
@@ -67,50 +50,40 @@ namespace Orleans.EventSourcing
 
         public static void RegisterInternalEventHandler(Assembly assembly)
         {
-            if (!registerAssembly.Contains(assembly.FullName))
+            lock (_lock)
             {
-                lock (_lock)
+                foreach (var eventType in assembly.GetTypes().Where(IsEventType))
                 {
-                    foreach (var grainType in assembly.GetTypes().Where(IsEventSourcingGrain))
+                    var entries = from method in eventType.GetMethods(bindingFlags)
+                                  let parameters = method.GetParameters()
+                                  where method.Name == "Apply"
+                                      && parameters.Length == 1
+                                      && typeof(EventSourcingState).IsAssignableFrom(parameters.Single().ParameterType)
+                                  select new { Method = method, StateType = parameters.Single().ParameterType };
+
+                    foreach (var entry in entries)
                     {
-                        var entries = from method in grainType.GetMethods(bindingFlags)
-                                      let parameters = method.GetParameters()
-                                      where method.Name == "Handle"
-                                          && parameters.Length == 1
-                                          && typeof(IEvent).IsAssignableFrom(parameters.Single().ParameterType)
-                                      select new { Method = method, EventType = parameters.Single().ParameterType };
-                        foreach (var entry in entries)
-                        {
-                            RegisterInternalEventHandlerAndEventType(grainType, entry.EventType, entry.Method);
-                        }
+                        RegisterEventApplyMethod(eventType, entry.StateType, entry.Method);
                     }
                 }
             }
         }
 
-        private static void RegisterInternalEventHandlerAndEventType(Type grainType, Type eventType, MethodInfo method)
-        {
-            IDictionary<Type, Action<IEventSourcingGrain, IEvent>> eventHandlerDic;
-
-            if (!mappings.TryGetValue(grainType, out eventHandlerDic))
+        private static void RegisterEventApplyMethod(Type eventType, Type stateType, MethodInfo method)
+        {  
+            if (!EventApplyMethodMappings.ContainsKey(eventType))
             {
-                eventHandlerDic = new Dictionary<Type, Action<IEventSourcingGrain, IEvent>>();
-                mappings.Add(grainType, eventHandlerDic);
+                var applyMethod = Dynamic<object>.Instance.Procedure.Explicit<EventSourcingState>.CreateDelegate(method);
+
+                EventApplyMethodMappings.Add(eventType, applyMethod);
             }
 
-            if (eventHandlerDic.ContainsKey(eventType))
-            {
-                throw  new Exception(string.Format("duplicated event handler on event-sourcing grain, grain type:{0}, event type:{1}", grainType.FullName, eventType.FullName));
-            }
-            var methodDelegate = DynamicReflection.CreateDelegate<Action<IEventSourcingGrain, IEvent>>(method, parameterTypes);
-
-            eventHandlerDic.Add(eventType, methodDelegate);
         }
         #endregion
 
-        private static bool IsEventSourcingGrain(Type grainType)
+        private static bool IsEventType(Type grainType)
         {
-            return grainType.IsClass && !grainType.IsAbstract && typeof(IEventSourcingGrain).IsAssignableFrom(grainType);
+            return grainType.IsClass && !grainType.IsAbstract && typeof(GrainEvent).IsAssignableFrom(grainType);
         }
     }
 

@@ -127,7 +127,7 @@ namespace Orleans.EventSourcing.Couchbase
             int eventTypeCode = @event.TypeCode;
             Type eventType;
 
-            if (!EventNameTypeMapping.TryGetEventType(eventTypeCode, out eventType))
+            if (!EventTypeCodeMapping.TryGetEventType(eventTypeCode, out eventType))
             {
                 throw new Exception("unknow event type");
             }
