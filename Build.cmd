@@ -33,6 +33,8 @@ SET CONFIGURATION=Release
 @echo ===== wait for generate nupkg =====
 del %CMDHOME%\*.nupkg
 "%NUGETEXE%" pack Orleans.EventSourcing\Orleans.EventSourcing.csproj -Prop Configuration=%CONFIGURATION% 
+"%NUGETEXE%" pack Orleans.EventSourcing.MongoDB\Orleans.EventSourcing.MongoDB.csproj -Prop Configuration=%CONFIGURATION% 
+"%NUGETEXE%" pack Orleans.EventSourcing.RabbitMqEventStreamProvider\Orleans.EventSourcing.RabbitMqEventStreamProvider.csproj -Prop Configuration=%CONFIGURATION% 
 @echo ===== wait for generate nupkg =====
 "%NUGETEXE%" push Orleans.EventSourcing*.nupkg -s http://10.0.0.200/ 
 @echo ===== press any key ... =====

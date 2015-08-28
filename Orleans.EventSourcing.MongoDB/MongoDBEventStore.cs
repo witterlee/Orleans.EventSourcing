@@ -117,7 +117,7 @@ namespace Orleans.EventSourcing.MongoDB
             eventTypeCode = bson.GetValue("TypeCode", BsonValue.Create(-1)).AsInt32;
             Type eventType;
 
-            if (eventTypeCode < 0 || !EventTypeCodeMapping.TryGetEventType(eventTypeCode, out eventType))
+            if (eventTypeCode < 0 || !EventNameCodeMapping.TryGetEventType(eventTypeCode, out eventType))
             {
                 throw new Exception("unknow event type");
             }

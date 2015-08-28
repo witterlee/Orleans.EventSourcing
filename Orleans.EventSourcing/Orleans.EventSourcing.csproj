@@ -61,7 +61,7 @@
     <Compile Include="EventStream\EventStreamProviderManager.cs" />
     <Compile Include="EventStream\IEventStreamProviderFactory.cs" />
     <Compile Include="EventStream\IEventStreamProvider.cs" />
-    <Compile Include="Event\EventTypeCodeMapping.cs" />
+    <Compile Include="Event\EventNameCodeMapping.cs" />
     <Compile Include="EventStore\EventStoreProviderAttribute.cs" />
     <Compile Include="Excepitons\EventStoreProviderEmptyException.cs" />
     <Compile Include="Excepitons\ConfigInvalidException.cs" />

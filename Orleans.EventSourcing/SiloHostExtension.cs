@@ -28,18 +28,7 @@ namespace Orleans.EventSourcing
             siloHost.UseEventStore(eventStoreSection, typeNameCodeMapping, assemlies);
 
             return siloHost;
-        }
-
-        public static SiloHost UseRabbitMqEventStreamProvider(this SiloHost siloHost, IEventStreamProviderFactory eventStreamProviderFactory)
-        {
-            if (eventStreamProviderFactory == null)
-                throw new ArgumentNullException("eventStreamProviderFactory", "eventStreamProviderFactory is null");
-
-            EventStreamProviderManager.Initailize(eventStreamProviderFactory);
-
-            return siloHost;
-        }
-
+        } 
         private static SiloHost RegisterGrain(this SiloHost siloHost, IDictionary<string, int> typeNameCodeMapping, params Assembly[] assemlies)
         {
             if (assemlies != null && assemlies.Any())
@@ -51,7 +40,7 @@ namespace Orleans.EventSourcing
                     {
                         var type = types.Single(t => t.FullName == kv.Key);
 
-                        EventTypeCodeMapping.RegisterEventType(kv.Value, type);
+                        EventNameCodeMapping.RegisterEventType(kv.Value, type);
                     }
                 }
                 GrainInternalEventHandlerProvider.RegisterInternalEventHandler(assemlies);

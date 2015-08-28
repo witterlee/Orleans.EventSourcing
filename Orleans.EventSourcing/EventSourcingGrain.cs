@@ -22,7 +22,7 @@ namespace Orleans.EventSourcing
             {
                 int typeCode;
 
-                if (!EventTypeCodeMapping.TryGetEventTypeCode(@event.GetType(), out typeCode))
+                if (!EventNameCodeMapping.TryGetEventTypeCode(@event.GetType(), out typeCode))
                     throw new Exception("unknow event type");
 
                 @event.GrainId = this.GetGrainId();
