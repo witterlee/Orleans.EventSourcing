@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using Orleans.EventSourcing.QuerySide;
 using Orleans.Runtime.Host;
 
 namespace Orleans.EventSourcing
@@ -28,7 +29,20 @@ namespace Orleans.EventSourcing
             siloHost.UseEventStore(eventStoreSection, typeNameCodeMapping, assemlies);
 
             return siloHost;
-        } 
+        }
+
+        public static SiloHost UseQuerySideBus(this SiloHost siloHost, params Assembly[] assemlies)
+        {
+            if (assemlies == null || !assemlies.Any())
+                throw new ArgumentNullException("assemlies", "assemlies is null");
+
+            var queryHandlerContainer = new QuerySideProcessorContainer();
+            queryHandlerContainer.RegisterHandlers(assemlies);
+
+            QuerySideProcessorBus.Initialize(queryHandlerContainer);
+
+            return siloHost;
+        }
         private static SiloHost RegisterGrain(this SiloHost siloHost, IDictionary<string, int> typeNameCodeMapping, params Assembly[] assemlies)
         {
             if (assemlies != null && assemlies.Any())

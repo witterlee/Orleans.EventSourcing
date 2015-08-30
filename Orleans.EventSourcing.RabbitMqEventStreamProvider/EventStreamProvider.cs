@@ -55,6 +55,7 @@ namespace Orleans.EventSourcing.RabbitMqEventStreamProvider
                     var routeKey = (Math.Abs(@event.GrainId.GetHashCode()) % _queueCount).ToString();
 
                     contentHeader.DeliveryMode = 2;
+                    contentHeader.Type = @event.TypeCode.ToString();
                     channel.ConfirmSelect();
                     channel.BasicPublish(EXCHANGE, routeKey, contentHeader, build.GetContentBody());
                     if (channel.WaitForConfirms(TimeSpan.FromSeconds(10)))

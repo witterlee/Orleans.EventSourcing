@@ -30,7 +30,6 @@ namespace Orleans.EventSourcing
                 EventTypeCodeMappings.Add(typeCode, type);
         }
 
-
         private static bool IsEventType(Type grainType)
         {
             return grainType.IsClass && !grainType.IsAbstract && typeof(GrainEvent).IsAssignableFrom(grainType);
