@@ -29,6 +29,7 @@ namespace Orleans.EventSourcing
                 @event.Version = this.GetState().Version + 1;
                 @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
                 @event.TypeCode = typeCode;
+
                 await this.EventStore.WriteEvent(@event);
             }
             catch (Exception ex)

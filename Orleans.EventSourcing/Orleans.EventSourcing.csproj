@@ -75,7 +75,6 @@
     <Compile Include="EventStore\IEventStoreProvider.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="QuerySide\QuerySideProcessorContainer.cs" />
-    <Compile Include="QuerySide\QuerySideProcessorException.cs" />
     <Compile Include="QuerySide\QuerySideProcessorBus.cs" />
     <Compile Include="QuerySide\IQuerySideHandler.cs" />
     <Compile Include="SiloHostExtension.cs" />
