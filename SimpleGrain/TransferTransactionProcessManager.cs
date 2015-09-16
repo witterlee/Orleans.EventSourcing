@@ -13,11 +13,16 @@ namespace Orleans.EventSourcing.SimpleGrain
         private const int TransferTransactionProcessManager_REMINDER_ERROR_CODE = 60001;
         async Task ITransferTransactionProcessManager.ProcessTransferTransaction(Guid fromAccountId, Guid toAccountId, decimal amount)
         {
+
+            var cmdId = RequestContext.Get("CommandId");
+
+            Console.WriteLine(cmdId + amount.ToString());
+
             var txid = Guid.NewGuid();
 
             var tx = GrainFactory.GetGrain<ITransferTransaction>(txid);
 
-            await tx.Initialize(fromAccountId, toAccountId, amount); 
+            await tx.Initialize(fromAccountId, toAccountId, amount);
             try
             {
                 await InnerProcessTransferTransaction(tx);

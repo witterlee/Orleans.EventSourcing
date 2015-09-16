@@ -35,7 +35,7 @@ namespace Orleans.EventSourcing.QuerySide
 
                     foreach (var method in executorInstance.GetType().GetMethods())
                     {
-                        if (method.Name == "Execute")
+                        if (method.Name == "Handle")
                         {
                             var @params = method.GetParameters();
 

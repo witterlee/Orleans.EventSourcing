@@ -11,18 +11,22 @@ namespace Orleans.EventSourcing.RabbitMqEventStreamProvider
     public class EventStreamProvider : IEventStreamProvider
     {
         private static int _queueCount;
+        private static string _deployId;
         private static readonly BlockingCollection<IModel> ChannelCollection = new BlockingCollection<IModel>();
         private const string EXCHANGE = "EventStreamRabbitMqExchange";
         private const string QUEUE = "EventStreamRabbitMqQueue";
         private static IConnectionFactory _connectionFactory;
 
-        internal static void SetConnectionFactory(IConnectionFactory connectionFactory, int queueCount)
+        internal static void SetConnectionFactory(IConnectionFactory connectionFactory, string deployId, int queueCount)
         {
             _connectionFactory = connectionFactory;
             if (queueCount < 1)
                 throw new ArgumentOutOfRangeException("queueCount", "queueCount must generate then 1");
-            _queueCount = queueCount;
+            if (string.IsNullOrEmpty(deployId))
+                throw new ArgumentOutOfRangeException("deployId", "deployId must not null or empty");
 
+            _queueCount = queueCount;
+            _deployId = deployId;
             var i = 10;
             var connection = _connectionFactory.CreateConnection();
 
@@ -45,8 +49,8 @@ namespace Orleans.EventSourcing.RabbitMqEventStreamProvider
                 IModel channel = null;
                 try
                 {
+                    var exchangeName = EXCHANGE + _deployId;
                     channel = ChannelCollection.Take();
-
                     var eventJson = JsonConvert.SerializeObject(@event);
                     var bytes = Encoding.UTF8.GetBytes(eventJson);
                     var build = new BytesMessageBuilder(channel);
@@ -57,7 +61,7 @@ namespace Orleans.EventSourcing.RabbitMqEventStreamProvider
                     contentHeader.DeliveryMode = 2;
                     contentHeader.Type = @event.TypeCode.ToString();
                     channel.ConfirmSelect();
-                    channel.BasicPublish(EXCHANGE, routeKey, contentHeader, build.GetContentBody());
+                    channel.BasicPublish(exchangeName, routeKey, contentHeader, build.GetContentBody());
                     if (channel.WaitForConfirms(TimeSpan.FromSeconds(10)))
                     {
                         tcs.SetResult(true);
@@ -87,10 +91,11 @@ namespace Orleans.EventSourcing.RabbitMqEventStreamProvider
                 {
                     for (int i = 0; i < queueCount; i++)
                     {
-                        var queueName = QUEUE + i;
-                        channel.ExchangeDeclare(EXCHANGE, ExchangeType.Direct, true, false, null);
+                        var exchangeName = EXCHANGE + _deployId;
+                        var queueName = QUEUE + _deployId + i;
+                        channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, true, false, null);
                         channel.QueueDeclare(queueName, true, false, false, null);
-                        channel.QueueBind(queueName, EXCHANGE, i.ToString());
+                        channel.QueueBind(queueName, exchangeName, i.ToString());
                     }
 
                 }

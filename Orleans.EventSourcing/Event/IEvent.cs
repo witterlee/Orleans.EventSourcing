@@ -3,7 +3,7 @@ using Orleans.Runtime;
 
 namespace Orleans.EventSourcing
 {
-
+    [Serializable]
     public class GrainEvent : IEvent
     {
         public GrainEvent()
@@ -17,10 +17,9 @@ namespace Orleans.EventSourcing
         public int TypeCode { get; set; }
         public long Version { get; set; }
     }
-
     /// <summary>
     /// The event interface.
-    /// </summary>
+    /// </summary> 
     public interface IEvent
     {
         string GrainId { get; }

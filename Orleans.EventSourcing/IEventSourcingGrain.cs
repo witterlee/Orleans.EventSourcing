@@ -5,8 +5,8 @@ namespace Orleans.EventSourcing
     /// <summary>
     /// Orleans grain communication interface IEventSourcingGrain
     /// </summary>
-    interface IEventSourcingGrain<out TState> : IEventSourcingGrain
-        where TState : EventSourcingState
+    public interface IEventSourcingGrain<out TState> : IEventSourcingGrain
+          where TState : EventSourcingState
     {
         TState GetState();
         Task WriteSnapshot();

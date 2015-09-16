@@ -4,9 +4,9 @@ namespace Orleans.EventSourcing.RabbitMqEventStreamProvider
 {
     public class EventStreamProviderFactory : IEventStreamProviderFactory
     {
-        public EventStreamProviderFactory(IConnectionFactory connectionFactory, int queueCount)
+        public EventStreamProviderFactory(IConnectionFactory connectionFactory, string deployId,int queueCount)
         {
-            EventStreamProvider.SetConnectionFactory(connectionFactory, queueCount);
+            EventStreamProvider.SetConnectionFactory(connectionFactory, deployId, queueCount);
         }
 
 

@@ -17,10 +17,11 @@ namespace Orleans.EventSourcing.QuerySide
         { 
             try
             {
-                var executor = _handlerContainer.FindHandler(typeof(TEvent));
+                var eventType = @event.GetType();
+                var executor = _handlerContainer.FindHandler(eventType);
 
                 if (executor == null)
-                    throw new Exception("Faile to find " + typeof(TEvent).Name + "'s executor.");
+                    throw new Exception("Faile to find " + eventType.Name + "'s executor.");
 
                 var writeResult = executor.Item1.Invoke(executor.Item2, @event);
             

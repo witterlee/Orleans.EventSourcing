@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.EventSourcing.SimpleInterface;
+using Orleans.Runtime;
 
 namespace Simple
 {
@@ -28,9 +29,9 @@ namespace Simple
 
             GrainClient.Initialize("DevTestClientConfiguration.xml");
             var sw3 = Stopwatch.StartNew();
-            //TestConcurent();
-
-            TestPerformance();
+            TestConcurent();
+            TestRequestContext();
+            //TestPerformance();
 
             Console.WriteLine("<------总共用时-------" + sw3.Elapsed.TotalSeconds + "------------>");
 
@@ -57,6 +58,38 @@ namespace Simple
                 GC.SuppressFinalize(hostWrapper);
             }
         }
+
+        static void TestRequestContext()
+        {
+            var userAId = Guid.NewGuid();
+            var userBId = Guid.NewGuid();
+            var accountAId = Guid.Parse("33ca5cd9-e39b-44d1-98cc-82e68baafca2");
+            var accountBId = Guid.Parse("0dc32514-51c0-458e-bed7-5d84d5b1de31");
+
+            var accountA = GrainClient.GrainFactory.GetGrain<IBankAccount>(accountAId);
+            var accountB = GrainClient.GrainFactory.GetGrain<IBankAccount>(accountBId);
+
+            Console.WriteLine("account A balance=" + accountA.GetBalance().Result);
+            Console.WriteLine("account B balance=" + accountB.GetBalance().Result);
+
+            Task.WhenAll(accountA.Initialize(userAId), accountB.Initialize(userBId)).Wait();
+
+            var transferManager = GrainClient.GrainFactory.GetGrain<ITransferTransactionProcessManager>(1);
+
+            RequestContext.Set("CommandId", Guid.NewGuid());
+            var r = new Random();
+            decimal amount = r.Next(100);
+
+            transferManager.ProcessTransferTransaction(accountAId, accountBId, amount);
+            amount = r.Next(100);
+            transferManager.ProcessTransferTransaction(accountAId, accountBId, amount);
+
+
+            //Console.WriteLine("account A balance=" + accountA.GetBalance().Result.ToString());
+            //Console.WriteLine("account B balance=" + accountB.GetBalance().Result.ToString());
+
+        }
+
 
         static void TestConcurent()
         {
@@ -101,27 +134,27 @@ namespace Simple
             var accountPairs = new ConcurrentDictionary<Guid, Guid>();
 
             var sw = Stopwatch.StartNew();
-          
-                var accountCreateTasks = new ConcurrentBag<Task>();
 
-                Parallel.For(0, 100, j =>
-                {
-                    var accountAId = Guid.NewGuid();
-                    var accountBId = Guid.NewGuid();
-                    accountPairs.TryAdd(accountAId, accountBId);
-                });
+            var accountCreateTasks = new ConcurrentBag<Task>();
 
-                accountPairs.AsParallel().ForAll(ap =>
-                {
-                    var accountA = GrainClient.GrainFactory.GetGrain<IBankAccount>(ap.Key);
-                    var accountB = GrainClient.GrainFactory.GetGrain<IBankAccount>(ap.Value);
+            Parallel.For(0, 100, j =>
+            {
+                var accountAId = Guid.NewGuid();
+                var accountBId = Guid.NewGuid();
+                accountPairs.TryAdd(accountAId, accountBId);
+            });
 
-                    accountCreateTasks.Add(accountA.Initialize(ap.Value));
-                    accountCreateTasks.Add(accountB.Initialize(ap.Key));
-                });
-                Task.WhenAll(accountCreateTasks).Wait();
+            accountPairs.AsParallel().ForAll(ap =>
+            {
+                var accountA = GrainClient.GrainFactory.GetGrain<IBankAccount>(ap.Key);
+                var accountB = GrainClient.GrainFactory.GetGrain<IBankAccount>(ap.Value);
 
-           
+                accountCreateTasks.Add(accountA.Initialize(ap.Value));
+                accountCreateTasks.Add(accountB.Initialize(ap.Key));
+            });
+            Task.WhenAll(accountCreateTasks).Wait();
+
+
             var sw1 = Stopwatch.StartNew();
 
             foreach (var kv in accountPairs)

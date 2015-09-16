@@ -48,7 +48,7 @@ namespace Simple
                         {
                             Uri = rabbitMqConnectionConfig.ConnectionString,
                             AutomaticRecoveryEnabled = true
-                        }, 4);
+                        },"Sample", 4);
                 siloHost.UseEventStore(eventStoreSection, GetEventTypeNameAndCodeMapping(), assembly)
                         .UseRabbitMqEventStreamProvider(eventSteamProviderFactory);
                 ok = siloHost.StartOrleansSilo();
