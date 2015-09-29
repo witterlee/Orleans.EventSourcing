@@ -9,8 +9,7 @@ namespace Orleans.EventSourcing
     {
         private static readonly IDictionary<int, Type> EventTypeCodeMappings = new Dictionary<int, Type>();
 
-        private static readonly object Locker = new object();
-        private static readonly bool Inited = false;
+        private static readonly object Locker = new object(); 
 
         public static bool TryGetEventType(int typeCode, out Type eventType)
         {

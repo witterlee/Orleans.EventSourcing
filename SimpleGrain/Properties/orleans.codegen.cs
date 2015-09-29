@@ -18,11 +18,876 @@
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
-    using Orleans;
     using System;
-    using System.Runtime.InteropServices;
-    using System.Runtime.Serialization;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Orleans.Serialization;
+    using Orleans.EventSourcing.SimpleGrain;
+    using Orleans.EventSourcing.SimpleInterface;
     
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_TransactionPreparationSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_TransactionPreparationSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.TransactionPreparation input = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(original));
+            Orleans.EventSourcing.SimpleGrain.TransactionPreparation result = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Amount = input.Amount;
+            result.PreparationType = input.PreparationType;
+            result.TransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransactionId)));
+            result.TransactionType = input.TransactionType;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.TransactionPreparation input = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(decimal));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.PreparationType, stream, typeof(Orleans.EventSourcing.SimpleInterface.PreparationType));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionType, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransactionType));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.TransactionPreparation result = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation))));
+            result.Amount = ((decimal)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(decimal), stream)));
+            result.PreparationType = ((Orleans.EventSourcing.SimpleInterface.PreparationType)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.PreparationType), stream)));
+            result.TransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransactionType = ((Orleans.EventSourcing.SimpleInterface.TransactionType)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransactionType), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_BankAccountInitializedSerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo1;
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        static Orleans_EventSourcing_SimpleGrain_BankAccountInitializedSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.BankAccountInitialized input = ((Orleans.EventSourcing.SimpleGrain.BankAccountInitialized)(original));
+            Orleans.EventSourcing.SimpleGrain.BankAccountInitialized result = ((Orleans.EventSourcing.SimpleGrain.BankAccountInitialized)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.BankAccountInitialized))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            object objResult = ((object)(result));
+            object temp1 = input.Message;
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = input.Success;
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.BankAccountInitialized input = ((Orleans.EventSourcing.SimpleGrain.BankAccountInitialized)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Message, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Success, stream, typeof(bool));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.BankAccountInitialized result = ((Orleans.EventSourcing.SimpleGrain.BankAccountInitialized)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.BankAccountInitialized))));
+            object objResult = ((object)(result));
+            object temp1 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.BankAccountInitialized), DeepCopier, Serializer, Deserializer);
+            fieldInfo1 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Message>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo2 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Success>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_BalanceNotEnoughSerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo1;
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        static Orleans_EventSourcing_SimpleGrain_BalanceNotEnoughSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.BalanceNotEnough input = ((Orleans.EventSourcing.SimpleGrain.BalanceNotEnough)(original));
+            Orleans.EventSourcing.SimpleGrain.BalanceNotEnough result = ((Orleans.EventSourcing.SimpleGrain.BalanceNotEnough)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.BalanceNotEnough))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            object objResult = ((object)(result));
+            object temp1 = input.Message;
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = input.Success;
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.BalanceNotEnough input = ((Orleans.EventSourcing.SimpleGrain.BalanceNotEnough)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Message, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Success, stream, typeof(bool));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.BalanceNotEnough result = ((Orleans.EventSourcing.SimpleGrain.BalanceNotEnough)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.BalanceNotEnough))));
+            object objResult = ((object)(result));
+            object temp1 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo1.SetValue(objResult, temp1);
+            object temp2 = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.BalanceNotEnough), DeepCopier, Serializer, Deserializer);
+            fieldInfo1 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Message>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo2 = typeof(Orleans.EventSourcing.TaskMessage).GetField("<Success>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+        }
+    }
+}
+namespace Orleans.EventSourcing.SimpleGrainSerializers
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Orleans.Serialization;
+    using Orleans.EventSourcing.SimpleGrain.Events;
+    using Orleans.EventSourcing.SimpleGrain;
+    using Orleans.EventSourcing.SimpleInterface;
+    using System.Collections;
+    using System.Runtime.Serialization;
+    using System.Runtime.InteropServices;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_BankAccountInitializeEventSerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_BankAccountInitializeEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.OwnerId)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = input.TypeCode;
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = input.UTCTimestamp;
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = input.Version;
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.OwnerId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent), DeepCopier, Serializer, Deserializer);
+            fieldInfo3 = typeof(Orleans.EventSourcing.SimpleGrain.Events.BankAccountInitializeEvent).GetField("<OwnerId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Orleans.EventSourcing.GrainEvent).GetField("<TypeCode>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Orleans.EventSourcing.GrainEvent).GetField("<UTCTimestamp>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Orleans.EventSourcing.GrainEvent).GetField("<Version>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransactionPreparationAddedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransactionPreparationAddedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionPreparation = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionPreparation)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionPreparation, stream, typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionPreparation = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationAddedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransactionPreparationCommittedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransactionPreparationCommittedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.CurrentBalance = input.CurrentBalance;
+            result.GrainId = input.GrainId;
+            result.TransactionPreparation = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransactionPreparation)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CurrentBalance, stream, typeof(decimal));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionPreparation, stream, typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.CurrentBalance = ((decimal)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(decimal), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransactionPreparation = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCommittedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransactionPreparationCanceledEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransactionPreparationCanceledEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransactionPreparation = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransactionPreparation)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionPreparation, stream, typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransactionPreparation = ((Orleans.EventSourcing.SimpleGrain.TransactionPreparation)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleGrain.TransactionPreparation), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransactionPreparationCanceledEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransferTransactionStartedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransferTransactionStartedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionInfo)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionInfo, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferTransactionStartedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleInterface_TransferTransactionInfoSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleInterface_TransferTransactionInfoSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo input = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(original));
+            Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo result = new Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Amount = input.Amount;
+            result.FromAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.FromAccountId)));
+            result.ToAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.ToAccountId)));
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo input = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(decimal));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.FromAccountId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ToAccountId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo result = new Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo();
+            result.Amount = ((decimal)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(decimal), stream)));
+            result.FromAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.ToAccountId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_AccountValidatePassedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_AccountValidatePassedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionInfo)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionInfo, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.AccountValidatePassedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransferOutPreparationConfirmedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransferOutPreparationConfirmedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionInfo)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionInfo, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferOutPreparationConfirmedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransferInPreparationConfirmedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransferInPreparationConfirmedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionInfo)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionInfo, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferInPreparationConfirmedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransferOutConfirmedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransferOutConfirmedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionInfo)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionInfo, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferOutConfirmedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransferInConfirmedEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransferInConfirmedEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionInfo)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionInfo, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TransferTransactionInfo = ((Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransferTransactionInfo), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferInConfirmedEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Orleans_EventSourcing_SimpleGrain_Events_TransferCanceledEventSerialization
+    {
+        
+        static Orleans_EventSourcing_SimpleGrain_Events_TransferCanceledEventSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent)(original));
+            Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent))));
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.CommandId = input.CommandId;
+            result.GrainId = input.GrainId;
+            result.TransactionFaileReason = input.TransactionFaileReason;
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.TransferTransactionId)));
+            result.TypeCode = input.TypeCode;
+            result.UTCTimestamp = input.UTCTimestamp;
+            result.Version = input.Version;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent input = ((Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.GrainId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionFaileReason, stream, typeof(Orleans.EventSourcing.SimpleInterface.TransactionFaileReason));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransferTransactionId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TypeCode, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UTCTimestamp, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Version, stream, typeof(long));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent result = ((Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent)(System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent))));
+            result.CommandId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.GrainId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.TransactionFaileReason = ((Orleans.EventSourcing.SimpleInterface.TransactionFaileReason)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Orleans.EventSourcing.SimpleInterface.TransactionFaileReason), stream)));
+            result.TransferTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.TypeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.UTCTimestamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            result.Version = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Orleans.EventSourcing.SimpleGrain.Events.TransferCanceledEvent), DeepCopier, Serializer, Deserializer);
+        }
+    }
 }
 #pragma warning restore 162
 #pragma warning restore 219

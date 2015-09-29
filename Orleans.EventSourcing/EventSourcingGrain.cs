@@ -16,7 +16,7 @@ namespace Orleans.EventSourcing
         /// </summary>
         /// <param name="event"></param>
         /// <returns></returns>
-        protected async Task RaiseEvent(GrainEvent @event)
+        protected Task RaiseEvent(GrainEvent @event)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Orleans.EventSourcing
                 @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
                 @event.TypeCode = typeCode;
 
-                await this.EventStore.WriteEvent(@event);
+                return this.EventStore.WriteEvent(@event);
             }
             catch (Exception ex)
             {

@@ -40,22 +40,30 @@ namespace Orleans.EventSourcing
             {
                 var writeResult = await this._eventStore.AppendAsync(@event);
 
-                if (writeResult == EventWriteResult.Success || writeResult == EventWriteResult.Duplicate)
+                //只在写入成功时，更新内存
+                if (writeResult == EventWriteResult.Success)
                 {
-                    if (await EventStreamProviderManager.GetEventStreamProvider().PublishAsync(@event))
-                    {
-                        HandleEvent(@event);
-
-                        if (@event.Version % this._afterSnapshotsEventCount == 0)
-                            await this.WriteSnapshot();
-                    }
-                    else
-                    {
-                        throw new Exception("publish event stream exception");
-                    }
+                    HandleEvent(@event);
                 }
+
+                else if (writeResult == EventWriteResult.Duplicate)
+                {
+                    @event = await this._eventStore.ReadOneAsync(this._grain.GetGrainId(), @event.CommandId);
+                }
+
                 else
                     throw new Exception("event store write exception");
+
+
+                if (await EventStreamProviderManager.GetEventStreamProvider().PublishAsync(@event))
+                {
+                    if (@event.Version % this._afterSnapshotsEventCount == 0)
+                        await this.WriteSnapshot();
+                }
+                else
+                {
+                    throw new Exception("publish event stream exception");
+                }
             }
         }
 

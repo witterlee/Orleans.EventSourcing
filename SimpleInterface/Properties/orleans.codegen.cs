@@ -29,27 +29,14 @@ namespace Orleans.EventSourcing.SimpleInterface
     using Orleans.EventSourcing.SimpleInterface;
     using Orleans;
     using Orleans.Runtime;
-    using Orleans.Core;
     using Orleans.EventSourcing;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class TransferTransactionFactory
     {
         
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<ITransferTransaction> instead.")]
-                        public static ITransferTransaction GetGrain(System.Guid primaryKey)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(ITransferTransaction), primaryKey));
-                        }
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<ITransferTransaction> instead.")]
-                        public static ITransferTransaction GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(ITransferTransaction), primaryKey, grainClassNamePrefix));
-                        }
 
             public static ITransferTransaction Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
@@ -57,7 +44,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return TransferTransactionReference.Cast(grainRef);
             }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
         [global::Orleans.CodeGeneration.GrainReferenceAttribute("Orleans.EventSourcing.SimpleInterface.ITransferTransaction")]
@@ -183,7 +170,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.MethodInvokerAttribute("Orleans.EventSourcing.SimpleInterface.ITransferTransaction", 1895808213)]
     internal class TransferTransactionMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
@@ -208,7 +195,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                         switch (methodId)
                         {
                             case 518927232: 
-                                return ((ITransferTransaction)grain).Initialize((Guid)arguments[0], (Guid)arguments[1], (Decimal)arguments[2]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((ITransferTransaction)grain).Initialize((System.Guid)arguments[0], (System.Guid)arguments[1], (System.Decimal)arguments[2]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 901321164: 
                                 return ((ITransferTransaction)grain).ConfirmAccountValidatePassed().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1613436135: 
@@ -278,23 +265,11 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class TransferTransactionProcessManagerFactory
     {
         
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<ITransferTransactionProcessManager> instead.")]
-                        public static ITransferTransactionProcessManager GetGrain(long primaryKey)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(ITransferTransactionProcessManager), primaryKey));
-                        }
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<ITransferTransactionProcessManager> instead.")]
-                        public static ITransferTransactionProcessManager GetGrain(long primaryKey, string grainClassNamePrefix)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(ITransferTransactionProcessManager), primaryKey, grainClassNamePrefix));
-                        }
 
             public static ITransferTransactionProcessManager Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
@@ -302,7 +277,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return TransferTransactionProcessManagerReference.Cast(grainRef);
             }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
         [global::Orleans.CodeGeneration.GrainReferenceAttribute("Orleans.EventSourcing.SimpleInterface.ITransferTransactionProcessManager")]
@@ -380,7 +355,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.MethodInvokerAttribute("Orleans.EventSourcing.SimpleInterface.ITransferTransactionProcessManager", 2060187244)]
     internal class TransferTransactionProcessManagerMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
@@ -443,23 +418,11 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class BankAccountFactory
     {
         
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IBankAccount> instead.")]
-                        public static IBankAccount GetGrain(System.Guid primaryKey)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IBankAccount), primaryKey));
-                        }
-
-                        [System.Obsolete("This method has been deprecated. Please use GrainFactory.GetGrain<IBankAccount> instead.")]
-                        public static IBankAccount GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(IBankAccount), primaryKey, grainClassNamePrefix));
-                        }
 
             public static IBankAccount Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
@@ -467,7 +430,7 @@ namespace Orleans.EventSourcing.SimpleInterface
                 return BankAccountReference.Cast(grainRef);
             }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
         [global::Orleans.CodeGeneration.GrainReferenceAttribute("Orleans.EventSourcing.SimpleInterface.IBankAccount")]
@@ -575,7 +538,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.MethodInvokerAttribute("Orleans.EventSourcing.SimpleInterface.IBankAccount", -912346303)]
     internal class BankAccountMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
@@ -658,7 +621,7 @@ namespace Orleans.EventSourcing.SimpleInterface
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Orleans_EventSourcing_SimpleInterface_TransferTransactionInfoSerialization
@@ -714,7 +677,7 @@ namespace Orleans.EventSourcing.SimpleInterfaceSerializers
     using System.Runtime.InteropServices;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Orleans_EventSourcing_SuccessMessageSerialization
@@ -762,7 +725,7 @@ namespace Orleans.EventSourcing.SimpleInterfaceSerializers
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.10.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Orleans_EventSourcing_ErrorMessageSerialization
