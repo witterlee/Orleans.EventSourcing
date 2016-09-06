@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Orleans.Runtime;
 
 namespace Orleans.EventSourcing
 {
@@ -8,7 +9,7 @@ namespace Orleans.EventSourcing
         where TGrain : Grain<TState>, IEventSourcingGrain<TState>, IGrain
         where TState : EventSourcingState
     {
-        private const int APPLY_EVENT_ERROR = 60101;
+        private const int APPLY_EVENT_ERROR = 100000 + 1;
         private EventStore<TGrain, TState> EventStore { get; set; }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace Orleans.EventSourcing
 
                 @event.GrainId = this.GetGrainId();
                 @event.Version = this.GetState().Version + 1;
-                @event.UTCTimestamp = DateTime.Now.ToUniversalTime();
+                @event.UtcTimestamp = DateTime.Now.ToUniversalTime();
                 @event.TypeCode = typeCode;
 
                 return this.EventStore.WriteEvent(@event);
@@ -35,12 +36,12 @@ namespace Orleans.EventSourcing
             catch (Exception ex)
             {
                 var log = this.GetLogger("event_store");
-                log.Warn(APPLY_EVENT_ERROR, string.Format("applay event {0} error, eventId={1}", @event.GetType().FullName, @event.Version), ex);
+                log.Warn(APPLY_EVENT_ERROR, $"applay event {@event.GetType().FullName} error, eventId={@event.Version}", ex);
                 throw ex;
             }
         }
 
-        public async override Task OnActivateAsync()
+        public override async Task OnActivateAsync()
         {
             this.EventStore = await EventStore<TGrain, TState>.Initialize(this as TGrain, 100);
             await this.EventStore.ReplayEvents();
@@ -52,17 +53,26 @@ namespace Orleans.EventSourcing
             return this.State;
         }
 
-        public Task WriteSnapshot()
+        public Task WriteSnapshotAsync()
         {
             return this.WriteStateAsync();
         }
 
         public string GetGrainId()
         {
+            string rtnKey;
             string extKey;
-            var grainId = this.GetPrimaryKey(out extKey).ToString();
+            var guidId = this.GetPrimaryKey(out extKey);
 
-            return grainId;
+            if (guidId == Guid.Empty)
+            {
+                rtnKey = this.IdentityString;
+            }
+            else
+            {
+                rtnKey = guidId.ToString();
+            }
+            return rtnKey;
         }
     }
 }

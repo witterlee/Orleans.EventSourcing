@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Orleans.EventSourcing.SimpleGrain.Events;
 using Orleans.EventSourcing.SimpleInterface;
 using Orleans.Providers;
-using Orleans.Runtime;
 
 namespace Orleans.EventSourcing.SimpleGrain
 {
@@ -98,7 +97,7 @@ namespace Orleans.EventSourcing.SimpleGrain
         }
     }
 
-    public class BankAcountState : EventSourcingState
+    public class BankAcountState :EventSourcingState
     {
         public Dictionary<Guid, TransactionPreparation> TransactionPreparations { get; set; }
         public Guid OwnerId { get; set; }

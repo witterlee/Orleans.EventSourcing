@@ -4,8 +4,8 @@
     {
         WriteResult Handle(T @event);
     }
-    public interface IQuerySideHandler { }
 
+    public interface IQuerySideHandler { } 
 
     public enum WriteResult
     {

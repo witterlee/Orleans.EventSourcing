@@ -77,29 +77,10 @@ namespace Orleans.EventSourcing.SimpleGrain
         Task<TransferTransactionInfo> ITransferTransaction.GetTransferTransactionInfo()
         {
             return Task.FromResult(this.State.TransferTransactionInfo);
-        }
-
-        #region event handlers   
-        private void Handle(TransferInPreparationConfirmedEvent @event)
-        {
-        
-        }
-        private void Handle(TransferOutConfirmedEvent @event)
-        {
-         
-        }
-        private void Handle(TransferInConfirmedEvent @event)
-        {
-           
-        }
-        private void Handle(TransferCanceledEvent @event)
-        {
-          
-        }
-        #endregion
+        } 
     }
 
-    public class TransferTransactionState : EventSourcingState
+    public class TransferTransactionState :EventSourcingState
     {
         public TransactionStatus Status { get; set; }
         public bool TransferOutPreparationConfirmed { get; set; }

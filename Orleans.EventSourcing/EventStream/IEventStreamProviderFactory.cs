@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Orleans.EventSourcing
+﻿namespace Orleans.EventSourcing
 {
     public interface IEventStreamProviderFactory
     {

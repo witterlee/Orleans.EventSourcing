@@ -13,7 +13,7 @@ namespace Orleans.EventSourcing
         public static SiloHost UseEventStore(this SiloHost siloHost, EventStoreSection eventStoreSection, IDictionary<string, int> typeNameCodeMapping, params Assembly[] assemlies)
         {
             if (eventStoreSection == null)
-                throw new ArgumentNullException("eventStoreSection", "eventStoreSection is null");
+                throw new ArgumentNullException(nameof(eventStoreSection), "eventStoreSection is null");
             RegisterGrain(siloHost, typeNameCodeMapping, assemlies);
             EventStoreProviderManager.Initailize(eventStoreSection);
 
@@ -23,7 +23,7 @@ namespace Orleans.EventSourcing
         public static SiloHost UseEventStore(this SiloHost siloHost, string eventStoreSectionName, IDictionary<string, int> typeNameCodeMapping, params Assembly[] assemlies)
         {
             if (string.IsNullOrEmpty(eventStoreSectionName))
-                throw new ArgumentNullException("eventStoreSectionName", "eventStoreSectionName is null");
+                throw new ArgumentNullException(nameof(eventStoreSectionName), "eventStoreSectionName is null");
 
             var eventStoreSection = (EventStoreSection)ConfigurationManager.GetSection("eventStoreProvider");
             siloHost.UseEventStore(eventStoreSection, typeNameCodeMapping, assemlies);
@@ -34,7 +34,7 @@ namespace Orleans.EventSourcing
         public static SiloHost UseQuerySideBus(this SiloHost siloHost, params Assembly[] assemlies)
         {
             if (assemlies == null || !assemlies.Any())
-                throw new ArgumentNullException("assemlies", "assemlies is null");
+                throw new ArgumentNullException(nameof(assemlies), "assemlies is null");
 
             var queryHandlerContainer = new QuerySideProcessorContainer();
             queryHandlerContainer.RegisterHandlers(assemlies);
@@ -57,7 +57,7 @@ namespace Orleans.EventSourcing
                         EventNameCodeMapping.RegisterEventType(kv.Value, type);
                     }
                 }
-                GrainInternalEventHandlerProvider.RegisterInternalEventHandler(assemlies);
+                //GrainInternalEventHandlerProvider.RegisterInternalEventHandler(assemlies);
             }
             return siloHost;
         }

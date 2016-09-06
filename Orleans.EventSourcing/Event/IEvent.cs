@@ -9,13 +9,18 @@ namespace Orleans.EventSourcing
         public GrainEvent()
         {
             var cmdId = RequestContext.Get("CommandId");
-            this.CommandId = cmdId == null ? "" : cmdId.ToString();
+            this.CommandId = cmdId?.ToString() ?? "";
         }
         public string GrainId { get; set; }
         public string CommandId { get; set; }
-        public DateTime UTCTimestamp { get; set; }
+        public DateTime UtcTimestamp { get; set; }
         public int TypeCode { get; set; }
-        public long Version { get; set; }
+        public int Version { get; set; }
+
+        public virtual void Apply<T>(T @event)
+        { 
+            throw new NotImplementedException();
+        }
     }
     /// <summary>
     /// The event interface.
@@ -24,8 +29,10 @@ namespace Orleans.EventSourcing
     {
         string GrainId { get; }
         string CommandId { get; }
-        long Version { get; }
+        int Version { get; }
         int TypeCode { get; }
-        DateTime UTCTimestamp { get; }
+        DateTime UtcTimestamp { get; }
+
+        void Apply<T>(T state);
     }
 }

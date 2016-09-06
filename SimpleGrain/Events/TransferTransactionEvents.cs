@@ -39,7 +39,7 @@ namespace Orleans.EventSourcing.SimpleGrain.Events
         public void Apply(TransferTransactionState state)
         {
             state.Status = TransactionStatus.AccountValidateCompleted;
-            state.AccountValidatedAt = this.UTCTimestamp;
+            state.AccountValidatedAt = this.UtcTimestamp;
         }
     }
     [Serializable]
@@ -51,7 +51,7 @@ namespace Orleans.EventSourcing.SimpleGrain.Events
         public void Apply(TransferTransactionState state)
         {
             state.TransferOutPreparationConfirmed = true;
-            state.TransferOutPreparationConfirmedAt = this.UTCTimestamp;
+            state.TransferOutPreparationConfirmedAt = this.UtcTimestamp;
 
             if (state.TransferInPreparationConfirmed)
                 state.Status = TransactionStatus.PreparationCompleted;
@@ -65,7 +65,7 @@ namespace Orleans.EventSourcing.SimpleGrain.Events
         public void Apply(TransferTransactionState state)
         {
             state.TransferInPreparationConfirmed = true;
-            state.TransferInPreparationConfirmedAt = this.UTCTimestamp;
+            state.TransferInPreparationConfirmedAt = this.UtcTimestamp;
             if (state.TransferOutPreparationConfirmed)
                 state.Status = TransactionStatus.PreparationCompleted;
         }
@@ -78,7 +78,7 @@ namespace Orleans.EventSourcing.SimpleGrain.Events
         public void Apply(TransferTransactionState state)
         {
             state.TransferOutConfirmed = true;
-            state.TransferOutConfirmedAt = this.UTCTimestamp;
+            state.TransferOutConfirmedAt = this.UtcTimestamp;
             if (state.TransferInConfirmed)
             {
                 state.Status = TransactionStatus.Completed;
@@ -94,7 +94,7 @@ namespace Orleans.EventSourcing.SimpleGrain.Events
         public void Apply(TransferTransactionState state)
         {
             state.TransferInConfirmed = true;
-            state.TransferInConfirmedAt = this.UTCTimestamp;
+            state.TransferInConfirmedAt = this.UtcTimestamp;
             if (state.TransferOutConfirmed)
             {
                 state.Status = TransactionStatus.Completed;
@@ -113,7 +113,7 @@ namespace Orleans.EventSourcing.SimpleGrain.Events
         public TransactionFaileReason TransactionFaileReason { get; set; }
         public void Apply(TransferTransactionState state)
         {
-            state.TransferCancelAt = this.UTCTimestamp;
+            state.TransferCancelAt = this.UtcTimestamp;
             state.Status = TransactionStatus.Canceled;
         }
     }

@@ -6,7 +6,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Newtonsoft.Json;
-using MongoDBBson = MongoDB.Bson;
 
 namespace Orleans.EventSourcing.MongoDB
 {

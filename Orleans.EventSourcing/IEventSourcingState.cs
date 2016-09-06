@@ -1,7 +1,7 @@
 ﻿namespace Orleans.EventSourcing
 {
-    public class EventSourcingState : GrainState
+    public class EventSourcingState
     {
-        public long Version { get; set; }
+        public int Version { get; set; }
     }
 }

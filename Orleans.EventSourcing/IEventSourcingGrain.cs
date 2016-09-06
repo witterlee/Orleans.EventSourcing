@@ -9,7 +9,7 @@ namespace Orleans.EventSourcing
           where TState : EventSourcingState
     {
         TState GetState();
-        Task WriteSnapshot();
+        Task WriteSnapshotAsync();
         string GetGrainId();
     }
 

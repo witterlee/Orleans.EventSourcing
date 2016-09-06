@@ -69,7 +69,7 @@ namespace Orleans.EventSourcing
 
         private Task WriteSnapshot()
         {
-            return this._grain.WriteSnapshot();
+            return this._grain.WriteSnapshotAsync();
         }
         public async Task ReplayEvents()
         {
@@ -89,21 +89,22 @@ namespace Orleans.EventSourcing
         private void HandleEvent(IEvent @event)
         {
             VerifyEvent(@event);
-            var eventApplyMethod = GrainInternalEventHandlerProvider.GetInternalEventApplyMethod(@event.GetType());
+            //var eventApplyMethod = GrainInternalEventHandlerProvider.GetInternalEventApplyMethod(@event.GetType());
 
-            if (eventApplyMethod == null)
-            {
-                throw new Exception(string.Format("Could not find event apply method for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
-            }
+            //if (eventApplyMethod == null)
+            //{
+            //    throw new Exception(string.Format("Could not find event apply method for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
+            //}
 
-            eventApplyMethod.Invoke(@event, this.State);
+            //eventApplyMethod.Invoke(@event, this.State);
+            @event.Apply(this.State);
             this.State.Version = @event.Version;
         }
         private void VerifyEvent(IEvent @event)
         {
             if (@event.Version != this.State.Version + 1)
             {
-                throw new Exception(string.Format("invlid event version for [{0}] of [{1}]", @event.GetType().FullName, this.GetType().FullName));
+                throw new Exception($"invlid event version for [{@event.GetType().FullName}] of [{this.GetType().FullName}]");
             }
         }
 

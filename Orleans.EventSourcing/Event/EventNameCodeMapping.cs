@@ -9,7 +9,7 @@ namespace Orleans.EventSourcing
     {
         private static readonly IDictionary<int, Type> EventTypeCodeMappings = new Dictionary<int, Type>();
 
-        private static readonly object Locker = new object(); 
+        private static readonly object Locker = new object();
 
         public static bool TryGetEventType(int typeCode, out Type eventType)
         {
@@ -34,13 +34,18 @@ namespace Orleans.EventSourcing
             return grainType.IsClass && !grainType.IsAbstract && typeof(GrainEvent).IsAssignableFrom(grainType);
         }
 
-        public static void Initialize(Dictionary<string, int> typeCodeDic)
+        public static void Initialize(Dictionary<string, int> typeCodeDic, string eventsAssemblyName)
         {
             lock (Locker)
             {
                 if (typeCodeDic.Any())
                 {
-                    var types = Assembly.LoadFrom("FullCoin.GrainInterface.Dll").ExportedTypes;
+                    var assembly = Assembly.LoadFrom(eventsAssemblyName);
+
+                    if (assembly == null)
+                        throw new ArgumentException("EventsAssembly Load Failed!", nameof(eventsAssemblyName));
+
+                    var types = assembly.ExportedTypes;
                     foreach (var kv in typeCodeDic)
                     {
                         var type = types.SingleOrDefault(t => t.FullName == kv.Key);
